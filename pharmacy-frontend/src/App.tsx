@@ -1,6 +1,4 @@
 import React from 'react';
-import Home from './components/home/Home'; 
-import logo from './logo.svg';
 import './App.css';
 import LoginPage from './components/login/LoginContent';
 
