@@ -5,8 +5,8 @@ function LoginPage() {
   return (
     <div>
       <Container component="main" maxWidth="xs">
-        <Box >
-          <Typography component="h1" variant="h5" align="center">
+        <Box >      
+          <Typography component="h1" variant="h5" align="center" paddingTop={10}>
             Sign In
           </Typography>
           
