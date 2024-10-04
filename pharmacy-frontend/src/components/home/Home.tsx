@@ -1,5 +1,5 @@
 import React from 'react';
-import './HomePage.css'; // Add any specific styles for the homepage
+import './HomePage.css'; 
 
 function HomePage() {
   return (
