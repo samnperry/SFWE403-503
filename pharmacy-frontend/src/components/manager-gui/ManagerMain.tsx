@@ -1,14 +1,14 @@
 import React from 'react';
-import './LoginContent.css'; // The CSS file with all the styles
+import './ManagerMain.css'; // The CSS file with all the styles
 import { Box, Typography, TextField, Button, FormControlLabel, Checkbox, Container } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-function LoginPage() {
+function ManagerMain() {
   const navigate = useNavigate();
 
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleNewPharmacist = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    navigate('/ManagerMain');
+    navigate('/HomePage');
   };
 
   return (
@@ -18,7 +18,7 @@ function LoginPage() {
           <Typography variant="h4" component="h1" align="center" className="login-title">
             Login
           </Typography>
-          <form onSubmit={handleLogin} noValidate>
+          <form onSubmit={handleNewPharmacist} noValidate>
             <Box className="input-box">
               <TextField
                 fullWidth
@@ -60,4 +60,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default ManagerMain;
