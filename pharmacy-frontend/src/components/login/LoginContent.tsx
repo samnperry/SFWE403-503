@@ -8,6 +8,7 @@ function LoginPage() {
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    // if (manager) // something like this might be good for GUIS
     navigate('/ManagerMain');
   };
 
