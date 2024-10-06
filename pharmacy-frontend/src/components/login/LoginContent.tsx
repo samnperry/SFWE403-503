@@ -30,6 +30,8 @@ function LoginPage() {
   };
   const handleNavigateSysAdmin = () => {
     navigate("/SysAdminPage");
+    // if (manager) // something like this might be good for GUIS
+    navigate('/ManagerMain');
   };
 
   //event handler included in the dev switch
