@@ -23,6 +23,8 @@ function LoginPage() {
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     navigate("/HomePage");
+  //if (manager) // something like this might be good for GUIS
+  //navigate('/ManagerMain');
   };
   
   const handleNavigateHome = () => {
@@ -30,9 +32,11 @@ function LoginPage() {
   };
   const handleNavigateSysAdmin = () => {
     navigate("/SysAdminPage");
-    // if (manager) // something like this might be good for GUIS
-    navigate('/ManagerMain');
   };
+  const handleNavigateManager = () => {
+    navigate("/ManagerMain");
+  };
+
 
   //event handler included in the dev switch
   const handleDevChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,6 +76,7 @@ function LoginPage() {
           <ButtonGroup variant="contained">
             <Button onClick={handleNavigateHome}>Home Page</Button>
             <Button onClick={handleNavigateSysAdmin}>SysAdmin Page</Button>
+            <Button onClick={handleNavigateManager}>Manager Page</Button>
           </ButtonGroup>
         </Box>
       </Container>
@@ -81,7 +86,7 @@ function LoginPage() {
   return (
     <div className="login-background">
       <Container maxWidth="xs" className="login-container">
-        <Box className="wrapper">
+        <Box className="wrapper" justifySelf={"center"} marginTop={"35%"}>
           <Typography
             variant="h4"
             component="h1"
@@ -137,10 +142,10 @@ function LoginPage() {
             </Button>
           </form>
         </Box>
-      </Container>
 
       {/* Dev Command box */}
       {devSection}
+      </Container>
     </div>
   );
 }

@@ -14,12 +14,14 @@
 
 .login-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: first baseline;
     height: 100%;
 }
 
 .dev-container {
+    justify-self: flex-end;
     display: flex;
     align-items: center;
     justify-content: center;
