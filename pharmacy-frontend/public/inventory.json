@@ -1,0 +1,27 @@
+[
+    {
+      "id": "001",
+      "name": "Aspirin",
+      "amount": 150,
+      "supplier": "HealthCo Pharma"
+    },
+    {
+      "id": "002",
+      "name": "Ibuprofen",
+      "amount": 80,
+      "supplier": "MediSupply Inc."
+    },
+    {
+      "id": "003",
+      "name": "Acetaminophen",
+      "amount": 200,
+      "supplier": "SafeMeds Ltd."
+    },
+    {
+      "id": "004",
+      "name": "Amoxicillin",
+      "amount": 60,
+      "supplier": "PharmaPlus"
+    }
+  ]
+  

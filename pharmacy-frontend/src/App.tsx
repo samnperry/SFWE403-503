@@ -5,6 +5,7 @@ import HomePage from './components/home/Home';
 import SysAdminPage from './components/sysAdmin/SysAdmin';
 import ManagerMain from './components/manager-gui/ManagerMain';
 import { BrowserRouter,Routes, Route } from 'react-router-dom';
+import Inventory from './components/inventory/Inventory';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path='/HomePage' element={<HomePage />}/>
           <Route path='/SysAdminPage' element={<SysAdminPage />}/>
           <Route path='/ManagerMain' element={<ManagerMain />}/>
+          <Route path='/Inventory' element={<Inventory />}/>
         </Routes>
       </BrowserRouter>
       
