@@ -9,11 +9,13 @@ interface InventoryItem {
   name: string;
   amount: number;
   supplier: string;
+  price_per_quantity: number;
+  expiration_date: string;
 }
 
 function Inventory() {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
-  const [newItem, setNewItem] = useState<InventoryItem>({ id: '', name: '', amount: 0, supplier: '' });
+  const [newItem, setNewItem] = useState<InventoryItem>({ id: '', name: '', amount: 0, supplier: '', price_per_quantity: 0.0, expiration_date: '' });
   const navigate = useNavigate();
 
   // Fetch inventory data from the backend server
@@ -56,7 +58,7 @@ function Inventory() {
       .then((data) => {
         console.log('Add item response:', data); // Log response for debugging
         setInventory(prevInventory => [...prevInventory, newItem]); // Add new item to state
-        setNewItem({ id: '', name: '', amount: 0, supplier: '' }); // Reset form
+        setNewItem({ id: '', name: '', amount: 0, supplier: '', price_per_quantity: 0.0, expiration_date: '' }); // Reset form
       })
       .catch(error => console.error('Error adding inventory item:', error));
   };
@@ -92,7 +94,7 @@ function Inventory() {
 
       {/* Add padding to account for the fixed AppBar */}
       <Box component="section" className="box-background" sx={{ p: 2, mt: 8 }}>
-        <Container component="main" style={{ padding: '2rem' }}>
+        <Container component="main" style={{ padding: '2rem', maxWidth: '1500px' }}> {/* Increased maxWidth */}
           <Typography variant="h5" gutterBottom>
             Pharmacy Inventory
           </Typography>
@@ -106,6 +108,8 @@ function Inventory() {
                   <TableCell>Name</TableCell>
                   <TableCell>Amount</TableCell>
                   <TableCell>Supplier</TableCell>
+                  <TableCell>Price Per Quantity</TableCell>
+                  <TableCell>Expiration Date</TableCell>
                   <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
@@ -116,6 +120,8 @@ function Inventory() {
                     <TableCell>{item.name}</TableCell>
                     <TableCell>{item.amount}</TableCell>
                     <TableCell>{item.supplier}</TableCell>
+                    <TableCell>${item.price_per_quantity}</TableCell> {/* Add $ sign */}
+                    <TableCell>{item.expiration_date}</TableCell>
                     <TableCell>
                       <Button variant="contained" color="secondary" onClick={() => handleRemoveItem(item.id)}>
                         Remove
@@ -130,11 +136,17 @@ function Inventory() {
           {/* Add New Item Form */}
           <Box sx={{ mt: 4 }}>
             <Typography variant="h6">Add New Inventory Item</Typography>
-            <TextField label="ID" name="id" value={newItem.id} onChange={handleInputChange} style={{ marginRight: '1rem' }} />
-            <TextField label="Name" name="name" value={newItem.name} onChange={handleInputChange} style={{ marginRight: '1rem' }} />
-            <TextField label="Amount" name="amount" type="number" value={newItem.amount} onChange={handleInputChange} style={{ marginRight: '1rem' }} />
-            <TextField label="Supplier" name="supplier" value={newItem.supplier} onChange={handleInputChange} style={{ marginRight: '1rem' }} />
-            <Button variant="contained" color="primary" onClick={handleAddItem}>Add Item</Button>
+            <Box sx={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}> {/* Use flex for row */}
+              <TextField label="ID" name="id" value={newItem.id} onChange={handleInputChange} style={{ flex: '1' }} />
+              <TextField label="Name" name="name" value={newItem.name} onChange={handleInputChange} style={{ flex: '1' }} />
+              <TextField label="Amount" name="amount" type="number" value={newItem.amount} onChange={handleInputChange} style={{ flex: '1' }} />
+              <TextField label="Supplier" name="supplier" value={newItem.supplier} onChange={handleInputChange} style={{ flex: '1' }} />
+              <TextField label="Price Per Quantity" name="price_per_quantity" type="number" value={newItem.price_per_quantity} onChange={handleInputChange} style={{ flex: '1' }} />
+              <TextField label="Expiration Date" name="expiration_date" type="date" value={newItem.expiration_date} onChange={handleInputChange} style={{ flex: '1' }} InputLabelProps={{ shrink: true }} /> {/* Date Input */}
+            </Box>
+            <Box sx={{ mt: 2 }}>
+              <Button variant="contained" color="primary" onClick={handleAddItem}>Add Item</Button>
+            </Box>
           </Box>
         </Container>
 
