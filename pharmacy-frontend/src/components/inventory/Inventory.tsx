@@ -142,7 +142,7 @@ function Inventory() {
               <TextField label="Amount" name="amount" type="number" value={newItem.amount} onChange={handleInputChange} style={{ flex: '1' }} />
               <TextField label="Supplier" name="supplier" value={newItem.supplier} onChange={handleInputChange} style={{ flex: '1' }} />
               <TextField label="Price Per Quantity" name="price_per_quantity" type="number" value={newItem.price_per_quantity} onChange={handleInputChange} style={{ flex: '1' }} />
-              <TextField label="Expiration Date" name="expiration_date" value={newItem.expiration_date} onChange={handleInputChange} style={{ flex: '1' }} />
+              <TextField label="Expiration Date" name="expiration_date" type="date" value={newItem.expiration_date} onChange={handleInputChange} style={{ flex: '1' }} InputLabelProps={{ shrink: true }} /> {/* Date Input */}
             </Box>
             <Box sx={{ mt: 2 }}>
               <Button variant="contained" color="primary" onClick={handleAddItem}>Add Item</Button>
