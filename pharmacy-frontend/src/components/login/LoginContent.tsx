@@ -36,6 +36,9 @@ function LoginPage() {
   const handleNavigateManager = () => {
     navigate("/ManagerMain");
   };
+  const handleNavigateStaffOverview = () => {
+    navigate("/StaffOverview");
+  };
 
 
   //event handler included in the dev switch
@@ -77,6 +80,7 @@ function LoginPage() {
             <Button onClick={handleNavigateHome}>Home Page</Button>
             <Button onClick={handleNavigateSysAdmin}>SysAdmin Page</Button>
             <Button onClick={handleNavigateManager}>Manager Page</Button>
+            <Button onClick={handleNavigateStaffOverview}>Staff Overview Page</Button>
           </ButtonGroup>
         </Box>
       </Container>
