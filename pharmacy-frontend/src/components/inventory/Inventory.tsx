@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './Inventory.css';
 import { Box, Typography, Container, AppBar, Toolbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable'
 
 // Define the type for inventory items
 interface InventoryItem {
@@ -20,7 +22,7 @@ function Inventory() {
 
   // Fetch inventory data from the backend server
   useEffect(() => {
-    fetch('http://localhost:5001/api/inventory') 
+    fetch('http://localhost:5001/api/inventory')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -78,6 +80,34 @@ function Inventory() {
       .catch(error => console.error('Error removing inventory item:', error));
   };
 
+  const handleGenerate = () => {
+    const doc = new jsPDF();
+
+    // Set the title of the PDF
+    doc.text("Inventory List", 14, 10);
+
+    // Define table columns and rows
+    const columns = ["ID", "Name", "Amount", "Supplier", "Price", "Expiration Date"];
+    const rows = inventory.map(item => [
+      item.id,
+      item.name,
+      item.amount,
+      item.supplier,
+      `$${item.price_per_quantity}`, // Add $ sign
+      item.expiration_date
+    ]);
+
+    // Ensure the autoTable method works properly
+    autoTable(doc, {
+      head: [columns],
+      body: rows,
+      startY: 20,
+    });
+
+    // Save the generated PDF
+    doc.save("inventory_list.pdf");
+  };
+
   return (
     <div className="inventory-background">
       {/* Fixed AppBar at the top */}
@@ -95,10 +125,14 @@ function Inventory() {
       {/* Add padding to account for the fixed AppBar */}
       <Box component="section" className="box-background" sx={{ p: 2, mt: 8 }}>
         <Container component="main" style={{ padding: '2rem', maxWidth: '1500px' }}> {/* Increased maxWidth */}
-          <Typography variant="h5" gutterBottom>
-            Pharmacy Inventory
-          </Typography>
-
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="h5" gutterBottom>
+              Pharmacy Inventory
+            </Typography>
+            <Button variant="contained" color="primary" onClick={handleGenerate}>
+              Generate Report
+            </Button>
+          </div>
           {/* Inventory Table */}
           <TableContainer component={Paper}>
             <Table>
