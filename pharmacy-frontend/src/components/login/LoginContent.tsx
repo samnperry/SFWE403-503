@@ -36,6 +36,10 @@ function LoginPage() {
   const handleNavigateManager = () => {
     navigate("/ManagerMain");
   };
+  const handleNavigateInventory = () => {
+    navigate("/Inventory");
+  };
+
   const handleNavigateStaffOverview = () => {
     navigate("/StaffOverview");
   };
@@ -80,6 +84,7 @@ function LoginPage() {
             <Button onClick={handleNavigateHome}>Home Page</Button>
             <Button onClick={handleNavigateSysAdmin}>SysAdmin Page</Button>
             <Button onClick={handleNavigateManager}>Manager Page</Button>
+            <Button onClick={handleNavigateInventory}>Inventory</Button>
             <Button onClick={handleNavigateStaffOverview}>Staff Overview Page</Button>
           </ButtonGroup>
         </Box>

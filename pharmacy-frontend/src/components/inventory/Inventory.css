@@ -1,0 +1,30 @@
+.inventory-background {
+    background-color: #f9f9f9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .box-background {
+    margin: auto;
+    max-width: 1200px;
+  }
+  
+  .MuiTable-root {
+    margin-top: 20px;
+  }
+  
+  .MuiTableCell-root {
+    padding: 16px;
+  }
+  
+  .MuiTableHead-root {
+    background-color: #f1f1f1;
+  }
+  
+  footer {
+    margin-top: auto;
+    background-color: #f1f1f1;
+    padding: 1rem;
+  }
+  
