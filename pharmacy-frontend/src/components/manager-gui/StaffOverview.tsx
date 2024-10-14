@@ -7,7 +7,7 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
 
-// Define the type for inventory items
+// Define the type for staff items
 interface StaffItem {
   id: string;
   type: string;
@@ -17,13 +17,13 @@ interface StaffItem {
 }
 
 function StaffOverview() {
-  const [inventory, setStaff] = useState<StaffItem[]>([]);
+  const [staffList, setStaff] = useState<StaffItem[]>([]);
   const [newItem, setNewStaff] = useState<StaffItem>({ id: '', type: '', name: '', username: '', password: '' });
   const navigate = useNavigate();
 
-  // Fetch inventory data from the backend server
+  // Fetch staff data from the backend server
   useEffect(() => {
-    fetch('http://localhost:5001/api/inventory') 
+    fetch('http://localhost:5001/api/staff') 
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -31,10 +31,10 @@ function StaffOverview() {
         return response.json();
       })
       .then((data: StaffItem[]) => {
-        console.log('Inventory data:', data);
+        console.log('Staff data:', data);
         setStaff(data);
       })
-      .catch(error => console.error('Error fetching inventory:', error));
+      .catch(error => console.error('Error fetching staff:', error));
   }, []);
 
   // Handle input changes for new item
@@ -45,7 +45,7 @@ function StaffOverview() {
 
   // Handle adding new item
   const handleAddItem = () => {
-    fetch('http://localhost:5001/api/inventory', {
+    fetch('http://localhost:5001/api/staff', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -63,32 +63,46 @@ function StaffOverview() {
         setStaff(prevStaff => [...prevStaff, newItem]); // Add new item to state
         setNewStaff({ id: '', type: '', name: '', username: '', password: '' }); // Reset form
       })
-      .catch(error => console.error('Error adding inventory item:', error));
+      .catch(error => console.error('Error adding staff item:', error));
   };
 
   // Handle removing item
   const handleRemoveItem = (id: string) => {
-    fetch(`http://localhost:5001/api/inventory/${id}`, {
+    fetch(`http://localhost:5001/api/staff/${id}`, {
       method: 'DELETE',
     })
       .then(response => {
         if (response.ok) {
-          setStaff(prevInventory => prevInventory.filter(item => item.id !== id));
+          setStaff(prevStaff => prevStaff.filter(item => item.id !== id));
         } else {
           console.error('Error removing item:', response.status);
         }
       })
-      .catch(error => console.error('Error removing inventory item:', error));
+      .catch(error => console.error('Error removing staff item:', error));
   };
 
-  // Sample list of users
-  const [users, setUsers] = useState([
-    { id: 1, type: 'Admin', name: 'John Doe', username: 'johndoe', password: 'password123' },
-    { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
-  ]);
+  // // Sample list of users
+  // const [users, setUsers] = useState([
+  //   { id: 1, type: 'Admin', name: 'John Doe', username: 'johndoe', password: 'password123' },
+  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
+  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
+  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
+  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
+  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
+  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
+  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
+  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
+  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
+  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
+  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
+  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
+  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
+  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
+  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
+  // ]);
 
   return (
-    <div style={{ width: '150vh', height: '100vh', backgroundColor: 'white' }}>
+    <div style={{ width: '150vh', height: '100%', backgroundColor: 'white' }}>
       {/* Navigation Bar */}
       <AppBar position="fixed" sx={{ zIndex: 1400 }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -128,7 +142,7 @@ function StaffOverview() {
 
         {/* User List */}
         <List>
-      {users.map((user, index) => (
+      {staffList.map((user, index) => (
         <ListItem
           key={user.id}
           sx={{
@@ -142,6 +156,7 @@ function StaffOverview() {
           {/* Editable fields */}
           <Box sx={{ display: 'flex', gap: 2, flex: 1 }}>
             <TextField
+              disabled
               label="Type"
               value={user.type}
               //onChange={(e) => handleInputChange(e, index, 'type')}
@@ -150,6 +165,7 @@ function StaffOverview() {
               sx={{ width: '100px' }}
             />
             <TextField
+              disabled
               label="ID"
               value={user.id}
               //onChange={(e) => handleInputChange(e, index, 'id')}
@@ -158,6 +174,7 @@ function StaffOverview() {
               sx={{ width: '70px' }}
             />
             <TextField
+              disabled
               label="Name"
               value={user.name}
               //onChange={(e) => handleInputChange(e, index, 'name')}
@@ -166,6 +183,7 @@ function StaffOverview() {
               sx={{ width: '150px' }}
             />
             <TextField
+              disabled
               label="Username"
               value={user.username}
               //onChange={(e) => handleInputChange(e, index, 'username')}
@@ -174,6 +192,7 @@ function StaffOverview() {
               sx={{ width: '150px' }}
             />
             <TextField
+              disabled
               label="Password"
               value={user.password}
               //onChange={(e) => handleInputChange(e, index, 'password')}
