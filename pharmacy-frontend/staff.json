@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "type": "Admin",
+    "name": "John Doe",
+    "username": "johndoe",
+    "password": "adminpass"
+  },
+  {
+    "id": 2,
+    "type": "Pharmacist",
+    "name": "Jane Smith",
+    "username": "janesmith",
+    "password": "pharmacist123"
+  },
+  {
+    "id": 3,
+    "type": "Technician",
+    "name": "Sarah Johnson",
+    "username": "sarahj",
+    "password": "tech456"
+  },
+  {
+    "id": 4,
+    "type": "Cashier",
+    "name": "Mike Brown",
+    "username": "mikeb",
+    "password": "cashier789"
+  },
+  {
+    "id": 5,
+    "type": "Pharmacist",
+    "name": "Emily Davis",
+    "username": "emilyd",
+    "password": "pharma321"
+  },
+  {
+    "id": 6,
+    "type": "Admin",
+    "name": "David Wilson",
+    "username": "davidw",
+    "password": "adminstrong"
+  },
+  {
+    "id": 7,
+    "type": "Technician",
+    "name": "Rachel Green",
+    "username": "rgreen",
+    "password": "tech789"
+  },
+  {
+    "id": 8,
+    "type": "Pharmacist",
+    "name": "Sophia Martinez",
+    "username": "sophiam",
+    "password": "pharmalife"
+  },
+  {
+    "id": 9,
+    "type": "Cashier",
+    "name": "Jake White",
+    "username": "jakew",
+    "password": "cashpass"
+  },
+  {
+    "id": 10,
+    "type": "Technician",
+    "name": "Olivia Lee",
+    "username": "olivial",
+    "password": "techpass"
+  }
+]

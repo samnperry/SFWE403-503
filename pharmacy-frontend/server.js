@@ -13,10 +13,16 @@ app.use(cors({
   origin: 'http://localhost:3000', // Specify the frontend origin
 }));
 
+/* Paths ***************************************/
 // Path to the inventory.json file
 const inventoryFilePath = path.join(__dirname, 'inventory.json');
 console.log('Inventory file path:', inventoryFilePath);
 
+// Path to the inventory.json file
+const staffFilePath = path.join(__dirname, 'staff.json');
+console.log('Staff file path:', staffFilePath);
+
+/* Gets ****************************************/
 // Get the current inventory
 app.get('/api/inventory', (req, res) => {
   fs.readFile(inventoryFilePath, 'utf8', (err, data) => {
@@ -27,6 +33,7 @@ app.get('/api/inventory', (req, res) => {
   });
 });
 
+/* Post ****************************************/
 // Add a new inventory item
 app.post('/api/inventory', (req, res) => {
   const newItem = req.body;
@@ -48,6 +55,7 @@ app.post('/api/inventory', (req, res) => {
   });
 });
 
+/* Delete **************************************/
 // Remove an inventory item by ID
 app.delete('/api/inventory/:id', (req, res) => {
   const itemId = req.params.id;
