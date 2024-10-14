@@ -22,5 +22,11 @@
     "name": "Amoxicillin",
     "amount": 60,
     "supplier": "PharmaPlus"
+  },
+  {
+    "id": "",
+    "name": "",
+    "amount": 0,
+    "supplier": ""
   }
 ]
