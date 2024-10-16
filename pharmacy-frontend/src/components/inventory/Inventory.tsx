@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Inventory.css';
-import { Box, Typography, Container, AppBar, Toolbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField } from '@mui/material';
+import { Box, Typography, Container, AppBar, Toolbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -19,6 +19,10 @@ function Inventory() {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [newItem, setNewItem] = useState<InventoryItem>({ id: '', name: '', amount: 0, supplier: '', price_per_quantity: 0.0, expiration_date: '' });
   const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
+  const [purchaseQuantity, setPurchaseQuantity] = useState('');
+
 
   // Fetch inventory data from the backend server
   useEffect(() => {
@@ -78,7 +82,29 @@ function Inventory() {
         }
       })
       .catch(error => console.error('Error removing inventory item:', error));
+  };  
+  
+  // Function to open dialog with the selected item
+  const handleOpenDialog = (item: InventoryItem) => {
+    setSelectedItem(item);
+    setOpenDialog(true);
   };
+
+  // Function to close dialog
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setPurchaseQuantity('');
+  };
+
+  // Function to handle the purchase
+  const handlePurchase = () => {
+    if (selectedItem) {
+      console.log(`Purchasing ${purchaseQuantity} of ${selectedItem.name}`);
+      // Here you would typically handle the backend update
+      handleCloseDialog();
+    }
+  };
+
 
   const handleGenerate = () => {
     const doc = new jsPDF();
@@ -157,8 +183,11 @@ function Inventory() {
                     <TableCell>${item.price_per_quantity}</TableCell> {/* Add $ sign */}
                     <TableCell>{item.expiration_date}</TableCell>
                     <TableCell>
-                      <Button variant="contained" color="secondary" onClick={() => handleRemoveItem(item.id)}>
+                      <Button sx={{marginRight: '1rem'}} variant="contained" color="secondary" onClick={() => handleRemoveItem(item.id)}>
                         Remove
+                      </Button>
+                      <Button variant="contained" color="secondary" onClick={() => handleOpenDialog(item)}>
+                        Purchase 
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -183,6 +212,28 @@ function Inventory() {
             </Box>
           </Box>
         </Container>
+
+        <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Purchase Item</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="quantity"
+            label="Quantity"
+            type="number"
+            fullWidth
+            variant="standard"
+            value={purchaseQuantity}
+            onChange={(e) => setPurchaseQuantity(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={handlePurchase}>Confirm Purchase</Button>
+        </DialogActions>
+      </Dialog>
+  
 
         {/* Footer */}
         <footer style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#f1f1f1' }}>
