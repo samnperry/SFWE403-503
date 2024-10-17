@@ -14,16 +14,17 @@ interface StaffItem {
   name: string;
   username: string;
   password: string;
+  disabled: boolean
 }
 
 function StaffOverview() {
   const [staffList, setStaff] = useState<StaffItem[]>([]);
-  const [newItem, setNewStaff] = useState<StaffItem>({ id: '', type: '', name: '', username: '', password: '' });
+  const [newItem, setNewStaff] = useState<StaffItem>({ id: '', type: '', name: '', username: '', password: '', disabled: true });
   const navigate = useNavigate();
 
   // Fetch staff data from the backend server
   useEffect(() => {
-    fetch('http://localhost:5001/api/staff') 
+    fetch('http://localhost:5001/api/staff')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -31,20 +32,55 @@ function StaffOverview() {
         return response.json();
       })
       .then((data: StaffItem[]) => {
+        data.forEach((value) => { value.disabled = true; })
         console.log('Staff data:', data);
         setStaff(data);
       })
       .catch(error => console.error('Error fetching staff:', error));
   }, []);
 
-  // Handle input changes for new item
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewStaff(prevState => ({ ...prevState, [name]: value }));
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, // event from input
+    index: number, // index of the staff in the staffList
+    field: string // the field to be updated (e.g., 'password', 'username')
+  ) => {
+    const { value } = e.target; // Get the new value from the input
+  
+    // Create a copy of the staffList
+    const updatedStaffList = [...staffList];
+  
+    // Update the specific field for the staff at the given index
+    updatedStaffList[index] = {
+      ...updatedStaffList[index],
+      [field]: value, // Dynamically update the field (e.g., 'password': newValue)
+    };
+  
+    // Set the updated list back to state (if using React state)
+    setStaff(updatedStaffList);
   };
 
+  const handleEditStaff = (id: string) => {
+    const staff = staffList.find(value => value.id === id);
+
+  if (staff) { // Ensure the staff member exists
+    staff.disabled = !staff.disabled; // Toggle the disabled property
+    setStaff([...staffList]);
+
+    fetch(`http://localhost:5001/api/staff/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(staff),
+    })
+      .then(response => response.json())
+      .then(data => console.log('Success:', data))
+      .catch(error => console.error('Error:', error));
+  }
+  }
+
   // Handle adding new item
-  const handleAddItem = () => {
+  const handleAddStaff = () => {
     fetch('http://localhost:5001/api/staff', {
       method: 'POST',
       headers: {
@@ -61,13 +97,13 @@ function StaffOverview() {
       .then((data) => {
         console.log('Add item response:', data); // Log response for debugging
         setStaff(prevStaff => [...prevStaff, newItem]); // Add new item to state
-        setNewStaff({ id: '', type: '', name: '', username: '', password: '' }); // Reset form
+        setNewStaff({ id: '', type: '', name: '', username: '', password: '', disabled: true }); // Reset form
       })
       .catch(error => console.error('Error adding staff item:', error));
   };
 
   // Handle removing item
-  const handleRemoveItem = (id: string) => {
+  const handleRemoveStaff = (id: string) => {
     fetch(`http://localhost:5001/api/staff/${id}`, {
       method: 'DELETE',
     })
@@ -81,37 +117,14 @@ function StaffOverview() {
       .catch(error => console.error('Error removing staff item:', error));
   };
 
-  // // Sample list of users
-  // const [users, setUsers] = useState([
-  //   { id: 1, type: 'Admin', name: 'John Doe', username: 'johndoe', password: 'password123' },
-  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
-  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
-  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
-  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
-  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
-  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
-  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
-  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
-  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
-  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
-  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
-  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
-  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
-  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
-  //   { id: 2, type: 'Pharmacist', name: 'Jane Smith', username: 'janesmith', password: 'password456' },
-  // ]);
-
   return (
     <div style={{ width: '150vh', height: '100%', backgroundColor: 'white' }}>
       {/* Navigation Bar */}
       <AppBar position="fixed" sx={{ zIndex: 1400 }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography variant="h6" sx={{ fontSize: '1.25rem' }}>
-            Pharmacy Manager
-          <Typography variant="h6" sx={{ fontSize: '1.25rem' }}>
-            {/* Replace <UserName> with dynamic username */}
-            UserName
-          </Typography>
+            Pharmacy Manager<br></br>
+            UserName {/* FIXME make dynamic */}
           </Typography>
           <Button color="inherit" onClick={() => navigate("/ManagerMain")}>Home</Button>
           <Button color="inherit">Staff</Button>
@@ -142,81 +155,81 @@ function StaffOverview() {
 
         {/* User List */}
         <List>
-      {staffList.map((user, index) => (
-        <ListItem
-          key={user.id}
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            borderBottom: '1px solid #e0e0e0',
-            padding: '1rem 0',
-          }}
-        >
-          {/* Editable fields */}
-          <Box sx={{ display: 'flex', gap: 2, flex: 1 }}>
-            <TextField
-              disabled
-              label="Type"
-              value={user.type}
-              //onChange={(e) => handleInputChange(e, index, 'type')}
-              variant="outlined"
-              size="small"
-              sx={{ width: '100px' }}
-            />
-            <TextField
-              disabled
-              label="ID"
-              value={user.id}
-              //onChange={(e) => handleInputChange(e, index, 'id')}
-              variant="outlined"
-              size="small"
-              sx={{ width: '70px' }}
-            />
-            <TextField
-              disabled
-              label="Name"
-              value={user.name}
-              //onChange={(e) => handleInputChange(e, index, 'name')}
-              variant="outlined"
-              size="small"
-              sx={{ width: '150px' }}
-            />
-            <TextField
-              disabled
-              label="Username"
-              value={user.username}
-              //onChange={(e) => handleInputChange(e, index, 'username')}
-              variant="outlined"
-              size="small"
-              sx={{ width: '150px' }}
-            />
-            <TextField
-              disabled
-              label="Password"
-              value={user.password}
-              //onChange={(e) => handleInputChange(e, index, 'password')}
-              variant="outlined"
-              size="small"
-              sx={{ width: '150px' }}
-            />
-          </Box>
+          {staffList.map((staff, index) => (
+            <ListItem
+              key={staff.id}
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderBottom: '1px solid #e0e0e0',
+                padding: '1rem 0',
+              }}
+            >
+              {/* Editable fields */}
+              <Box sx={{ display: 'flex', gap: 2, flex: 1 }}>
+                <TextField
+                  disabled={staff.disabled}
+                  label="Type"
+                  value={staff.type}
+                  onChange={(e) => handleInputChange(e, index, 'type')}
+                  variant="outlined"
+                  size="small"
+                  sx={{ width: '15%' }}
+                />
+                <TextField
+                  disabled={staff.disabled}
+                  label="ID"
+                  value={staff.id}
+                  onChange={(e) => handleInputChange(e, index, 'id')}
+                  variant="outlined"
+                  size="small"
+                  sx={{ width: '8%' }}
+                />
+                <TextField
+                  disabled={staff.disabled}
+                  label="Name"
+                  value={staff.name}
+                  onChange={(e) => handleInputChange(e, index, 'name')}
+                  variant="outlined"
+                  size="small"
+                  sx={{ width: '20%' }}
+                />
+                <TextField
+                  disabled={staff.disabled}
+                  label="Username"
+                  value={staff.username}
+                  onChange={(e) => handleInputChange(e, index, 'username')}
+                  variant="outlined"
+                  size="small"
+                  sx={{ width: '20%' }}
+                />
+                <TextField
+                  disabled={staff.disabled}
+                  label="Password"
+                  value={staff.password}
+                  onChange={(e) => handleInputChange(e, index, 'password')}
+                  variant="outlined"
+                  size="small"
+                  sx={{ width: '20%' }}
+                />
+              </Box>
 
-          {/* Action buttons */}
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <IconButton aria-label="edit" color="primary">
-              <EditIcon />
-            </IconButton>
-            <IconButton aria-label="delete" color="secondary">
-              <DeleteIcon />
-            </IconButton>
-            <IconButton aria-label="unlock" color="default">
-              <LockOpenIcon />
-            </IconButton>
-          </Box>
-        </ListItem>
-      ))}
-    </List>
+              {/* Action buttons */}
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <IconButton aria-label="edit" color="primary" onClick={(e) => handleEditStaff(staff.id)}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton aria-label="delete" color="secondary" onClick={() => handleRemoveStaff(staff.id)}>
+                  <DeleteIcon />
+                </IconButton>
+                <IconButton aria-label="unlock" color="default" >
+                  <LockOpenIcon />
+                </IconButton>
+              </Box>
+            </ListItem>
+          ))}
+        </List>
       </Container>
     </div>
   );

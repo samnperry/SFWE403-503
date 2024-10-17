@@ -84,6 +84,42 @@ app.post('/api/staff', (req, res) => {
   });
 });
 
+/* Put *****************************************/
+//Update inventory by ID
+
+// Update a staff member by ID
+app.put('/api/staff/:id', (req, res) => {
+  const staffId = req.params.id; // Get the ID from the URL
+  const updatedStaffData = req.body; // Get the new data from the request body
+
+  // Read the current staff data from the JSON file
+  fs.readFile(staffFilePath, 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error reading staff file' });
+    }
+
+    let staff = JSON.parse(data); // Parse the current staff data
+
+    // Find the index of the staff member to update
+    const staffIndex = staff.findIndex(item => item.id === staffId);
+    if (staffIndex === -1) {
+      return res.status(404).json({ message: 'Staff member not found' });
+    }
+
+    // Update the staff member's data with the new values from the request body
+    staff[staffIndex] = { ...staff[staffIndex], ...updatedStaffData };
+
+    // Write the updated staff data back to the JSON file
+    fs.writeFile(staffFilePath, JSON.stringify(staff, null, 2), err => {
+      if (err) {
+        return res.status(500).json({ error: 'Error writing to staff file' });
+      }
+      res.json({ message: 'Staff member updated successfully', staff });
+    });
+  });
+});
+
+
 /* Delete **************************************/
 // Remove an inventory item by ID
 app.delete('/api/inventory/:id', (req, res) => {
@@ -115,13 +151,13 @@ app.delete('/api/staff/:id', (req, res) => {
     }
 
     let staff = JSON.parse(data);
-    staff = staff.filter(item => item.id !== itemId);
+    staff = staff.filter(item => item.id !== staffId);
 
     fs.writeFile(staffFilePath, JSON.stringify(staff, null, 2), err => {
       if (err) {
         return res.status(500).json({ error: 'Error writing to staff file' });
       }
-      res.json({ message: 'Staff removed successfully', inventory });
+      res.json({ message: 'Staff removed successfully', staff });
     });
   });
 });
