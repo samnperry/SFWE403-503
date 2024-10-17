@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './Inventory.css';
-import { Box, Typography, Container, AppBar, Toolbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField } from '@mui/material';
+import { Box, Typography, Container, AppBar, Toolbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 // Define the type for inventory items
 interface InventoryItem {
@@ -17,10 +19,14 @@ function Inventory() {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [newItem, setNewItem] = useState<InventoryItem>({ id: '', name: '', amount: 0, supplier: '', price_per_quantity: 0.0, expiration_date: '' });
   const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
+  const [purchaseQuantity, setPurchaseQuantity] = useState('');
+
 
   // Fetch inventory data from the backend server
   useEffect(() => {
-    fetch('http://localhost:5001/api/inventory') 
+    fetch('http://localhost:5001/api/inventory')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -76,6 +82,56 @@ function Inventory() {
         }
       })
       .catch(error => console.error('Error removing inventory item:', error));
+  };  
+  
+  // Function to open dialog with the selected item
+  const handleOpenDialog = (item: InventoryItem) => {
+    setSelectedItem(item);
+    setOpenDialog(true);
+  };
+
+  // Function to close dialog
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setPurchaseQuantity('');
+  };
+
+  // Function to handle the purchase
+  const handlePurchase = () => {
+    if (selectedItem) {
+      console.log(`Purchasing ${purchaseQuantity} of ${selectedItem.name}`);
+      // Here you would typically handle the backend update
+      handleCloseDialog();
+    }
+  };
+
+
+  const handleGenerate = () => {
+    const doc = new jsPDF();
+
+    // Set the title of the PDF
+    doc.text("Inventory List", 14, 10);
+
+    // Define table columns and rows
+    const columns = ["ID", "Name", "Amount", "Supplier", "Price", "Expiration Date"];
+    const rows = inventory.map(item => [
+      item.id,
+      item.name,
+      item.amount,
+      item.supplier,
+      `$${item.price_per_quantity}`, // Add $ sign
+      item.expiration_date
+    ]);
+
+    // Ensure the autoTable method works properly
+    autoTable(doc, {
+      head: [columns],
+      body: rows,
+      startY: 20,
+    });
+
+    // Save the generated PDF
+    doc.save("inventory_list.pdf");
   };
 
   return (
@@ -95,10 +151,14 @@ function Inventory() {
       {/* Add padding to account for the fixed AppBar */}
       <Box component="section" className="box-background" sx={{ p: 2, mt: 8 }}>
         <Container component="main" style={{ padding: '2rem', maxWidth: '1500px' }}> {/* Increased maxWidth */}
-          <Typography variant="h5" gutterBottom>
-            Pharmacy Inventory
-          </Typography>
-
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="h5" gutterBottom>
+              Pharmacy Inventory
+            </Typography>
+            <Button variant="contained" color="primary" onClick={handleGenerate}>
+              Generate Report
+            </Button>
+          </div>
           {/* Inventory Table */}
           <TableContainer component={Paper}>
             <Table>
@@ -123,8 +183,11 @@ function Inventory() {
                     <TableCell>${item.price_per_quantity}</TableCell> {/* Add $ sign */}
                     <TableCell>{item.expiration_date}</TableCell>
                     <TableCell>
-                      <Button variant="contained" color="secondary" onClick={() => handleRemoveItem(item.id)}>
+                      <Button sx={{marginRight: '1rem'}} variant="contained" color="secondary" onClick={() => handleRemoveItem(item.id)}>
                         Remove
+                      </Button>
+                      <Button variant="contained" color="secondary" onClick={() => handleOpenDialog(item)}>
+                        Purchase 
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -149,6 +212,28 @@ function Inventory() {
             </Box>
           </Box>
         </Container>
+
+        <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Purchase Item</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="quantity"
+            label="Quantity"
+            type="number"
+            fullWidth
+            variant="standard"
+            value={purchaseQuantity}
+            onChange={(e) => setPurchaseQuantity(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={handlePurchase}>Confirm Purchase</Button>
+        </DialogActions>
+      </Dialog>
+  
 
         {/* Footer */}
         <footer style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#f1f1f1' }}>

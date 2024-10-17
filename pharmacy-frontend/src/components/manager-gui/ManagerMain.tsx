@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./ManagerMain.css";
 import {
   Box,
@@ -10,11 +10,68 @@ import {
   AppBar,
   Toolbar,
   Paper,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Badge,
+  IconButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+
+// Define the Medication interface
+interface Medication {
+  id: string;
+  name: string;
+  amount: number;
+  supplier: string;
+  price_per_quantity: number;
+  expiration_date: string;
+}
 
 function ManagerMain() {
   const navigate = useNavigate();
+  const [expiredMedications, setExpiredMedications] = useState<Medication[]>([]);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  function parseDate(dateString: string): Date {
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day); // Month is 0-indexed
+  }
+
+  useEffect(() => {
+    const fetchInventory = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/api/inventory');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const medications: Medication[] = await response.json();
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const expiredMeds = medications.filter((med) => {
+          const expDate = parseDate(med.expiration_date);
+          return expDate < today;
+        });
+
+        if (expiredMeds.length > 0) {
+          setExpiredMedications(expiredMeds);
+        }
+      } catch (error) {
+        console.error('Error fetching inventory:', error);
+      }
+    };
+
+    fetchInventory();
+  }, []);
+
+  const handleNotificationClick = () => {
+    setOpenDialog(true);
+  };
 
   return (
     <div className="manager-background">
@@ -24,6 +81,18 @@ function ManagerMain() {
           <Typography variant="h6" style={{ flexGrow: 1 }}>
             Manager View
           </Typography>
+          {/* Notification Button */}
+          <IconButton
+            color={expiredMedications.length > 0 ? "error" : "inherit"}
+            onClick={handleNotificationClick}
+          >
+            <Badge
+              badgeContent={expiredMedications.length > 0 ? expiredMedications.length : null}
+              color="error"
+            >
+              <NotificationsIcon color="inherit" />
+            </Badge>
+          </IconButton>
           <Button color="inherit" href="/HomePage">
             Home
           </Button>
@@ -87,6 +156,39 @@ function ManagerMain() {
           </Typography>
         </footer>
       </Box>
+
+      {/* Dialog for Expired Medications */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Expired Medications</DialogTitle>
+        <DialogContent>
+          {expiredMedications.length > 0 ? (
+            <>
+              <DialogContentText>
+                The following medications have expired:
+              </DialogContentText>
+              <ul>
+                {expiredMedications.map((med) => (
+                  <li key={med.id}>
+                    {med.name} (expired on {med.expiration_date})
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <DialogContentText>
+              There are no expired medications at this time.
+            </DialogContentText>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="primary">
+            Close
+          </Button>
+          <Button onClick={() => navigate("/Inventory")} color="primary">
+            Go to Inventory
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

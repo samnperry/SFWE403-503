@@ -22,6 +22,10 @@ console.log('Inventory file path:', inventoryFilePath);
 const staffFilePath = path.join(__dirname, 'staff.json');
 console.log('Staff file path:', staffFilePath);
 
+// Path to the pharmacy.json file
+const pharmacyFilePath = path.join(__dirname, 'pharmacy.json');
+console.log('Purchase file path:', pharmacyFilePath);
+
 /* Gets ****************************************/
 // Get the current inventory
 app.get('/api/inventory', (req, res) => {
@@ -41,6 +45,38 @@ app.get('/api/staff', (req, res) => {
     res.json(JSON.parse(data));
   });
 });
+
+// Get the current pharmacy data
+app.get('/api/pharmacy', (req, res) => {
+  fs.readFile(pharmacyFilePath, 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error reading pharmacy file' });
+    }
+    res.json(JSON.parse(data));
+  });
+});
+
+/* Put/Patch (Edit) *********************************/
+// Update the single pharmacy details
+app.put('/api/pharmacy', (req, res) => {
+  const updatedPharmacy = req.body;
+
+  // Read the existing pharmacy data
+  fs.readFile(pharmacyFilePath, 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error reading pharmacy file' });
+    }
+
+    // Since there's only one object, we directly update it
+    fs.writeFile(pharmacyFilePath, JSON.stringify(updatedPharmacy, null, 2), err => {
+      if (err) {
+        return res.status(500).json({ error: 'Error writing to pharmacy file' });
+      }
+      res.json({ message: 'Pharmacy details updated successfully', pharmacy: updatedPharmacy });
+    });
+  });
+});
+
 
 /* Post ****************************************/
 // Add a new inventory item
