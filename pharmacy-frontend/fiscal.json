@@ -1,0 +1,16 @@
+[
+  {
+    "itemId": "002",
+    "itemName": "Ibuprofen",
+    "quantityPurchased": "20",
+    "supplier": "MediSupply Inc.",
+    "pricePerUnit": 1.28
+  },
+  {
+    "itemId": "001",
+    "itemName": "Aspirin",
+    "quantityPurchased": "20",
+    "supplier": "HealthCo Pharma",
+    "pricePerUnit": 1.28
+  }
+]

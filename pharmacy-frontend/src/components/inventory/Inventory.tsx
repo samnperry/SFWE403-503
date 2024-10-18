@@ -98,10 +98,35 @@ function Inventory() {
 
   // Function to handle the purchase
   const handlePurchase = () => {
-    if (selectedItem) {
-      console.log(`Purchasing ${purchaseQuantity} of ${selectedItem.name}`);
-      // Here you would typically handle the backend update
-      handleCloseDialog();
+    if (selectedItem && purchaseQuantity) {
+      const purchaseDetails = {
+        itemId: selectedItem.id,
+        itemName: selectedItem.name,
+        quantityPurchased: purchaseQuantity,
+        supplier: selectedItem.supplier,
+        pricePerUnit: selectedItem.price_per_quantity
+      };
+
+      fetch('http://localhost:5001/api/fiscal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(purchaseDetails),
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Purchase recorded:', data);
+        handleCloseDialog();
+      })
+      .catch(error => {
+        console.error('Error recording purchase:', error);
+      });
     }
   };
 
