@@ -5,17 +5,17 @@
     "name": "Phoenix ",
     "username": "Garcia",
     "password": "pp",
-    "disabled": false,
+    "disabled": true,
     "locked": false,
     "attempted": 0
   },
   {
     "id": "2",
-    "type": "Technician",
+    "type": "Manager",
     "name": "Samantha",
     "username": "Kun",
     "password": "dayo",
-    "disabled": false,
+    "disabled": true,
     "locked": false,
     "attempted": 0
   },
@@ -25,7 +25,7 @@
     "name": "max",
     "username": "Max",
     "password": "Max",
-    "disabled": false,
+    "disabled": true,
     "locked": false,
     "attempted": 0
   }

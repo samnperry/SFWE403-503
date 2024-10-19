@@ -66,8 +66,6 @@ function LoginPage() {
           navigate('/SysAdminPage');
         } else if (user.type === 'Manager') {
           navigate('/ManagerMain');
-        } else if (user.type === 'Technician') {
-          navigate('/HomePage');
         } else {
           // If user type is not recognized, navigate to a default page
           navigate('/HomePage');

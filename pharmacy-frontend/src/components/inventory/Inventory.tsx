@@ -167,8 +167,7 @@ function Inventory() {
           <Typography variant="h6" style={{ flexGrow: 1 }}>
             Inventory Management
           </Typography>
-          <Button color="inherit" href='/HomePage'>Home</Button>
-          <Button color="inherit" onClick={() => navigate('/ManagerMain')}>Manager</Button>
+          <Button color="inherit" href='/ManagerMain'>Home</Button>
           <Button color="inherit" onClick={() => navigate('/LoginPage')}>Log Out</Button>
         </Toolbar>
       </AppBar>

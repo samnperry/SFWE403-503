@@ -93,9 +93,6 @@ function ManagerMain() {
               <NotificationsIcon color="inherit" />
             </Badge>
           </IconButton>
-          <Button color="inherit" href="/HomePage">
-            Home
-          </Button>
           <Button color="inherit">Prescriptions</Button>
           <Button color="inherit">Orders</Button>
           <Button color="inherit">Profile</Button>
