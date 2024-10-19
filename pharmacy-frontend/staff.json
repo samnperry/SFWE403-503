@@ -1,58 +1,22 @@
 [
   {
     "id": "1",
-    "type": "Technician",
-    "name": "Rachel Green",
-    "username": "rgreen",
-    "password": "tech789",
-    "disabled": true
+    "type": "Admin",
+    "name": "Phoenix ",
+    "username": "Garcia ",
+    "password": "pp",
+    "disabled": true,
+    "locked": false,
+    "attempted": 0
   },
   {
     "id": "2",
-    "type": "Pharmacist",
-    "name": "Emily Davis",
-    "username": "emilyd",
-    "password": "pharma321",
-    "disabled": true
-  },
-  {
-    "id": "3",
-    "type": "Admin",
-    "name": "David Wilson",
-    "username": "davidw",
-    "password": "adminstrong",
-    "disabled": true
-  },
-  {
-    "id": "4",
     "type": "Technician",
-    "name": "Rachel Green",
-    "username": "rgreen",
-    "password": "tech789",
-    "disabled": true
-  },
-  {
-    "id": "5",
-    "type": "Technician",
-    "name": "Phoenix",
-    "username": "Garcia",
-    "password": "pp",
-    "disabled": true
-  },
-  {
-    "id": "6",
-    "type": "Pharmacist",
-    "name": "Pho",
-    "username": "Nix",
-    "password": "SUGMA BALLS",
-    "disabled": true
-  },
-  {
-    "id": "7",
-    "type": "Admin",
     "name": "Samantha",
     "username": "Kun",
     "password": "dayo",
-    "disabled": true
+    "disabled": true,
+    "locked": false,
+    "attempted": 0
   }
 ]

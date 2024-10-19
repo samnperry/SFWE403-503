@@ -4,6 +4,7 @@ import { AppBar, Toolbar, Typography, Button, Box, Container, List, ListItem, Li
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
+import LockIcon from '@mui/icons-material/Lock';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
 
@@ -14,12 +15,14 @@ interface StaffItem {
   name: string;
   username: string;
   password: string;
-  disabled: boolean
+  disabled: boolean;
+  locked: boolean;
+  attempted: number;
 }
 
 function StaffOverview() {
   const [staffList, setStaff] = useState<StaffItem[]>([]);
-  const [newItem, setNewStaff] = useState<StaffItem>({ id: '', type: '', name: '', username: '', password: '', disabled: true });
+  const [newItem, setNewStaff] = useState<StaffItem>({ id: '', type: '', name: '', username: '', password: '', disabled: true, locked: false, attempted: 0 });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,7 +42,7 @@ function StaffOverview() {
       })
       .catch(error => console.error('Error fetching staff:', error));
   }, []);
-  
+
   // Use another useEffect to rewrite staff after it is set
   useEffect(() => {
     if (staffList.length > 0) {
@@ -51,16 +54,16 @@ function StaffOverview() {
         },
         body: JSON.stringify(staffList), // Send updated staffList
       })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Staff data successfully rewritten:', data);
-      })
-      .catch(error => console.error('Error rewriting staff:', error));
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Staff data successfully rewritten:', data);
+        })
+        .catch(error => console.error('Error rewriting staff:', error));
     }
   }, [staffList]); // This useEffect depends on staffList, will trigger when it's updated
 
@@ -104,6 +107,26 @@ function StaffOverview() {
     }
   }
 
+  const handleUnlockAccount = (id: string) => {
+    const staff = staffList.find(value => value.id === id);
+
+    if (staff) { // Ensure the staff member exists
+      staff.attempted = 0; // Toggle the disabled property
+      setStaff([...staffList]);
+
+      fetch(`http://localhost:5001/api/staff/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(staff),
+      })
+        .then(response => response.json())
+        .then(data => console.log('Success:', data))
+        .catch(error => console.error('Error:', error));
+    }
+  }
+
   // Handle adding new item
   const handleAddStaff = () => {
     const newStaff = {
@@ -113,6 +136,8 @@ function StaffOverview() {
       username: '',
       password: '',
       disabled: false,  // Fields should be editable when a new staff is added
+      locked: false,
+      attempted: 0
     };
 
     fetch('http://localhost:5001/api/staff', {
@@ -256,8 +281,11 @@ function StaffOverview() {
                 <IconButton aria-label="delete" color="secondary" onClick={() => handleRemoveStaff(staff.id)}>
                   <DeleteIcon />
                 </IconButton>
-                <IconButton aria-label="unlock" color="default" >
-                  <LockOpenIcon />
+                <IconButton aria-label="unlock" color="default"
+                  sx={{ color: staff.attempted >= 5 ? 'red' : 'inherit' }}
+                  onClick={() => handleUnlockAccount(staff.id)}
+                  >
+                  {staff.attempted < 5 ? <LockOpenIcon /> : <LockIcon />}
                 </IconButton>
               </Box>
             </ListItem>
