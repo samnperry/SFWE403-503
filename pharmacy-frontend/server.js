@@ -26,6 +26,11 @@ console.log('Staff file path:', staffFilePath);
 const pharmacyFilePath = path.join(__dirname, 'pharmacy.json');
 console.log('Purchase file path:', pharmacyFilePath);
 
+// Path to the fiscal.json file
+const fiscalFilePath = path.join(__dirname, 'fiscal.json');
+console.log('Purchase file path:', fiscalFilePath);
+
+
 /* Gets ****************************************/
 // Get the current inventory
 app.get('/api/inventory', (req, res) => {
@@ -55,6 +60,17 @@ app.get('/api/pharmacy', (req, res) => {
     res.json(JSON.parse(data));
   });
 });
+
+// Get the current fiscal data
+app.get('/api/fiscal', (req, res) => {
+  fs.readFile(fiscalFilePath, 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error reading fiscal file' });
+    }
+    res.json(JSON.parse(data));
+  });
+});
+
 
 /* Put/Patch (Edit) *********************************/
 // Update the single pharmacy details
@@ -116,6 +132,28 @@ app.post('/api/staff', (req, res) => {
         return res.status(500).json({ error: 'Error writing to staff file' });
       }
       res.json({ message: 'Staff added successfully', staff });
+    });
+  });
+});
+
+app.post('/api/fiscal', (req, res) => {
+  const newPurchase = req.body; // Get the purchase data from the request body
+
+  // Read the current fiscal data from the JSON file
+  fs.readFile(fiscalFilePath, 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error reading fiscal file' });
+    }
+
+    let fiscalData = JSON.parse(data); // Parse the current fiscal data
+    fiscalData.push(newPurchase); // Add the new purchase to the data array
+
+    // Write the updated fiscal data back to the JSON file
+    fs.writeFile(fiscalFilePath, JSON.stringify(fiscalData, null, 2), err => {
+      if (err) {
+        return res.status(500).json({ error: 'Error writing to fiscal file' });
+      }
+      res.json({ message: 'Purchase recorded successfully', newPurchase });
     });
   });
 });
@@ -197,6 +235,35 @@ app.delete('/api/staff/:id', (req, res) => {
     });
   });
 });
+
+// DELETE endpoint to remove a purchase record by ID
+app.delete('/api/fiscal/:id', (req, res) => {
+  const purchaseId = req.params.id; // Get the ID from the URL
+
+  fs.readFile(fiscalFilePath, 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error reading fiscal file' });
+    }
+
+    let fiscalData = JSON.parse(data);
+    const index = fiscalData.findIndex(purchase => purchase.id === purchaseId);
+
+    if (index === -1) {
+      return res.status(404).json({ message: 'Purchase record not found' });
+    }
+
+    // Remove the record from the array
+    fiscalData.splice(index, 1);
+
+    fs.writeFile(fiscalFilePath, JSON.stringify(fiscalData, null, 2), err => {
+      if (err) {
+        return res.status(500).json({ error: 'Error writing to fiscal file' });
+      }
+      res.json({ message: 'Purchase record deleted successfully' });
+    });
+  });
+});
+
 
 /* Rewrite **************************************/
 // API endpoint to delete all contents of the JSON file and rewrite with a new array
