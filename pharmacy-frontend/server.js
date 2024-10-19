@@ -101,7 +101,7 @@ app.post('/api/inventory', (req, res) => {
 });
 
 app.post('/api/staff', (req, res) => {
-  const newItem = req.body;
+  const newStaff = req.body;
 
   fs.readFile(staffFilePath, 'utf8', (err, data) => {
     if (err) {
@@ -195,6 +195,25 @@ app.delete('/api/staff/:id', (req, res) => {
       }
       res.json({ message: 'Staff removed successfully', staff });
     });
+  });
+});
+
+/* Rewrite **************************************/
+// API endpoint to delete all contents of the JSON file and rewrite with a new array
+app.put('/api/rewrite/staff', (req, res) => {
+  const newArray = req.body;
+
+  if (!Array.isArray(newArray)) {
+    return res.status(400).json({ error: 'Input must be an array' });
+  }
+
+  // Overwrite the file with the new array
+  fs.writeFile(staffFilePath, JSON.stringify(newArray, null, 2), (err) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error writing to file' });
+    }
+
+    res.json({ message: 'File successfully rewritten', data: newArray });
   });
 });
 

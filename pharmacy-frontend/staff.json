@@ -1,38 +1,6 @@
 [
   {
-    "id": "3",
-    "type": "Technician",
-    "name": "Sarah Johnson",
-    "username": "sarahj",
-    "password": "penis",
-    "disabled": true
-  },
-  {
-    "id": "4",
-    "type": "Cashier",
-    "name": "Mike Brown",
-    "username": "mikeb",
-    "password": "cashier789",
-    "disabled": true
-  },
-  {
-    "id": "5",
-    "type": "Pharmacist",
-    "name": "Emily Davis",
-    "username": "emilyd",
-    "password": "pharma321",
-    "disabled": true
-  },
-  {
-    "id": "6",
-    "type": "Admin",
-    "name": "David Wilson",
-    "username": "davidw",
-    "password": "adminstrong",
-    "disabled": true
-  },
-  {
-    "id": "7",
+    "id": "1",
     "type": "Technician",
     "name": "Rachel Green",
     "username": "rgreen",
@@ -40,27 +8,51 @@
     "disabled": true
   },
   {
-    "id": "8",
+    "id": "2",
     "type": "Pharmacist",
-    "name": "Sophia Martinez",
-    "username": "sophiam",
-    "password": "pharmalife",
+    "name": "Emily Davis",
+    "username": "emilyd",
+    "password": "pharma321",
     "disabled": true
   },
   {
-    "id": "9",
-    "type": "Cashier",
-    "name": "Jake White",
-    "username": "jakew",
-    "password": "penisss",
+    "id": "3",
+    "type": "Admin",
+    "name": "David Wilson",
+    "username": "davidw",
+    "password": "adminstrong",
     "disabled": true
   },
   {
-    "id": "10",
+    "id": "4",
     "type": "Technician",
-    "name": "Olivia Lee",
-    "username": "olivial",
-    "password": "techpass",
+    "name": "Rachel Green",
+    "username": "rgreen",
+    "password": "tech789",
+    "disabled": true
+  },
+  {
+    "id": "5",
+    "type": "Technician",
+    "name": "Phoenix",
+    "username": "Garcia",
+    "password": "pp",
+    "disabled": true
+  },
+  {
+    "id": "6",
+    "type": "Pharmacist",
+    "name": "Pho",
+    "username": "Nix",
+    "password": "SUGMA BALLS",
+    "disabled": true
+  },
+  {
+    "id": "7",
+    "type": "Admin",
+    "name": "Samantha",
+    "username": "Kun",
+    "password": "dayo",
     "disabled": true
   }
 ]

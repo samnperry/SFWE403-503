@@ -22,8 +22,8 @@ function StaffOverview() {
   const [newItem, setNewStaff] = useState<StaffItem>({ id: '', type: '', name: '', username: '', password: '', disabled: true });
   const navigate = useNavigate();
 
-  // Fetch staff data from the backend server
   useEffect(() => {
+    // Fetch staff data from the backend server
     fetch('http://localhost:5001/api/staff')
       .then(response => {
         if (!response.ok) {
@@ -32,12 +32,37 @@ function StaffOverview() {
         return response.json();
       })
       .then((data: StaffItem[]) => {
-        data.forEach((value) => { value.disabled = true; })
+        data.forEach((value) => { value.disabled = true; });
+        data.forEach((value, index) => { value.id = (index + 1).toString(); });
         console.log('Staff data:', data);
-        setStaff(data);
+        setStaff(data); // Update the staffList
       })
       .catch(error => console.error('Error fetching staff:', error));
   }, []);
+  
+  // Use another useEffect to rewrite staff after it is set
+  useEffect(() => {
+    if (staffList.length > 0) {
+      // Ensure staffList is populated before calling the PUT request
+      fetch('http://localhost:5001/api/rewrite/staff', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(staffList), // Send updated staffList
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Staff data successfully rewritten:', data);
+      })
+      .catch(error => console.error('Error rewriting staff:', error));
+    }
+  }, [staffList]); // This useEffect depends on staffList, will trigger when it's updated
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, // event from input
@@ -45,16 +70,16 @@ function StaffOverview() {
     field: string // the field to be updated (e.g., 'password', 'username')
   ) => {
     const { value } = e.target; // Get the new value from the input
-  
+
     // Create a copy of the staffList
     const updatedStaffList = [...staffList];
-  
+
     // Update the specific field for the staff at the given index
     updatedStaffList[index] = {
       ...updatedStaffList[index],
       [field]: value, // Dynamically update the field (e.g., 'password': newValue)
     };
-  
+
     // Set the updated list back to state (if using React state)
     setStaff(updatedStaffList);
   };
@@ -62,31 +87,40 @@ function StaffOverview() {
   const handleEditStaff = (id: string) => {
     const staff = staffList.find(value => value.id === id);
 
-  if (staff) { // Ensure the staff member exists
-    staff.disabled = !staff.disabled; // Toggle the disabled property
-    setStaff([...staffList]);
+    if (staff) { // Ensure the staff member exists
+      staff.disabled = !staff.disabled; // Toggle the disabled property
+      setStaff([...staffList]);
 
-    fetch(`http://localhost:5001/api/staff/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(staff),
-    })
-      .then(response => response.json())
-      .then(data => console.log('Success:', data))
-      .catch(error => console.error('Error:', error));
-  }
+      fetch(`http://localhost:5001/api/staff/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(staff),
+      })
+        .then(response => response.json())
+        .then(data => console.log('Success:', data))
+        .catch(error => console.error('Error:', error));
+    }
   }
 
   // Handle adding new item
   const handleAddStaff = () => {
+    const newStaff = {
+      id: (staffList.length + 1).toString(),  // Generate a new ID based on the length of the list
+      type: '',
+      name: '',
+      username: '',
+      password: '',
+      disabled: false,  // Fields should be editable when a new staff is added
+    };
+
     fetch('http://localhost:5001/api/staff', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newItem),
+      body: JSON.stringify(newStaff),
     })
       .then(response => {
         if (!response.ok) {
@@ -96,8 +130,7 @@ function StaffOverview() {
       })
       .then((data) => {
         console.log('Add item response:', data); // Log response for debugging
-        setStaff(prevStaff => [...prevStaff, newItem]); // Add new item to state
-        setNewStaff({ id: '', type: '', name: '', username: '', password: '', disabled: true }); // Reset form
+        setStaff([...staffList, newStaff]); // Add new item to state
       })
       .catch(error => console.error('Error adding staff item:', error));
   };
@@ -148,7 +181,7 @@ function StaffOverview() {
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
           <Typography variant="h4">Staff Overview</Typography>
-          <Button variant="contained" startIcon={<AddIcon />} color="primary" size="large">
+          <Button variant="contained" startIcon={<AddIcon />} color="primary" size="large" onClick={handleAddStaff}>
             Add New User
           </Button>
         </Box>
