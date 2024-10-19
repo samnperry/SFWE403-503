@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./LoginContent.css"; // The CSS file with all the styles
 import {
   Box,
@@ -14,19 +14,15 @@ import {
 import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
-  //devEnabled represents the state of the dev controls switch
-  //setDevEnabled is the function to set devEnabled. found in handleDevChange
-  const [devEnabled, setDevEnabled] = React.useState(false);
-
+  const [devEnabled, setDevEnabled] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    navigate("/HomePage");
-  //if (manager) // something like this might be good for GUIS
-  //navigate('/ManagerMain');
-  };
-  
+  // State for username, password, and error message
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  // Navigation handlers
   const handleNavigateHome = () => {
     navigate("/HomePage");
   };
@@ -39,19 +35,62 @@ function LoginPage() {
   const handleNavigateInventory = () => {
     navigate("/Inventory");
   };
-
   const handleNavigateStaffOverview = () => {
     navigate("/StaffOverview");
   };
 
-
-  //event handler included in the dev switch
+  // Event handler for dev controls switch
   const handleDevChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDevEnabled(event.target.checked);
   };
 
-  //Defines the devSection. While switch is disabled, only a switch is displayed
-  //While the switch is enabled, displays a box with dev controls in it
+  // Handle login using fetch
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:5001/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const user = data.user;
+
+        // Navigate based on user type
+        if (user.type === 'Admin') {
+          navigate('/SysAdminPage');
+        } else if (user.type === 'Manager') {
+          navigate('/ManagerMain');
+        } else if (user.type === 'Technician') {
+          navigate('/HomePage');
+        } else {
+          // If user type is not recognized, navigate to a default page
+          navigate('/HomePage');
+        }
+      } else {
+        // Handle HTTP errors
+        const errorData = await response.json();
+        if (response.status === 401) {
+          setError('Invalid username or password');
+        } else if (response.status === 403) {
+          setError(errorData.error); // 'User is disabled' or 'User account is locked'
+        } else {
+          setError('An error occurred during login');
+        }
+      }
+    } catch (error) {
+      // Handle network errors
+      setError('Unable to connect to server');
+      console.error('Login error:', error);
+    }
+  };
+
+  // Defines the devSection
   let devSection;
   if (!devEnabled) {
     devSection = (
@@ -90,7 +129,7 @@ function LoginPage() {
         </Box>
       </Container>
     );
-  } //end of devSection
+  }
 
   return (
     <div className="login-background">
@@ -113,6 +152,8 @@ function LoginPage() {
                 InputProps={{ disableUnderline: true }}
                 className="input-field"
                 required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </Box>
             <Box className="input-box">
@@ -124,8 +165,15 @@ function LoginPage() {
                 InputProps={{ disableUnderline: true }}
                 className="input-field"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </Box>
+            {error && (
+              <Typography color="error" variant="body2" align="center">
+                {error}
+              </Typography>
+            )}
             <Box className="remember-forgot">
               <FormControlLabel
                 control={<Checkbox className="checkbox" />}
@@ -152,8 +200,8 @@ function LoginPage() {
           </form>
         </Box>
 
-      {/* Dev Command box */}
-      {devSection}
+        {/* Dev Command box */}
+        {devSection}
       </Container>
     </div>
   );

@@ -3,9 +3,9 @@
     "id": "1",
     "type": "Admin",
     "name": "Phoenix ",
-    "username": "Garcia ",
+    "username": "Garcia",
     "password": "pp",
-    "disabled": true,
+    "disabled": false,
     "locked": false,
     "attempted": 0
   },
@@ -15,7 +15,17 @@
     "name": "Samantha",
     "username": "Kun",
     "password": "dayo",
-    "disabled": true,
+    "disabled": false,
+    "locked": false,
+    "attempted": 0
+  },
+  {
+    "id": "3",
+    "type": "Manager",
+    "name": "max",
+    "username": "Max",
+    "password": "Max",
+    "disabled": false,
     "locked": false,
     "attempted": 0
   }

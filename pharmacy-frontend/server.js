@@ -18,17 +18,17 @@ app.use(cors({
 const inventoryFilePath = path.join(__dirname, 'inventory.json');
 console.log('Inventory file path:', inventoryFilePath);
 
-// Path to the inventory.json file
+// Path to the staff.json file
 const staffFilePath = path.join(__dirname, 'staff.json');
 console.log('Staff file path:', staffFilePath);
 
 // Path to the pharmacy.json file
 const pharmacyFilePath = path.join(__dirname, 'pharmacy.json');
-console.log('Purchase file path:', pharmacyFilePath);
+console.log('Pharmacy file path:', pharmacyFilePath);
 
 // Path to the fiscal.json file
 const fiscalFilePath = path.join(__dirname, 'fiscal.json');
-console.log('Purchase file path:', fiscalFilePath);
+console.log('Fiscal file path:', fiscalFilePath);
 
 
 /* Gets ****************************************/
@@ -116,6 +116,7 @@ app.post('/api/inventory', (req, res) => {
   });
 });
 
+// Add a new staff member
 app.post('/api/staff', (req, res) => {
   const newStaff = req.body;
 
@@ -136,6 +137,7 @@ app.post('/api/staff', (req, res) => {
   });
 });
 
+// Add a new fiscal record
 app.post('/api/fiscal', (req, res) => {
   const newPurchase = req.body; // Get the purchase data from the request body
 
@@ -158,9 +160,65 @@ app.post('/api/fiscal', (req, res) => {
   });
 });
 
-/* Put *****************************************/
-//Update inventory by ID
+// Login endpoint
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
 
+  fs.readFile(staffFilePath, 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error reading staff file' });
+    }
+
+    let staff = JSON.parse(data);
+
+    // Find the user with matching username
+    const userIndex = staff.findIndex((user) => user.username === username);
+
+    if (userIndex !== -1) {
+      let user = staff[userIndex];
+
+      // Check if user is locked
+      if (user.locked) {
+        return res.status(403).json({ error: 'User account is locked' });
+      }
+
+      if (user.password === password) {
+        // Successful login, reset attempt count
+        staff[userIndex].attempted = 0;
+      } else {
+        // Incorrect password, increment attempt count
+        staff[userIndex].attempted += 1;
+
+        // Check if attempts exceed 5
+        if (staff[userIndex].attempted >= 5) {
+          staff[userIndex].locked = true; // Lock the user account
+        }
+      }
+
+      // Save updated user info back to the staff file
+      fs.writeFile(staffFilePath, JSON.stringify(staff, null, 2), (writeErr) => {
+        if (writeErr) {
+          return res.status(500).json({ error: 'Error writing to staff file' });
+        }
+
+        if (staff[userIndex].locked) {
+          return res.status(403).json({ error: 'User account has been locked due to multiple failed attempts' });
+        } else if (user.password === password) {
+          const { password, ...userWithoutPassword } = staff[userIndex];
+          res.json({ user: userWithoutPassword }); // Successful login
+        } else {
+          res.status(401).json({ error: 'Invalid username or password' });
+        }
+      });
+
+    } else {
+      // Username not found
+      res.status(401).json({ error: 'Invalid username or password' });
+    }
+  });
+});
+
+/* Put *****************************************/
 // Update a staff member by ID
 app.put('/api/staff/:id', (req, res) => {
   const staffId = req.params.id; // Get the ID from the URL
@@ -216,6 +274,7 @@ app.delete('/api/inventory/:id', (req, res) => {
   });
 });
 
+// Remove a staff member by ID
 app.delete('/api/staff/:id', (req, res) => {
   const staffId = req.params.id;
 
