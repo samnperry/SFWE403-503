@@ -112,6 +112,7 @@ function StaffOverview() {
 
     if (staff) { // Ensure the staff member exists
       staff.attempted = 0; // Toggle the disabled property
+      staff.locked = false;
       setStaff([...staffList]);
 
       fetch(`http://localhost:5001/api/staff/${id}`, {
