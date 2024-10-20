@@ -1,5 +1,5 @@
 .login-background {
-    background-image: url('../Assets/Miku.jpeg'); 
+    background-color: white; 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -98,7 +98,7 @@ button[type="submit"] {
     height: 55px; 
     border: none;
     border-radius: 50px;
-    background-color: rgb(255, 72, 237); 
+    background-color: rgb(88, 128, 184); 
     color: white;
     font-size: 18px;
     cursor: pointer;

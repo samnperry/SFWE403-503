@@ -36,9 +36,9 @@ function StaffOverview() {
       })
       .then((data: StaffItem[]) => {
         data.forEach((value) => { value.disabled = true; });
-        data.forEach((value, index) => { value.id = (index + 1).toString(); });
+        data.forEach((value, index) => { value.id = (index).toString(); });
+        setStaff(data);
         console.log('Staff data:', data);
-        setStaff(data); // Update the staffList
       })
       .catch(error => console.error('Error fetching staff:', error));
   }, []);
@@ -131,7 +131,7 @@ function StaffOverview() {
   // Handle adding new item
   const handleAddStaff = () => {
     const newStaff = {
-      id: (staffList.length + 1).toString(),  // Generate a new ID based on the length of the list
+      id: (staffList.length).toString(),  // Generate a new ID based on the length of the list
       type: '',
       name: '',
       username: '',
@@ -181,14 +181,12 @@ function StaffOverview() {
       {/* Navigation Bar */}
       <AppBar position="fixed" sx={{ zIndex: 1400 }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography variant="h6" sx={{ fontSize: '1.25rem' }}>
-            Pharmacy Manager<br></br>
-            UserName {/* FIXME make dynamic */}
+          <Typography variant="h6" style={{ flexGrow: 1 }}>
+            Pharmacy Manager
           </Typography>
-          <Button color="inherit" onClick={() => navigate("/ManagerMain")}>Home</Button>
-          <Button color="inherit">Staff</Button>
-          <Button color="inherit" onClick={() => navigate("/Inventory")}>Inventory</Button>
-          <Button color="inherit" onClick={() => navigate("/LoginPage")}>Log Out</Button>
+          <Button color="inherit" href='/ManagerMain'>Home</Button>
+          <Button color="inherit" href='/Inventory'>Inventory</Button>
+          <Button color="inherit" onClick={() => navigate('/LoginPage')}>Log Out</Button>
         </Toolbar>
       </AppBar>
 
@@ -214,7 +212,7 @@ function StaffOverview() {
 
         {/* User List */}
         <List>
-          {staffList.map((staff, index) => (
+          {staffList.slice(2).map((staff, index) => (
             <ListItem
               key={staff.id}
               sx={{
@@ -231,7 +229,7 @@ function StaffOverview() {
                   disabled={staff.disabled}
                   label="Type"
                   value={staff.type}
-                  onChange={(e) => handleInputChange(e, index, 'type')}
+                  onChange={(e) => handleInputChange(e, index + 2, 'type')}
                   variant="outlined"
                   size="small"
                   sx={{ width: '15%' }}
@@ -240,7 +238,7 @@ function StaffOverview() {
                   disabled={staff.disabled}
                   label="ID"
                   value={staff.id}
-                  onChange={(e) => handleInputChange(e, index, 'id')}
+                  onChange={(e) => handleInputChange(e, index + 2, 'id')}
                   variant="outlined"
                   size="small"
                   sx={{ width: '8%' }}
@@ -249,7 +247,7 @@ function StaffOverview() {
                   disabled={staff.disabled}
                   label="Name"
                   value={staff.name}
-                  onChange={(e) => handleInputChange(e, index, 'name')}
+                  onChange={(e) => handleInputChange(e, index + 2, 'name')}
                   variant="outlined"
                   size="small"
                   sx={{ width: '20%' }}
@@ -258,7 +256,7 @@ function StaffOverview() {
                   disabled={staff.disabled}
                   label="Username"
                   value={staff.username}
-                  onChange={(e) => handleInputChange(e, index, 'username')}
+                  onChange={(e) => handleInputChange(e, index + 2, 'username')}
                   variant="outlined"
                   size="small"
                   sx={{ width: '20%' }}
@@ -267,7 +265,7 @@ function StaffOverview() {
                   disabled={staff.disabled}
                   label="Password"
                   value={staff.password}
-                  onChange={(e) => handleInputChange(e, index, 'password')}
+                  onChange={(e) => handleInputChange(e, index + 2, 'password')}
                   variant="outlined"
                   size="small"
                   sx={{ width: '20%' }}
@@ -285,7 +283,7 @@ function StaffOverview() {
                 <IconButton aria-label="unlock" color="default"
                   sx={{ color: staff.attempted >= 5 ? 'red' : 'inherit' }}
                   onClick={() => handleUnlockAccount(staff.id)}
-                  >
+                >
                   {staff.attempted < 5 ? <LockOpenIcon /> : <LockIcon />}
                 </IconButton>
               </Box>

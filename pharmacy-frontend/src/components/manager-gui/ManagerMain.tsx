@@ -100,6 +100,7 @@ function ManagerMain() {
               <NotificationsIcon color="inherit" />
             </Badge>
           </IconButton>
+          <Button color="inherit" onClick={() => navigate('/LoginPage')}>Log Out</Button>
 
         </Toolbar>
       </AppBar>

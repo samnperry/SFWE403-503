@@ -67,8 +67,7 @@ function LoginPage() {
         } else if (user.type === 'Manager') {
           navigate('/ManagerMain');
         } else {
-          // If user type is not recognized, navigate to a default page
-          navigate('/HomePage');
+          //if type is not recognized, don't log in
         }
       } else {
         // Handle HTTP errors
@@ -118,7 +117,6 @@ function LoginPage() {
             Navigate to:
           </Typography>
           <ButtonGroup variant="contained">
-            <Button onClick={handleNavigateHome}>Home Page</Button>
             <Button onClick={handleNavigateSysAdmin}>SysAdmin Page</Button>
             <Button onClick={handleNavigateManager}>Manager Page</Button>
             <Button onClick={handleNavigateInventory}>Inventory</Button>

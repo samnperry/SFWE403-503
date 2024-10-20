@@ -5,7 +5,7 @@
     "name": "admin",
     "username": "admin",
     "password": "admin",
-    "disabled": true,
+    "disabled": false,
     "locked": false,
     "attempted": 0
   },
@@ -15,7 +15,7 @@
     "name": "manager",
     "username": "manager",
     "password": "manager",
-    "disabled": true,
+    "disabled": false,
     "locked": false,
     "attempted": 0
   }
