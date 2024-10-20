@@ -18,5 +18,15 @@
     "disabled": true,
     "locked": false,
     "attempted": 0
+  },
+  {
+    "id": "2",
+    "type": "Pharmacist",
+    "name": "fjioajif",
+    "username": "",
+    "password": "",
+    "disabled": true,
+    "locked": false,
+    "attempted": 0
   }
 ]

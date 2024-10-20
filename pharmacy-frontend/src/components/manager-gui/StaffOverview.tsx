@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import "./StaffOverview.css"; // The CSS file with all the styles
-import { AppBar, Toolbar, Typography, Button, Box, Container, List, ListItem, ListItemText, IconButton, TextField } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box, Container, List, ListItem, ListItemText, IconButton, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
@@ -86,6 +86,21 @@ function StaffOverview() {
     // Set the updated list back to state (if using React state)
     setStaff(updatedStaffList);
   };
+
+  const handleSelectChange = (event: { target: { value: any; }; }, index: number, field: any) => {
+    const { value } = event.target; // Get the selected value
+    const updatedStaffList = [...staffList]; // Copy the current staff list
+  
+    // Update the specific field for the selected staff member
+    updatedStaffList[index] = {
+      ...updatedStaffList[index],
+      [field]: value,
+    };
+  
+    // Update the state with the modified staff list
+    setStaff(updatedStaffList);
+  };
+  
 
   const handleEditStaff = (id: string) => {
     const staff = staffList.find(value => value.id === id);
@@ -225,15 +240,23 @@ function StaffOverview() {
             >
               {/* Editable fields */}
               <Box sx={{ display: 'flex', gap: 2, flex: 1 }}>
-                <TextField
-                  disabled={staff.disabled}
-                  label="Type"
-                  value={staff.type}
-                  onChange={(e) => handleInputChange(e, index + 2, 'type')}
-                  variant="outlined"
-                  size="small"
-                  sx={{ width: '15%' }}
-                />
+
+                <FormControl fullWidth size="small" sx={{ width: '15%' }}>
+                  <InputLabel id={`select-label-${index}`}>Type</InputLabel>
+                  <Select
+                    labelId={`select-label-${index}`}
+                    id={`select-${index}`}
+                    value={staff.type}
+                    label="Type"
+                    onChange={(e) => handleSelectChange(e, index + 2, 'type')}
+                    disabled={staff.disabled}
+                  >
+                    <MenuItem value="Pharmacist">Pharmacist</MenuItem>
+                    <MenuItem value="Pharmacist Technician">Pharmacist Technician</MenuItem>
+                    <MenuItem value="Cashier">Cashier</MenuItem>
+                  </Select>
+                </FormControl>
+
                 <TextField
                   disabled={staff.disabled}
                   label="ID"
