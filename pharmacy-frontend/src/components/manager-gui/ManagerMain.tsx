@@ -53,13 +53,20 @@ function ManagerMain() {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
+        // Filter expired medications
         const expiredMeds = medications.filter((med) => {
           const expDate = parseDate(med.expiration_date);
           return expDate < today;
         });
 
-        if (expiredMeds.length > 0) {
-          setExpiredMedications(expiredMeds);
+        // Filter low-stock medications (less than 5 units)
+        const lowStockMeds = medications.filter((med) => med.amount < 5);
+
+        // Combine both expired and low stock medications for the alert
+        const alertMeds = [...expiredMeds, ...lowStockMeds];
+
+        if (alertMeds.length > 0) {
+          setExpiredMedications(alertMeds); // Reuse the existing state for simplicity
         }
       } catch (error) {
         console.error('Error fetching inventory:', error);
@@ -152,26 +159,26 @@ function ManagerMain() {
         </footer>
       </Box>
 
-      {/* Dialog for Expired Medications */}
+      {/* Dialog for Expired and Low-Stock Medications */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Expired Medications</DialogTitle>
+        <DialogTitle>Inventory Alerts</DialogTitle>
         <DialogContent>
           {expiredMedications.length > 0 ? (
             <>
               <DialogContentText>
-                The following medications have expired:
+                The following medications need your attention:
               </DialogContentText>
               <ul>
                 {expiredMedications.map((med) => (
                   <li key={med.id}>
-                    {med.name} (expired on {med.expiration_date})
+                    {med.name} ({med.amount < 5 ? "Low stock" : `Expired on ${med.expiration_date}`})
                   </li>
                 ))}
               </ul>
             </>
           ) : (
             <DialogContentText>
-              There are no expired medications at this time.
+              There are no alerts at this time.
             </DialogContentText>
           )}
         </DialogContent>
