@@ -93,9 +93,7 @@ function ManagerMain() {
               <NotificationsIcon color="inherit" />
             </Badge>
           </IconButton>
-          <Button color="inherit">Prescriptions</Button>
-          <Button color="inherit">Orders</Button>
-          <Button color="inherit">Profile</Button>
+
         </Toolbar>
       </AppBar>
 
