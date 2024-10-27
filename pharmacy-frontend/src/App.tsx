@@ -7,6 +7,8 @@ import ManagerMain from './components/manager-gui/ManagerMain';
 import StaffOverview from './components/manager-gui/StaffOverview';
 import { BrowserRouter,Routes, Route } from 'react-router-dom';
 import Inventory from './components/inventory/Inventory';
+import Pharm from './components/pharm-gui/pharm';
+
 
 
 function App() {
@@ -21,6 +23,7 @@ function App() {
           <Route path='/ManagerMain' element={<ManagerMain />}/>
           <Route path='/Inventory' element={<Inventory />}/>
           <Route path='/StaffOverview' element={<StaffOverview />}/>
+          <Route path='/Pharm' element={<Pharm/>}/>
         </Routes>
       </BrowserRouter>
       
