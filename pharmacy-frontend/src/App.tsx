@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import LoginPage from './components/login/LoginContent';
-import HomePage from './components/home/Home';
 import SysAdminPage from './components/sysAdmin/SysAdmin';
 import ManagerMain from './components/manager-gui/ManagerMain';
 import StaffOverview from './components/manager-gui/StaffOverview';
@@ -16,7 +15,6 @@ function App() {
         <Routes>
           <Route index element={<LoginPage />}/>
           <Route path='/LoginPage' element={<LoginPage />}/>
-          <Route path='/HomePage' element={<HomePage />}/>
           <Route path='/SysAdminPage' element={<SysAdminPage />}/>
           <Route path='/ManagerMain' element={<ManagerMain />}/>
           <Route path='/Inventory' element={<Inventory />}/>

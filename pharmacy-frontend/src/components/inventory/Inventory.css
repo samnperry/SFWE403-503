@@ -1,5 +1,6 @@
 .inventory-background {
     background-color: #f9f9f9;
+    /* background-image: url('../Assets/pink-background.jpg'); */
     min-height: 100vh;
     display: flex;
     flex-direction: column;

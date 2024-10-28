@@ -81,7 +81,7 @@ function ManagerMain() {
   };
 
   return (
-    <div className="manager-background">
+    <div className="manager-background" >
       {/* Fixed AppBar at the top */}
       <AppBar position="fixed">
         <Toolbar>

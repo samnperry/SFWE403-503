@@ -1,10 +1,11 @@
 .staffoverview-background {
     background-color: white; 
+    /* background-image: url('../Assets/pink-background.jpg'); */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 100vh;
-     width: 100vw;  
+    height: 100%;
+     width: 150vh;  
     margin: 0;
     /* font-family: Arial, sans-serif; */
     /* display: flex; */

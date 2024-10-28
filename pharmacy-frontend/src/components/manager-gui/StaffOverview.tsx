@@ -90,17 +90,17 @@ function StaffOverview() {
   const handleSelectChange = (event: { target: { value: any; }; }, index: number, field: any) => {
     const { value } = event.target; // Get the selected value
     const updatedStaffList = [...staffList]; // Copy the current staff list
-  
+
     // Update the specific field for the selected staff member
     updatedStaffList[index] = {
       ...updatedStaffList[index],
       [field]: value,
     };
-  
+
     // Update the state with the modified staff list
     setStaff(updatedStaffList);
   };
-  
+
 
   const handleEditStaff = (id: string) => {
     const staff = staffList.find(value => value.id === id);
@@ -192,7 +192,7 @@ function StaffOverview() {
   };
 
   return (
-    <div style={{ width: '150vh', height: '100%', backgroundColor: 'white' }}>
+    <div style={{ width: '150vh', height: '100%'}}>
       {/* Navigation Bar */}
       <AppBar position="fixed" sx={{ zIndex: 1400 }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -204,116 +204,118 @@ function StaffOverview() {
           <Button color="inherit" onClick={() => navigate('/LoginPage')}>Log Out</Button>
         </Toolbar>
       </AppBar>
+      <div className='staffoverview-background'>
+        {/* Main content */}
+        <Container
+          maxWidth="xl"
+          sx={{
+            marginTop: '100px', // Pushes the container below the navbar
+            backgroundColor: 'white',
+            padding: '2rem',
+            borderRadius: '12px',
+            boxShadow: 5,
+            height: '80vh', // Set height for scrollable list
+            overflowY: 'auto', // Enable scrolling for the user list
+          }}
+        >
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <Typography variant="h4">Staff Overview</Typography>
+            <Button variant="contained" startIcon={<AddIcon />} color="primary" size="large" onClick={handleAddStaff}>
+              Add New User
+            </Button>
+          </Box>
 
-      {/* Main content */}
-      <Container
-        maxWidth="xl"
-        sx={{
-          marginTop: '100px', // Pushes the container below the navbar
-          backgroundColor: 'white',
-          padding: '2rem',
-          borderRadius: '12px',
-          boxShadow: 5,
-          height: '80vh', // Set height for scrollable list
-          overflowY: 'auto', // Enable scrolling for the user list
-        }}
-      >
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-          <Typography variant="h4">Staff Overview</Typography>
-          <Button variant="contained" startIcon={<AddIcon />} color="primary" size="large" onClick={handleAddStaff}>
-            Add New User
-          </Button>
-        </Box>
+          {/* User List */}
+          <List>
+            {staffList.slice(2).map((staff, index) => (
+              <ListItem
+                key={staff.id}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  borderBottom: '1px solid #e0e0e0',
+                  padding: '1rem 0',
+                }}
+              >
+                {/* Editable fields */}
+                <Box sx={{ display: 'flex', gap: 2, flex: 1 }}>
 
-        {/* User List */}
-        <List>
-          {staffList.slice(2).map((staff, index) => (
-            <ListItem
-              key={staff.id}
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                borderBottom: '1px solid #e0e0e0',
-                padding: '1rem 0',
-              }}
-            >
-              {/* Editable fields */}
-              <Box sx={{ display: 'flex', gap: 2, flex: 1 }}>
+                  <FormControl fullWidth size="small" sx={{ width: '15%' }}>
+                    <InputLabel id={`select-label-${index}`}>Type</InputLabel>
+                    <Select
+                      labelId={`select-label-${index}`}
+                      id={`select-${index}`}
+                      value={staff.type}
+                      label="Type"
+                      onChange={(e) => handleSelectChange(e, index + 2, 'type')}
+                      disabled={staff.disabled}
+                    >
+                      <MenuItem value="Pharmacist">Pharmacist</MenuItem>
+                      <MenuItem value="Pharmacist Technician">Pharmacist Technician</MenuItem>
+                      <MenuItem value="Cashier">Cashier</MenuItem>
+                    </Select>
+                  </FormControl>
 
-                <FormControl fullWidth size="small" sx={{ width: '15%' }}>
-                  <InputLabel id={`select-label-${index}`}>Type</InputLabel>
-                  <Select
-                    labelId={`select-label-${index}`}
-                    id={`select-${index}`}
-                    value={staff.type}
-                    label="Type"
-                    onChange={(e) => handleSelectChange(e, index + 2, 'type')}
+                  <TextField
                     disabled={staff.disabled}
+                    label="ID"
+                    value={staff.id}
+                    onChange={(e) => handleInputChange(e, index + 2, 'id')}
+                    variant="outlined"
+                    size="small"
+                    sx={{ width: '8%' }}
+                  />
+                  <TextField
+                    disabled={staff.disabled}
+                    label="Name"
+                    value={staff.name}
+                    onChange={(e) => handleInputChange(e, index + 2, 'name')}
+                    variant="outlined"
+                    size="small"
+                    sx={{ width: '20%' }}
+                  />
+                  <TextField
+                    disabled={staff.disabled}
+                    label="Username"
+                    value={staff.username}
+                    onChange={(e) => handleInputChange(e, index + 2, 'username')}
+                    variant="outlined"
+                    size="small"
+                    sx={{ width: '20%' }}
+                  />
+                  <TextField
+                    disabled={staff.disabled}
+                    label="Password"
+                    value={staff.password}
+                    onChange={(e) => handleInputChange(e, index + 2, 'password')}
+                    variant="outlined"
+                    size="small"
+                    sx={{ width: '20%' }}
+                  />
+                </Box>
+
+                {/* Action buttons */}
+                <Box sx={{ display: 'flex', gap: 2 }}>
+                  <IconButton aria-label="edit" color="primary" onClick={(e) => handleEditStaff(staff.id)}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton aria-label="delete" color="secondary" onClick={() => handleRemoveStaff(staff.id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                  <IconButton aria-label="unlock" color="default"
+                    sx={{ color: staff.attempted >= 5 ? 'red' : 'inherit' }}
+                    onClick={() => handleUnlockAccount(staff.id)}
                   >
-                    <MenuItem value="Pharmacist">Pharmacist</MenuItem>
-                    <MenuItem value="Pharmacist Technician">Pharmacist Technician</MenuItem>
-                    <MenuItem value="Cashier">Cashier</MenuItem>
-                  </Select>
-                </FormControl>
+                    {staff.attempted < 5 ? <LockOpenIcon /> : <LockIcon />}
+                  </IconButton>
+                </Box>
+              </ListItem>
+            ))}
+          </List>
+        </Container>
+      </div>
 
-                <TextField
-                  disabled={staff.disabled}
-                  label="ID"
-                  value={staff.id}
-                  onChange={(e) => handleInputChange(e, index + 2, 'id')}
-                  variant="outlined"
-                  size="small"
-                  sx={{ width: '8%' }}
-                />
-                <TextField
-                  disabled={staff.disabled}
-                  label="Name"
-                  value={staff.name}
-                  onChange={(e) => handleInputChange(e, index + 2, 'name')}
-                  variant="outlined"
-                  size="small"
-                  sx={{ width: '20%' }}
-                />
-                <TextField
-                  disabled={staff.disabled}
-                  label="Username"
-                  value={staff.username}
-                  onChange={(e) => handleInputChange(e, index + 2, 'username')}
-                  variant="outlined"
-                  size="small"
-                  sx={{ width: '20%' }}
-                />
-                <TextField
-                  disabled={staff.disabled}
-                  label="Password"
-                  value={staff.password}
-                  onChange={(e) => handleInputChange(e, index + 2, 'password')}
-                  variant="outlined"
-                  size="small"
-                  sx={{ width: '20%' }}
-                />
-              </Box>
-
-              {/* Action buttons */}
-              <Box sx={{ display: 'flex', gap: 2 }}>
-                <IconButton aria-label="edit" color="primary" onClick={(e) => handleEditStaff(staff.id)}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton aria-label="delete" color="secondary" onClick={() => handleRemoveStaff(staff.id)}>
-                  <DeleteIcon />
-                </IconButton>
-                <IconButton aria-label="unlock" color="default"
-                  sx={{ color: staff.attempted >= 5 ? 'red' : 'inherit' }}
-                  onClick={() => handleUnlockAccount(staff.id)}
-                >
-                  {staff.attempted < 5 ? <LockOpenIcon /> : <LockIcon />}
-                </IconButton>
-              </Box>
-            </ListItem>
-          ))}
-        </List>
-      </Container>
     </div>
   );
 }
