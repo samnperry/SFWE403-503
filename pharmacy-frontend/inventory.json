@@ -22,5 +22,13 @@
     "supplier": "SafeMeds Ltd.",
     "price_per_quantity": 10.28,
     "expiration_date": "2024-10-12"
+  },
+  {
+    "id": "004",
+    "name": "hawk",
+    "amount": "1",
+    "supplier": "Tiuah",
+    "price_per_quantity": "1000",
+    "expiration_date": "2024-10-22"
   }
 ]

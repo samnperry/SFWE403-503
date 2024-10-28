@@ -294,6 +294,18 @@ app.delete('/api/staff/:id', (req, res) => {
     });
   });
 });
+// Update the single pharmacy details
+app.put('/api/pharmacy', (req, res) => {
+  const updatedPharmacy = req.body;
+
+  // Write the updated pharmacy data to the file
+  fs.writeFile(pharmacyFilePath, JSON.stringify(updatedPharmacy, null, 2), err => {
+    if (err) {
+      return res.status(500).json({ error: 'Error writing to pharmacy file' });
+    }
+    res.json({ message: 'Pharmacy details updated successfully', pharmacy: updatedPharmacy });
+  });
+});
 
 // DELETE endpoint to remove a purchase record by ID
 app.delete('/api/fiscal/:id', (req, res) => {
