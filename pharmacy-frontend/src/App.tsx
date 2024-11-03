@@ -8,6 +8,7 @@ import { BrowserRouter,Routes, Route } from 'react-router-dom';
 import Inventory from './components/inventory/Inventory';
 import Pharm from './components/pharm-gui/pharm';
 import PatientManager from './components/patient-gui/patient';
+import Cashier from './components/cashier-gui/cashier';
 
 
 
@@ -24,6 +25,7 @@ function App() {
           <Route path='/StaffOverview' element={<StaffOverview />}/>
           <Route path='/Pharm' element={<Pharm/>}/>
           <Route path='/PatientManager' element={<PatientManager/>}/>
+          <Route path='/Cashier' element={<Cashier/>}/>
         </Routes>
       </BrowserRouter>
       

@@ -1,0 +1,78 @@
+/* General Layout */
+.cashier-container {
+    margin-top: 100px;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  /* Header and Titles */
+  .app-bar {
+    background-color: #2c3e50;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .section-title {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  
+  /* Form Controls */
+  .form-control {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .select-field,
+  .quantity-field {
+    width: 100%;
+    margin: 10px 0;
+  }
+  
+  /* Buttons */
+  .add-to-cart-button,
+  .complete-purchase-button,
+  .remove-button {
+    margin-top: 10px;
+  }
+  
+  .add-to-cart-button {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .complete-purchase-button {
+    background-color: #27ae60;
+    color: white;
+  }
+  
+  .remove-button {
+    color: #e74c3c;
+  }
+  
+  /* Cart Table */
+  .cart-table {
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  .cart-table th, .cart-table td {
+    padding: 10px;
+  }
+  
+  .cart-total {
+    font-weight: bold;
+    margin-top: 15px;
+  }
+  
+  /* Placeholder Message */
+  .placeholder-message {
+    font-style: italic;
+    color: #7f8c8d;
+    margin-top: 20px;
+  }
+  

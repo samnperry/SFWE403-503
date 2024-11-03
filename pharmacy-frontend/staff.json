@@ -21,12 +21,13 @@
   },
   {
     "id": "2",
-    "type": "Pharmacist",
-    "name": "fjioajif",
-    "username": "",
-    "password": "",
+    "type": "Cashier",
+    "name": "William Rains",
+    "username": "Willyrains",
+    "password": "Plane",
     "disabled": true,
     "locked": false,
-    "attempted": 0
+    "attempted": 0,
+    "firstTimeLogin": false
   }
 ]

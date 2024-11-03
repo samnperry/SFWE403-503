@@ -10,8 +10,16 @@ import {
   Container,
   Switch,
   ButtonGroup,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+
+
+//TODO: add error catching for manager and admin accounts on first time login.
 
 function LoginPage() {
   const [devEnabled, setDevEnabled] = useState(false);
@@ -21,28 +29,42 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [firstTimeLogin, setFirstTimeLogin] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
+  const [userId, setUserId] = useState(''); // Store user ID for backend update
 
   // Navigation handlers
   const handleNavigateHome = () => {
     navigate("/HomePage");
   };
+
   const handleNavigateSysAdmin = () => {
     navigate("/SysAdminPage");
   };
+
   const handleNavigateManager = () => {
     navigate("/ManagerMain");
   };
+
   const handleNavigateInventory = () => {
     navigate("/Inventory");
   };
+
   const handleNavigateStaffOverview = () => {
     navigate("/StaffOverview");
   };
+
   const handleNavigatepharm = () => {
     navigate("/Pharm");
   };
+
   const handleNavigatePatientManager = () => {
     navigate("/PatientManager");
+  };
+
+  const handleNavigateCashier = () => {
+    navigate("/Cashier");
   };
 
   // Event handler for dev controls switch
@@ -67,13 +89,19 @@ function LoginPage() {
         const data = await response.json();
         const user = data.user;
 
-        // Navigate based on user type
-        if (user.type === 'Admin') {
-          navigate('/SysAdminPage');
-        } else if (user.type === 'Manager') {
-          navigate('/ManagerMain');
+        if (user.firstTimeLogin) {
+          setUserId(user.id); // Save user ID for update
+          setFirstTimeLogin(true);
+          setOpenDialog(true); // Open the password change dialog
         } else {
-          //if type is not recognized, don't log in
+          // Navigate based on user type
+          if (user.type === 'Admin') {
+            navigate('/SysAdminPage');
+          } else if (user.type === 'Manager') {
+            navigate('/ManagerMain');
+          } else if (user.type === 'Cashier') {
+            navigate('/Cashier');
+          }
         }
       } else {
         // Handle HTTP errors
@@ -87,9 +115,32 @@ function LoginPage() {
         }
       }
     } catch (error) {
-      // Handle network errors
       setError('Unable to connect to server');
       console.error('Login error:', error);
+    }
+  };
+
+  // Handle password update
+  const handlePasswordChange = async () => {
+    try {
+      const response = await fetch(`http://localhost:5001/api/staff/${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ password: newPassword, firstTimeLogin: false }) // Update password and set firstTimeLogin to false
+      });
+
+      if (response.ok) {
+        setOpenDialog(false);  // Close the dialog after successful update
+        const data = await response.json();
+        navigate(data.type === 'Admin' ? '/SysAdminPage' : data.type === 'Manager' ? '/ManagerMain' : '/Cashier'); // Navigate after updating password
+      } else {
+        setError('Failed to update password. Please try again.');
+      }
+    } catch (error) {
+      setError('Unable to connect to server');
+      console.error('Password change error:', error);
     }
   };
 
@@ -129,7 +180,7 @@ function LoginPage() {
             <Button onClick={handleNavigateStaffOverview}>Staff Overview Page</Button>
             <Button onClick={handleNavigatepharm}>Pharm</Button>
             <Button onClick={handleNavigatePatientManager}>Patient Manager</Button>
-
+            <Button onClick={handleNavigateCashier}>Cashier</Button>
           </ButtonGroup>
         </Box>
       </Container>
@@ -140,12 +191,7 @@ function LoginPage() {
     <div className="login-background">
       <Container maxWidth="xs" className="login-container">
         <Box className="wrapper" justifySelf={"center"} marginTop={"35%"}>
-          <Typography
-            variant="h4"
-            component="h1"
-            align="center"
-            className="login-title"
-          >
+          <Typography variant="h4" component="h1" align="center" className="login-title">
             Login
           </Typography>
           <form onSubmit={handleLogin} noValidate>
@@ -185,21 +231,11 @@ function LoginPage() {
                 label="Remember me"
                 className="remember-me"
               />
-              <Typography
-                variant="body2"
-                component="a"
-                href="#"
-                className="forgot-password"
-              >
+              <Typography variant="body2" component="a" href="#" className="forgot-password">
                 Forgot Password?
               </Typography>
             </Box>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              className="login-button"
-            >
+            <Button type="submit" fullWidth variant="contained" className="login-button">
               Login
             </Button>
           </form>
@@ -207,6 +243,29 @@ function LoginPage() {
 
         {/* Dev Command box */}
         {devSection}
+
+        {/* Password Change Dialog */}
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+          <DialogTitle>Change Password</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              This is your first time logging in. Please set a new password.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="New Password"
+              type="password"
+              fullWidth
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenDialog(false)} color="secondary">Cancel</Button>
+            <Button onClick={handlePasswordChange} color="primary">Update Password</Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </div>
   );

@@ -18,11 +18,12 @@ interface StaffItem {
   disabled: boolean;
   locked: boolean;
   attempted: number;
+  firstTimeLogin: boolean;
 }
 
 function StaffOverview() {
   const [staffList, setStaff] = useState<StaffItem[]>([]);
-  const [newItem, setNewStaff] = useState<StaffItem>({ id: '', type: '', name: '', username: '', password: '', disabled: true, locked: false, attempted: 0 });
+  const [newItem, setNewStaff] = useState<StaffItem>({ id: '', type: '', name: '', username: '', password: '', disabled: true, locked: false, attempted: 0, firstTimeLogin: true});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -153,7 +154,8 @@ function StaffOverview() {
       password: '',
       disabled: false,  // Fields should be editable when a new staff is added
       locked: false,
-      attempted: 0
+      attempted: 0,
+      firstTimeLogin: true
     };
 
     fetch('http://localhost:5001/api/staff', {
