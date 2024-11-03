@@ -30,6 +30,10 @@ console.log('Pharmacy file path:', pharmacyFilePath);
 const fiscalFilePath = path.join(__dirname, 'fiscal.json');
 console.log('Fiscal file path:', fiscalFilePath);
 
+// Path to the patient.json file
+const patientFilePath = path.join(__dirname, 'patients.json');
+console.log('Patient file path:', patientFilePath);
+
 
 /* Gets ****************************************/
 // Get the current inventory
@@ -70,6 +74,17 @@ app.get('/api/fiscal', (req, res) => {
     res.json(JSON.parse(data));
   });
 });
+
+// GET: Retrieve all patients
+app.get('/api/patients', (req, res) => {
+  fs.readFile(patientFilePath, 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error reading patient file' });
+    }
+    res.json(JSON.parse(data));
+  });
+});
+
 
 
 /* Put/Patch (Edit) *********************************/
@@ -218,6 +233,29 @@ app.post('/api/login', (req, res) => {
   });
 });
 
+// POST: Add a new patient
+app.post('/api/patients', (req, res) => {
+  const newPatient = req.body;
+
+  fs.readFile(patientFilePath, 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error reading patient file' });
+    }
+
+    let patients = JSON.parse(data);
+    patients.push(newPatient);
+
+    fs.writeFile(patientFilePath, JSON.stringify(patients, null, 2), err => {
+      if (err) {
+        return res.status(500).json({ error: 'Error writing to patient file' });
+      }
+      res.json({ message: 'Patient added successfully', patients });
+    });
+  });
+});
+
+
+
 /* Put *****************************************/
 // Update a staff member by ID
 app.put('/api/staff/:id', (req, res) => {
@@ -247,6 +285,36 @@ app.put('/api/staff/:id', (req, res) => {
         return res.status(500).json({ error: 'Error writing to staff file' });
       }
       res.json({ message: 'Staff member updated successfully', staff });
+    });
+  });
+});
+
+// PUT: Update an existing patient by ID
+app.put('/api/patients/:id', (req, res) => {
+  const patientId = req.params.id; // Get the ID from the URL
+  const updatedPatientData = req.body; // Get the new data from the request body
+
+  fs.readFile(patientFilePath, 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error reading patient file' });
+    }
+
+    let patients = JSON.parse(data);
+
+    // Find the index of the patient to update
+    const patientIndex = patients.findIndex(patient => patient.id === patientId);
+    if (patientIndex === -1) {
+      return res.status(404).json({ message: 'Patient not found' });
+    }
+
+    // Update the patient's data with the new values from the request body
+    patients[patientIndex] = { ...patients[patientIndex], ...updatedPatientData };
+
+    fs.writeFile(patientFilePath, JSON.stringify(patients, null, 2), err => {
+      if (err) {
+        return res.status(500).json({ error: 'Error writing to patient file' });
+      }
+      res.json({ message: 'Patient updated successfully', patients });
     });
   });
 });
@@ -335,6 +403,40 @@ app.delete('/api/fiscal/:id', (req, res) => {
   });
 });
 
+// DELETE: Remove a patient by name using a query parameter
+app.delete('/api/patients', (req, res) => {
+  const patientName = req.query.name?.toLowerCase();
+
+  if (!patientName) {
+    return res.status(400).json({ error: 'Patient name is required' });
+  }
+
+  fs.readFile(patientFilePath, 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error reading patient file' });
+    }
+
+    let patients = JSON.parse(data);
+
+    // Filter out the patient by name (case-insensitive comparison)
+    const updatedPatients = patients.filter(patient => patient.name.toLowerCase() !== patientName);
+
+    // Check if any patient was removed
+    if (patients.length === updatedPatients.length) {
+      return res.status(404).json({ message: 'Patient not found' });
+    }
+
+    // Write the updated patient list to the file
+    fs.writeFile(patientFilePath, JSON.stringify(updatedPatients, null, 2), err => {
+      if (err) {
+        return res.status(500).json({ error: 'Error writing to patient file' });
+      }
+      res.json({ message: 'Patient removed successfully', patients: updatedPatients });
+    });
+  });
+});
+
+
 
 /* Rewrite **************************************/
 // API endpoint to delete all contents of the JSON file and rewrite with a new array
@@ -354,6 +456,7 @@ app.put('/api/rewrite/staff', (req, res) => {
     res.json({ message: 'File successfully rewritten', data: newArray });
   });
 });
+
 
 // Start the server
 app.listen(PORT, () => {

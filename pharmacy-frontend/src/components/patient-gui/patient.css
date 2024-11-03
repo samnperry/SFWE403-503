@@ -1,0 +1,121 @@
+/* pharm.css */
+
+/* General layout styling */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+  }
+  
+  .pharm-background {
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    padding-top: 80px; /* To avoid overlap with AppBar */
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  /* AppBar styling */
+  .MuiAppBar-root {
+    background-color: #1976d2;
+  }
+  
+  .MuiTypography-h6 {
+    font-weight: bold;
+  }
+  
+  /* Typography */
+  h4, h5, h6 {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  /* Form styling */
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .MuiTextField-root {
+    width: 100%;
+  }
+  
+  .MuiButton-containedPrimary {
+    background-color: #1976d2;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .MuiButton-containedPrimary:hover {
+    background-color: #115293;
+  }
+  
+  /* Table styling */
+  .MuiTableContainer-root {
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .MuiTableHead-root {
+    background-color: #1976d2;
+  }
+  
+  .MuiTableCell-root {
+    font-weight: 500;
+    color: #333;
+    padding: 12px;
+  }
+  
+  .MuiTableCell-root:first-child {
+    font-weight: 600;
+  }
+  
+  .MuiTableCell-head {
+    color: white;
+    font-weight: bold;
+  }
+  
+  .MuiButton-colorSecondary {
+    color: #d32f2f;
+    font-weight: bold;
+  }
+  
+  .MuiButton-colorSecondary:hover {
+    background-color: rgba(211, 47, 47, 0.1);
+  }
+  
+  /* Button styling */
+  button {
+    margin-top: 15px;
+    padding: 10px 20px;
+  }
+  
+  button:disabled {
+    background-color: #e0e0e0;
+    color: #aaa;
+  }
+  
+  /* Responsive styling */
+  @media (max-width: 600px) {
+    .container {
+      padding: 10px;
+    }
+  
+    .MuiTextField-root, .MuiButton-containedPrimary {
+      width: 100%;
+    }
+  }
+  
