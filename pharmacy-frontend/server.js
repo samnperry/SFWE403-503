@@ -34,6 +34,8 @@ console.log('Fiscal file path:', fiscalFilePath);
 const patientFilePath = path.join(__dirname, 'patients.json');
 console.log('Patient file path:', patientFilePath);
 
+const systemLogFilePath = path.join(__dirname, 'system-log.txt');
+console.log('systemLog file path:', patientFilePath);
 
 /* Gets ****************************************/
 // Get the current inventory
@@ -126,6 +128,15 @@ app.post('/api/inventory', (req, res) => {
       if (err) {
         return res.status(500).json({ error: 'Error writing to inventory file' });
       }
+
+      // Write to the system log file
+      const logEntry = `Date: ${new Date().toISOString()} - New inventory added: ${JSON.stringify(newItem)}\n`;
+      fs.appendFile(systemLogFilePath, logEntry, (err) => {
+        if (err) {
+          console.error('Error writing to system log file:', err);
+        }
+      });
+
       res.json({ message: 'Item added successfully', inventory });
     });
   });
@@ -170,6 +181,15 @@ app.post('/api/fiscal', (req, res) => {
       if (err) {
         return res.status(500).json({ error: 'Error writing to fiscal file' });
       }
+
+      // Write to the system log file
+      const logEntry = `Date: ${new Date().toISOString()} - New purchase added: ${JSON.stringify(newPurchase)}\n`;
+      fs.appendFile(systemLogFilePath, logEntry, (err) => {
+        if (err) {
+          console.error('Error writing to system log file:', err);
+        }
+      });
+
       res.json({ message: 'Purchase recorded successfully', newPurchase });
     });
   });
@@ -331,12 +351,22 @@ app.delete('/api/inventory/:id', (req, res) => {
     }
 
     let inventory = JSON.parse(data);
+    const deletedItem = inventory.find((item) => item.id === itemId);
     inventory = inventory.filter(item => item.id !== itemId);
 
     fs.writeFile(inventoryFilePath, JSON.stringify(inventory, null, 2), err => {
       if (err) {
         return res.status(500).json({ error: 'Error writing to inventory file' });
       }
+
+      // Write to the system log file
+      const logEntry = `Date: ${new Date().toISOString()} - Inventory removed: ${JSON.stringify(deletedItem)}\n`;
+      fs.appendFile(systemLogFilePath, logEntry, (err) => {
+        if (err) {
+          console.error('Error writing to system log file:', err);
+        }
+      });
+
       res.json({ message: 'Item removed successfully', inventory });
     });
   });

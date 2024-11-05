@@ -177,6 +177,8 @@ function LoginPage() {
             <Button onClick={handleNavigateSysAdmin}>SysAdmin Page</Button>
             <Button onClick={handleNavigateManager}>Manager Page</Button>
             <Button onClick={handleNavigateInventory}>Inventory</Button>
+          </ButtonGroup>
+          <ButtonGroup variant="contained">
             <Button onClick={handleNavigateStaffOverview}>Staff Overview Page</Button>
             <Button onClick={handleNavigatepharm}>Pharm</Button>
             <Button onClick={handleNavigatePatientManager}>Patient Manager</Button>

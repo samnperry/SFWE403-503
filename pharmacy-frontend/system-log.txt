@@ -1,0 +1,12 @@
+Things this log tracks:     :
+FilledPrescription          :
+InventoryUpdate: Add Remove :Done
+LogIn                       :
+LogOut                      :
+Purchase                    :Done
+
+*** Begin log ***
+Date: 2024-11-05T20:47:27.496Z - New purchase added: {"itemId":"004","itemName":"hawk","quantityPurchased":"8","supplier":"Tiuah","pricePerUnit":"1000"}
+Date: 2024-11-05T20:56:22.252Z - New inventory added: {"id":"004","name":"hawk","amount":"1","supplier":"tuak","price_per_quantity":"9997","expiration_date":"2022-12-20"}
+Date: 2024-11-05T20:58:59.046Z - New inventory added: {"id":"004","name":"test","amount":"1","supplier":"tuah","price_per_quantity":"992","expiration_date":"2022-12-22"}
+Date: 2024-11-05T20:59:04.546Z - Inventory removed: {"id":"004","name":"test","amount":"1","supplier":"tuah","price_per_quantity":"992","expiration_date":"2022-12-22"}

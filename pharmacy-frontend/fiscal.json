@@ -12,5 +12,40 @@
     "quantityPurchased": "20",
     "supplier": "HealthCo Pharma",
     "pricePerUnit": 1.28
+  },
+  {
+    "itemId": "001",
+    "itemName": "Aspirin",
+    "quantityPurchased": "6",
+    "supplier": "HealthCo Pharma",
+    "pricePerUnit": 1.28
+  },
+  {
+    "itemId": "004",
+    "itemName": "hawk",
+    "quantityPurchased": "5",
+    "supplier": "Tiuah",
+    "pricePerUnit": "1000"
+  },
+  {
+    "itemId": "004",
+    "itemName": "hawk",
+    "quantityPurchased": "3",
+    "supplier": "Tiuah",
+    "pricePerUnit": "1000"
+  },
+  {
+    "itemId": "004",
+    "itemName": "hawk",
+    "quantityPurchased": "7",
+    "supplier": "Tiuah",
+    "pricePerUnit": "1000"
+  },
+  {
+    "itemId": "004",
+    "itemName": "hawk",
+    "quantityPurchased": "8",
+    "supplier": "Tiuah",
+    "pricePerUnit": "1000"
   }
 ]
