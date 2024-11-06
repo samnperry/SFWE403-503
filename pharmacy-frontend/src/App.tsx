@@ -6,9 +6,9 @@ import ManagerMain from './components/manager-gui/ManagerMain';
 import StaffOverview from './components/manager-gui/StaffOverview';
 import { BrowserRouter,Routes, Route } from 'react-router-dom';
 import Inventory from './components/inventory/Inventory';
-import Pharm from './components/pharm-gui/pharm';
-import PatientManager from './components/patient-gui/patient';
-import Cashier from './components/cashier-gui/cashier';
+import Pharm from './components/pharm-gui/Pharm';
+import PatientManager from './components/patient-gui/Patient';
+import Cashier from './components/cashier-gui/Cashier';
 
 
 

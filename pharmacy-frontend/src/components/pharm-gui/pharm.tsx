@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./pharm.css";
+import "./Pharm.css";
 import {
   Box,
   Typography,

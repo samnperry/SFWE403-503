@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./Patient.css";
 import {
   Box,
   Typography,
@@ -96,9 +97,11 @@ function PatientManager() {
     }
   };
 
-  const handleNavigateHome = () => navigate("/HomePage");//Not real
+  const handleNavigateHome = () => navigate("/PatientManager");//Not real
   //Maybe naviage to Pharmacist Page instead?
+  const handleProfile = () => navigate("/ProfilePage");
   const handleLogout = () => navigate("/LoginPage");
+
 
   return (
     <div>
@@ -109,6 +112,9 @@ function PatientManager() {
           </Typography>
           <Button color="inherit" onClick={handleNavigateHome}>
             Home
+          </Button>
+          <Button color="inherit" onClick={handleProfile}>
+            Profile
           </Button>
           <Button color="inherit" onClick={handleLogout}>
             Log Out
