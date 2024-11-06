@@ -24,3 +24,13 @@ export interface PharmacyDetails{
     openingTime: string;
     closingTime: string;
 }
+export interface User {
+    id: string;
+    type: string;
+    name: string;
+    username: string;
+    password: string;
+    disabled: boolean;
+    locked: boolean;
+    attempted: number;
+  }

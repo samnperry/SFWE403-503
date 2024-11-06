@@ -227,16 +227,6 @@ function LoginPage() {
                 {error}
               </Typography>
             )}
-            <Box className="remember-forgot">
-              <FormControlLabel
-                control={<Checkbox className="checkbox" />}
-                label="Remember me"
-                className="remember-me"
-              />
-              <Typography variant="body2" component="a" href="#" className="forgot-password">
-                Forgot Password?
-              </Typography>
-            </Box>
             <Button type="submit" fullWidth variant="contained" className="login-button">
               Login
             </Button>

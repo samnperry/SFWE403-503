@@ -137,12 +137,14 @@ function Pharm() {
   };
 
   const handleNavigateHome = () => {
-    navigate("/HomePage");
+    navigate("/Pharm");
   };
 
   const handleLogout = () => {
     navigate("/LoginPage");
   };
+
+  const handleProfile = () => navigate("/ProfilePage");
 
   return (
     <div className="pharm-background">
@@ -153,6 +155,9 @@ function Pharm() {
           </Typography>
           <Button color="inherit" onClick={handleNavigateHome}>
             Home
+          </Button>
+          <Button color="inherit" onClick={handleProfile}>
+            Profile
           </Button>
           <Button color="inherit" onClick={handleLogout}>
             Log Out

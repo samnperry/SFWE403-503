@@ -55,18 +55,18 @@
     height: 70px;
     border-radius: 20px;
     padding: 0 25px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    color: white; /* Text inside input fields is white */
+    background-color: rgba(128, 128, 128, 0.2); /* Light grey background */
+    border: 2px solid rgba(128, 128, 128, 0.4); /* Grey border */
+    color: white;
     transition: background-color 0.3s, border-color 0.3s;
 }
 
 .input-field .MuiFilledInput-root:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: rgba(128, 128, 128, 0.3); /* Darker grey on hover */
 }
 
 .input-field .MuiFilledInput-root:focus-within {
-    border-color: white;
+    border-color: rgba(255, 255, 255, 0.8); /* Lighten border color on focus */
 }
 
 .input-label {

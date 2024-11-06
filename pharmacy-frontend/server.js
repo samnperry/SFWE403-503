@@ -487,6 +487,43 @@ app.put('/api/rewrite/staff', (req, res) => {
   });
 });
 
+//For Changing Password
+
+app.get('/api/user/:username', (req, res) => {
+  fs.readFile(staffFilePath, 'utf-8', (err, data) => {
+    if (err) return res.status(500).send("Error reading user data.");
+    const users = JSON.parse(data);
+    const user = users.find(u => u.username === req.params.username);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).send("User not found.");
+    }
+  });
+});
+
+// Update password
+app.put('/api/user/password', (req, res) => {
+  const { username, currentPassword, newPassword } = req.body;
+
+  fs.readFile(staffFilePath, 'utf-8', (err, data) => {
+    if (err) return res.status(500).send("Error reading user data.");
+    const users = JSON.parse(data);
+    const userIndex = users.findIndex(u => u.username === username);
+
+    if (userIndex === -1 || users[userIndex].password !== currentPassword) {
+      return res.status(400).send("Incorrect current password.");
+    }
+
+    users[userIndex].password = newPassword;
+
+    fs.writeFile(staffFilePath, JSON.stringify(users, null, 2), err => {
+      if (err) return res.status(500).send("Error updating password.");
+      res.send("Password updated successfully.");
+    });
+  });
+});
+
 
 // Start the server
 app.listen(PORT, () => {

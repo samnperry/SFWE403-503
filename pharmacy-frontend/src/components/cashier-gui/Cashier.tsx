@@ -107,7 +107,7 @@ function Cashier() {
     alert("Purchase completed successfully!");
   };
 
-  const handleNavigateHome = () => navigate("/HomePage");
+  const handleNavigateHome = () => navigate("/Cashier");
   const handleLogout = () => navigate("/LoginPage");
 
   return (

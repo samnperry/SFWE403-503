@@ -113,9 +113,6 @@ function PatientManager() {
           <Button color="inherit" onClick={handleNavigateHome}>
             Home
           </Button>
-          <Button color="inherit" onClick={handleProfile}>
-            Profile
-          </Button>
           <Button color="inherit" onClick={handleLogout}>
             Log Out
           </Button>
