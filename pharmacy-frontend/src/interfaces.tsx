@@ -34,3 +34,13 @@ export interface User {
     locked: boolean;
     attempted: number;
   }
+
+export interface Patient {
+    name: string;
+    dateOfBirth: string;
+    address: string;
+    phone: string;
+    email: string;
+    insurance: string;
+    prescriptions: string[];
+  }

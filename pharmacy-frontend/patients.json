@@ -5,6 +5,7 @@
     "address": "1605 N Fremont Ave.",
     "phone": "5204712355",
     "email": "willyrains424@gmail.com",
-    "insurance": "BCBS"
+    "insurance": "BCBS",
+    "prescriptions": ["adderal", "fentynal"]
   }
 ]

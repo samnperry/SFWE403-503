@@ -15,17 +15,20 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  List,
+  ListItem,
+  IconButton,
+  DialogActions,
+  ListItemText,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete"
 import { useNavigate } from "react-router-dom";
+import { Patient } from '../../interfaces'; // Assuming the interfaces file is in a parent folder
 
-interface Patient {
-  name: string;
-  dateOfBirth: string;
-  address: string;
-  phone: string;
-  email: string;
-  insurance: string;
-}
+
 
 //PUT does not work rn
 
@@ -39,7 +42,19 @@ function PatientManager() {
     phone: "",
     email: "",
     insurance: "",
+    prescriptions: [],
   });
+  const [open, setOpen] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState<Patient>({
+    name: "",
+    dateOfBirth: "",
+    address: "",
+    phone: "",
+    email: "",
+    insurance: "",
+    prescriptions: [],
+  });
+  const [newPrescription, setNewPrescription] = useState('');
 
   useEffect(() => {
     fetchPatients();
@@ -73,6 +88,7 @@ function PatientManager() {
         phone: "",
         email: "",
         insurance: "",
+        prescriptions: [],
       });
       alert("Patient added successfully.");
     } catch (error) {
@@ -96,6 +112,50 @@ function PatientManager() {
       alert("Could not remove patient.");
     }
   };
+
+  // Open dialog and set the selected patient's data
+  const handleOpenDialog = (patient: Patient) => {
+    setSelectedPatient(patient);
+    setOpen(true);
+  };
+
+  // Close dialog
+  const handleCloseDialog = () => {
+    setOpen(false);
+    setSelectedPatient({
+      name: "",
+      dateOfBirth: "",
+      address: "",
+      phone: "",
+      email: "",
+      insurance: "",
+      prescriptions: [],
+    });
+    setNewPrescription('');
+  };
+
+  // Add a new prescription
+  const handleAddPrescription = () => {
+    if (newPrescription.trim()) {
+      setSelectedPatient(prevPatient => ({
+        ...prevPatient,
+        prescriptions: [...prevPatient.prescriptions, newPrescription]
+      }));
+      setNewPrescription(''); // Clear input
+    }
+  };
+
+  // Delete a prescription
+  const handleDeletePrescription = (index: number) => {
+    setSelectedPatient(prevPatient => ({
+      ...prevPatient,
+      prescriptions: prevPatient.prescriptions.filter((_, i) => i !== index)
+    }));
+  };
+
+  function handleOpenPrescriptions(name: string): void {
+    throw new Error("Function not implemented.");
+  }
 
   const handleNavigateHome = () => navigate("/PatientManager");//Not real
   //Maybe naviage to Pharmacist Page instead?
@@ -215,11 +275,20 @@ function PatientManager() {
                       <TableCell>{patient.insurance}</TableCell>
                       <TableCell>
                         <Button
-                          color="secondary"
+                          color="primary"
+                          onClick={() => handleOpenDialog(patient)}
+                          variant="contained"
+                        >
+                          Prescriptions
+                        </Button>
+                        <Button
+                          color="error"
                           onClick={() => handleRemovePatient(patient.name)}
+                          variant="contained"
                         >
                           Remove
                         </Button>
+
                       </TableCell>
                     </TableRow>
                   ))}
@@ -229,6 +298,35 @@ function PatientManager() {
           </Box>
         </Box>
       </Container>
+      <Dialog open={open} onClose={handleCloseDialog}>
+        <DialogTitle>Prescriptions for {selectedPatient?.name}</DialogTitle>
+        <DialogContent>
+          <List>
+            {selectedPatient?.prescriptions?.map((prescription, index) => (
+              <ListItem key={index} secondaryAction={
+                <IconButton edge="end" color="error" onClick={() => handleDeletePrescription(index)}>
+                  <DeleteIcon />
+                </IconButton>
+              }>
+                <ListItemText primary={prescription} />
+              </ListItem>
+            ))}
+          </List>
+
+          <TextField
+            label="New Prescription"
+            value={newPrescription}
+            onChange={(e) => setNewPrescription(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={handleAddPrescription} variant="contained">Add Prescription</Button>
+          <Button onClick={handleCloseDialog} color="secondary">Close</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
