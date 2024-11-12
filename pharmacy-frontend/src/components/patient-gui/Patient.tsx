@@ -36,6 +36,7 @@ function PatientManager() {
   const navigate = useNavigate();
   const [patients, setPatients] = useState<Patient[]>([]);
   const [newPatient, setNewPatient] = useState<Partial<Patient>>({
+    id: -1,
     name: "",
     dateOfBirth: "",
     address: "",
@@ -46,6 +47,7 @@ function PatientManager() {
   });
   const [open, setOpen] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient>({
+    id: -1,
     name: "",
     dateOfBirth: "",
     address: "",
@@ -54,11 +56,36 @@ function PatientManager() {
     insurance: "",
     prescriptions: [],
   });
-  const [newPrescription, setNewPrescription] = useState('');
+  const [newPrescription, setNewPrescription] = useState({
+    name: "",
+    amount: 0,
+  });
+  const [nextID, setNextID] = useState(-1);
 
   useEffect(() => {
-    fetchPatients();
+    const fetchAndSetPatients = async () => {
+      await fetchPatients();
+
+      // Calculate the maximum ID after fetching patients
+      const maxID = patients.reduce((max, patient) => Math.max(max, patient.id), 0);
+      setNextID(maxID + 1);
+      setNewPatient({
+        id: nextID,
+        name: "",
+        dateOfBirth: "",
+        address: "",
+        phone: "",
+        email: "",
+        insurance: "",
+        prescriptions: [],
+      }
+
+      )
+    };
+
+    fetchAndSetPatients();
   }, []);
+
 
   const fetchPatients = async () => {
     try {
@@ -66,6 +93,8 @@ function PatientManager() {
       if (!response.ok) throw new Error("Error fetching patients.");
       const data: Patient[] = await response.json();
       setPatients(data);
+      const maxID = patients.reduce((max, patient) => Math.max(max, patient.id), 1);
+      setNextID(maxID + 1);
     } catch (error) {
       console.error(error);
       alert("Could not fetch patients.");
@@ -73,15 +102,21 @@ function PatientManager() {
   };
 
   const handleAddPatient = async () => {
+    const maxID = patients.reduce((max, patient) => Math.max(max, patient.id), 1);
+    const newID = maxID + 1;
+
     try {
       const response = await fetch("http://localhost:5001/api/patients", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newPatient),
+        body: JSON.stringify({ ...newPatient, id: newID }),
       });
+
       if (!response.ok) throw new Error("Error adding patient.");
+
       await fetchPatients();
       setNewPatient({
+        id: newID,
         name: "",
         dateOfBirth: "",
         address: "",
@@ -90,12 +125,14 @@ function PatientManager() {
         insurance: "",
         prescriptions: [],
       });
+      setNextID(newID + 1); // Set the next ID for the future addition
       alert("Patient added successfully.");
     } catch (error) {
       console.error(error);
       alert("Could not add patient.");
     }
   };
+
 
   const handleRemovePatient = async (name: string) => {
     try {
@@ -123,6 +160,7 @@ function PatientManager() {
   const handleCloseDialog = () => {
     setOpen(false);
     setSelectedPatient({
+      id: nextID,
       name: "",
       dateOfBirth: "",
       address: "",
@@ -131,27 +169,87 @@ function PatientManager() {
       insurance: "",
       prescriptions: [],
     });
-    setNewPrescription('');
+    setNewPrescription({
+      name: "",
+      amount: 0,
+    });
   };
 
   // Add a new prescription
-  const handleAddPrescription = () => {
-    if (newPrescription.trim()) {
-      setSelectedPatient(prevPatient => ({
-        ...prevPatient,
-        prescriptions: [...prevPatient.prescriptions, newPrescription]
-      }));
-      setNewPrescription(''); // Clear input
+  const handleAddPrescription = async () => {
+    // Update locally
+    const updatedPrescriptions = [...selectedPatient.prescriptions, newPrescription];
+    setSelectedPatient(prevPatient => ({
+      ...prevPatient,
+      prescriptions: updatedPrescriptions,
+    }));
+
+    // Clear input
+    setNewPrescription({
+      name: "",
+      amount: 0,
+    });
+
+    try {
+      // Send updated prescriptions to server
+      const response = await fetch(`http://localhost:5001/api/patients/${selectedPatient.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prescriptions: updatedPrescriptions }),
+      });
+
+      if (!response.ok) throw new Error("Error updating prescriptions.");
+
+      setPatients(prevPatients =>
+        prevPatients.map(patient =>
+          patient.id === selectedPatient.id
+            ? { ...patient, prescriptions: updatedPrescriptions }
+            : patient
+        )
+      );
+
+
+      alert("Prescription added successfully.");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to add prescription.");
     }
   };
 
   // Delete a prescription
-  const handleDeletePrescription = (index: number) => {
+  const handleDeletePrescription = async (index: number) => {
+    // Update locally
+    const updatedPrescriptions = selectedPatient.prescriptions.filter((_, i) => i !== index);
     setSelectedPatient(prevPatient => ({
       ...prevPatient,
-      prescriptions: prevPatient.prescriptions.filter((_, i) => i !== index)
+      prescriptions: updatedPrescriptions,
     }));
+
+    try {
+      // Send updated prescriptions to server
+      const response = await fetch(`http://localhost:5001/api/patients/${selectedPatient.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prescriptions: updatedPrescriptions }),
+      });
+
+      if (!response.ok) throw new Error("Error updating prescriptions.");
+
+      setPatients(prevPatients =>
+        prevPatients.map(patient =>
+          patient.id === selectedPatient.id
+            ? { ...patient, prescriptions: updatedPrescriptions }
+            : patient
+        )
+      );
+
+      alert("Prescription deleted successfully.");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete prescription.");
+    }
   };
+
 
   function handleOpenPrescriptions(name: string): void {
     throw new Error("Function not implemented.");
@@ -164,7 +262,7 @@ function PatientManager() {
 
 
   return (
-    <div>
+    <div style={{ alignItems: "start" }}>
       <AppBar position="fixed">
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
@@ -179,9 +277,9 @@ function PatientManager() {
         </Toolbar>
       </AppBar>
       <Toolbar />
+      <div className="">
+        <Container maxWidth="md" style={{ height: "80vh", alignItems: "start", display: 'block', marginTop: '0px' }}>
 
-      <Container maxWidth="md">
-        <Box mt={5} textAlign="center">
           <Typography variant="h4" gutterBottom>
             Manage Patients
           </Typography>
@@ -256,6 +354,7 @@ function PatientManager() {
                 <TableHead>
                   <TableRow>
                     <TableCell>Name</TableCell>
+                    <TableCell>ID</TableCell>
                     <TableCell>Date of Birth</TableCell>
                     <TableCell>Address</TableCell>
                     <TableCell>Phone</TableCell>
@@ -268,6 +367,7 @@ function PatientManager() {
                   {patients.map((patient, index) => (
                     <TableRow key={index}>
                       <TableCell>{patient.name}</TableCell>
+                      <TableCell>{patient.id}</TableCell>
                       <TableCell>{patient.dateOfBirth}</TableCell>
                       <TableCell>{patient.address}</TableCell>
                       <TableCell>{patient.phone}</TableCell>
@@ -296,37 +396,48 @@ function PatientManager() {
               </Table>
             </TableContainer>
           </Box>
-        </Box>
-      </Container>
-      <Dialog open={open} onClose={handleCloseDialog}>
-        <DialogTitle>Prescriptions for {selectedPatient?.name}</DialogTitle>
-        <DialogContent>
-          <List>
-            {selectedPatient?.prescriptions?.map((prescription, index) => (
-              <ListItem key={index} secondaryAction={
-                <IconButton edge="end" color="error" onClick={() => handleDeletePrescription(index)}>
-                  <DeleteIcon />
-                </IconButton>
-              }>
-                <ListItemText primary={prescription} />
-              </ListItem>
-            ))}
-          </List>
 
-          <TextField
-            label="New Prescription"
-            value={newPrescription}
-            onChange={(e) => setNewPrescription(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-        </DialogContent>
+        </Container>
+        <Dialog open={open} onClose={handleCloseDialog}>
+          <DialogTitle>Prescriptions for {selectedPatient?.name}</DialogTitle>
+          <DialogContent>
+            <List>
+              {selectedPatient?.prescriptions?.map((prescription, index) => (
+                <ListItem key={index} secondaryAction={
+                  <IconButton edge="end" color="error" onClick={() => handleDeletePrescription(index)}>
+                    <DeleteIcon />
+                  </IconButton>
+                }>
+                  <ListItemText primary={prescription.name + ": " + prescription.amount} />
+                </ListItem>
+              ))}
+            </List>
 
-        <DialogActions>
-          <Button onClick={handleAddPrescription} variant="contained">Add Prescription</Button>
-          <Button onClick={handleCloseDialog} color="secondary">Close</Button>
-        </DialogActions>
-      </Dialog>
+            <TextField
+              label="Prescription Name"
+              value={newPrescription.name}
+              onChange={(e) => setNewPrescription(prev => ({ ...prev, name: e.target.value }))}
+              fullWidth
+              margin="normal"
+            />
+
+            <TextField
+              label="Amount"
+              type="number"
+              value={newPrescription.amount}
+              onChange={(e) => setNewPrescription(prev => ({ ...prev, amount: Number(e.target.value) }))}
+              fullWidth
+              margin="normal"
+            />
+
+          </DialogContent>
+
+          <DialogActions>
+            <Button onClick={handleAddPrescription} variant="contained">Add Prescription</Button>
+            <Button onClick={handleCloseDialog} color="secondary">Close</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </div>
   );
 }

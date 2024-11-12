@@ -10,3 +10,13 @@ Date: 2024-11-05T20:47:27.496Z - New purchase added: {"itemId":"004","itemName":
 Date: 2024-11-05T20:56:22.252Z - New inventory added: {"id":"004","name":"hawk","amount":"1","supplier":"tuak","price_per_quantity":"9997","expiration_date":"2022-12-20"}
 Date: 2024-11-05T20:58:59.046Z - New inventory added: {"id":"004","name":"test","amount":"1","supplier":"tuah","price_per_quantity":"992","expiration_date":"2022-12-22"}
 Date: 2024-11-05T20:59:04.546Z - Inventory removed: {"id":"004","name":"test","amount":"1","supplier":"tuah","price_per_quantity":"992","expiration_date":"2022-12-22"}
+Date: 2024-11-12T03:37:45.128Z - New inventory added: {"id":"","name":"","amount":0,"supplier":"","price_per_quantity":0,"expiration_date":""}
+Date: 2024-11-12T03:37:45.654Z - New inventory added: {"id":"","name":"","amount":0,"supplier":"","price_per_quantity":0,"expiration_date":""}
+Date: 2024-11-12T03:37:46.193Z - New inventory added: {"id":"","name":"","amount":0,"supplier":"","price_per_quantity":0,"expiration_date":""}
+Date: 2024-11-12T03:37:47.020Z - New inventory added: {"id":"","name":"","amount":0,"supplier":"","price_per_quantity":0,"expiration_date":""}
+Date: 2024-11-12T03:40:24.577Z - New inventory added: {"id":"004","name":"","amount":0,"supplier":"","price_per_quantity":0,"expiration_date":""}
+Date: 2024-11-12T03:40:26.674Z - New inventory added: {"id":"005","name":"","amount":0,"supplier":"","price_per_quantity":0,"expiration_date":""}
+Date: 2024-11-12T03:40:29.408Z - New inventory added: {"id":"006","name":"","amount":0,"supplier":"","price_per_quantity":0,"expiration_date":""}
+Date: 2024-11-12T03:40:33.402Z - Inventory removed: {"id":"004","name":"","amount":0,"supplier":"","price_per_quantity":0,"expiration_date":""}
+Date: 2024-11-12T03:40:33.931Z - Inventory removed: {"id":"005","name":"","amount":0,"supplier":"","price_per_quantity":0,"expiration_date":""}
+Date: 2024-11-12T03:40:34.424Z - Inventory removed: {"id":"006","name":"","amount":0,"supplier":"","price_per_quantity":0,"expiration_date":""}

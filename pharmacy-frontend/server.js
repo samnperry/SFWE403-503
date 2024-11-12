@@ -311,7 +311,7 @@ app.put('/api/staff/:id', (req, res) => {
 
 // PUT: Update an existing patient by ID
 app.put('/api/patients/:id', (req, res) => {
-  const patientId = req.params.id; // Get the ID from the URL
+  const patientId = Number(req.params.id); // Get the ID from the URL
   const updatedPatientData = req.body; // Get the new data from the request body
 
   fs.readFile(patientFilePath, 'utf8', (err, data) => {

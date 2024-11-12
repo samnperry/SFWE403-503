@@ -1,3 +1,5 @@
+import { StringLiteral } from "typescript";
+
 export interface InventoryItem {
     id: string;
     name: string;
@@ -36,11 +38,17 @@ export interface User {
   }
 
 export interface Patient {
+    id: number;
     name: string;
     dateOfBirth: string;
     address: string;
     phone: string;
     email: string;
     insurance: string;
-    prescriptions: string[];
+    prescriptions: Prescription[];
   }
+
+export interface Prescription{
+    name: string;
+    amount: number;
+}

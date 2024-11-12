@@ -1,11 +1,25 @@
 [
   {
+    "id": 1,
     "name": "William Rains",
     "dateOfBirth": "04/14/2003",
     "address": "1605 N Fremont Ave.",
     "phone": "5204712355",
     "email": "willyrains424@gmail.com",
     "insurance": "BCBS",
-    "prescriptions": ["adderal", "fentynal"]
+    "prescriptions": [
+      {
+        "name": "adderal",
+        "amount": 20
+      },
+      {
+        "name": "fentynal",
+        "amount": 10000
+      },
+      {
+        "name": "pp",
+        "amount": 999
+      }
+    ]
   }
 ]
