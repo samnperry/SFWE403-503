@@ -1,7 +1,7 @@
 Things this log tracks:     :
 FilledPrescription          :
 InventoryUpdate: Add Remove :Done
-LogIn                       :
+LogIn                       :Done
 LogOut                      :
 Purchase                    :Done
 
@@ -20,3 +20,12 @@ Date: 2024-11-12T03:40:29.408Z - New inventory added: {"id":"006","name":"","amo
 Date: 2024-11-12T03:40:33.402Z - Inventory removed: {"id":"004","name":"","amount":0,"supplier":"","price_per_quantity":0,"expiration_date":""}
 Date: 2024-11-12T03:40:33.931Z - Inventory removed: {"id":"005","name":"","amount":0,"supplier":"","price_per_quantity":0,"expiration_date":""}
 Date: 2024-11-12T03:40:34.424Z - Inventory removed: {"id":"006","name":"","amount":0,"supplier":"","price_per_quantity":0,"expiration_date":""}
+Date: 2024-11-13T18:14:43.614Z - Successful Login for User: admin
+Date: 2024-11-13T18:16:23.396Z - Unsuccessful Login Attempt by User: admin
+Date: 2024-11-13T18:16:28.355Z - Unsuccessful Login Attempt by User: admin
+Date: 2024-11-13T18:16:33.754Z - Unsuccessful Login Attempt by User: admin
+Date: 2024-11-13T18:16:35.287Z - Unsuccessful Login Attempt by User: admin
+Date: 2024-11-13T18:16:35.637Z - Unsuccessful Login Attempt by User: admin
+Date: 2024-11-13T18:16:36.613Z - Locked Login Attempted by User: admin
+Date: 2024-11-13T18:16:37.317Z - Locked Login Attempted by User: admin
+Date: 2024-11-13T18:16:37.487Z - Locked Login Attempted by User: admin

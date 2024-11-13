@@ -214,14 +214,38 @@ app.post('/api/login', (req, res) => {
 
       // Check if user is locked
       if (user.locked) {
+        // Write to the system log file
+        const logEntry = `Date: ${new Date().toISOString()} - Locked Login Attempted by User: ${username}\n`;
+        fs.appendFile(systemLogFilePath, logEntry, (err) => {
+          if (err) {
+            console.error('Error writing to system log file:', err);
+          }
+        });
+        ////
         return res.status(403).json({ error: 'User account is locked' });
       }
 
       if (user.password === password) {
+        // Write to the system log file
+        const logEntry = `Date: ${new Date().toISOString()} - Successful Login for User: ${username}\n`;
+        fs.appendFile(systemLogFilePath, logEntry, (err) => {
+          if (err) {
+            console.error('Error writing to system log file:', err);
+          }
+        });
+        ////
         // Successful login, reset attempt count
         staff[userIndex].attempted = 0;
       } else {
         // Incorrect password, increment attempt count
+        // Write to the system log file
+        const logEntry = `Date: ${new Date().toISOString()} - Unsuccessful Login Attempt by User: ${username}\n`;
+        fs.appendFile(systemLogFilePath, logEntry, (err) => {
+          if (err) {
+            console.error('Error writing to system log file:', err);
+          }
+        });
+        ////
         staff[userIndex].attempted += 1;
 
         // Check if attempts exceed 5
