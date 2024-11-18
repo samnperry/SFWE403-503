@@ -5,8 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { InventoryItem, FiscalItem, PharmacyDetails } from '../../interfaces'; // Assuming the interfaces file is in a parent folder
+import { useUserContext } from '../UserContext'
 
 function Inventory() {
+  const user = useUserContext().user;
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [FiscalData, setFiscalData] = useState<FiscalItem[]>([]);
   const [PharmacyDetail, setPharmacyDetails] = useState<PharmacyDetails>();
@@ -232,6 +234,32 @@ function Inventory() {
     .catch(error => console.error('Error fetching fiscal data:', error));
   };
   
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/api/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user }), // Pass the user object in the request body
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.message); // "Logout successful. Redirecting to login page..."
+  
+        // Redirect to the login page
+        window.location.href = data.redirect;
+      } else {
+        const errorData = await response.json();
+        console.error('Logout failed:', errorData.error);
+        alert(errorData.error); // Show error message to the user
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+      alert('An unexpected error occurred. Please try again.');
+    }
+  };
   
   return (
     <div className="inventory-background">
@@ -242,7 +270,7 @@ function Inventory() {
     Inventory Management
     </Typography>
     <Button color="inherit" href='/ManagerMain'>Home</Button>
-    <Button color="inherit" onClick={() => navigate('/LoginPage')}>Log Out</Button>
+    <Button color="inherit" onClick={handleLogout}>Log Out</Button>
     </Toolbar>
     </AppBar>
     

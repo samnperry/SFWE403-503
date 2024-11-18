@@ -17,11 +17,18 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from '../UserContext'
 
 
 //TODO: add error catching for manager and admin accounts on first time login.
 
+interface user {
+  name: string;
+  type: string;
+}
+
 function LoginPage() {
+  const { setUser } = useUserContext();
   const [devEnabled, setDevEnabled] = useState(false);
   const navigate = useNavigate();
 
@@ -95,6 +102,7 @@ function LoginPage() {
           setOpenDialog(true); // Open the password change dialog
         } else {
           // Navigate based on user type
+          setUser({name: username, type: user.type });
           if (user.type === 'Admin') {
             navigate('/SysAdminPage');
           } else if (user.type === 'Manager') {

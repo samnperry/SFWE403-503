@@ -7,6 +7,7 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LockIcon from '@mui/icons-material/Lock';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from '../UserContext';
 
 // Define the type for staff items
 interface StaffItem {
@@ -22,6 +23,7 @@ interface StaffItem {
 }
 
 function StaffOverview() {
+  const user = useUserContext().user;
   const [staffList, setStaff] = useState<StaffItem[]>([]);
   const [newItem, setNewStaff] = useState<StaffItem>({ id: '', type: '', name: '', username: '', password: '', disabled: true, locked: false, attempted: 0, firstTimeLogin: true});
   const navigate = useNavigate();
@@ -193,6 +195,33 @@ function StaffOverview() {
       .catch(error => console.error('Error removing staff item:', error));
   };
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/api/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user }), // Pass the user object in the request body
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.message); // "Logout successful. Redirecting to login page..."
+  
+        // Redirect to the login page
+        window.location.href = data.redirect;
+      } else {
+        const errorData = await response.json();
+        console.error('Logout failed:', errorData.error);
+        alert(errorData.error); // Show error message to the user
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+      alert('An unexpected error occurred. Please try again.');
+    }
+  };
+
   return (
     <div style={{ width: '150vh', height: '100%'}}>
       {/* Navigation Bar */}
@@ -203,7 +232,7 @@ function StaffOverview() {
           </Typography>
           <Button color="inherit" href='/ManagerMain'>Home</Button>
           <Button color="inherit" href='/Inventory'>Inventory</Button>
-          <Button color="inherit" onClick={() => navigate('/LoginPage')}>Log Out</Button>
+          <Button color="inherit" onClick={handleLogout}>Log Out</Button>
         </Toolbar>
       </AppBar>
       <div className='staffoverview-background'>

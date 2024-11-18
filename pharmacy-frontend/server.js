@@ -5,6 +5,7 @@ const cors = require('cors'); // Import the cors package
 const app = express();
 const PORT = 5001;
 
+
 // Middleware to parse JSON bodies
 app.use(express.json());
 
@@ -276,6 +277,29 @@ app.post('/api/login', (req, res) => {
     }
   });
 });
+
+// Logout endpoint
+app.post('/api/logout', (req, res) => {
+  const { user } = req.body; // Expecting a user object in the request body
+  if (!user || !user.name) {
+    return res.status(400).json({ error: 'Invalid user object' });
+  }
+
+  // Write the logout event to the system log file
+  const logEntry = `Date: ${new Date().toISOString()} - User "${user.name}" of type "${user.type}" has successfully logged out.\n`;
+
+  fs.appendFile(systemLogFilePath, logEntry, (err) => {
+    if (err) {
+      console.error('Error writing to system log file:', err);
+      return res.status(500).json({ error: 'Unable to process logout request' });
+    }
+
+    console.log(`User ${user.name} has logged out successfully.`);
+    // Redirect the user to the login page
+    res.status(200).json({ message: 'Logout successful. Redirecting to login page...', redirect: '/LoginPage' });
+  });
+});
+
 
 // POST: Add a new patient
 app.post('/api/patients', (req, res) => {

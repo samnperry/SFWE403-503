@@ -2,7 +2,7 @@ Things this log tracks:     :
 FilledPrescription          :
 InventoryUpdate: Add Remove :Done
 LogIn                       :Done
-LogOut                      :
+LogOut                      :Done
 Purchase                    :Done
 
 *** Begin log ***
@@ -29,3 +29,16 @@ Date: 2024-11-13T18:16:35.637Z - Unsuccessful Login Attempt by User: admin
 Date: 2024-11-13T18:16:36.613Z - Locked Login Attempted by User: admin
 Date: 2024-11-13T18:16:37.317Z - Locked Login Attempted by User: admin
 Date: 2024-11-13T18:16:37.487Z - Locked Login Attempted by User: admin
+Date: 2024-11-18T20:27:01.571Z - Successful Login for User: admin
+Date: 2024-11-18T20:50:30.117Z - Successful Login for User: admin
+Date: 2024-11-18T20:52:50.057Z - Successful Login for User: admin
+Date: 2024-11-18T21:24:12.389Z - Successful Login for User: admin
+Date: 2024-11-18T21:28:47.386Z - Unsuccessful Login Attempt by User: admin
+Date: 2024-11-18T21:28:51.616Z - Successful Login for User: admin
+Date: 2024-11-18T21:30:26.500Z - Successful Login for User: admin
+Date: 2024-11-18T21:32:50.645Z - Successful Login for User: admin
+Date: 2024-11-18T21:36:01.242Z - Successful Login for User: admin
+Date: 2024-11-18T21:36:40.262Z - Successful Login for User: admin
+Date: 2024-11-18T21:36:49.935Z - User: admin of type Admin
+Date: 2024-11-18T21:38:57.143Z - Successful Login for User: admin
+Date: 2024-11-18T21:38:58.809Z - User: admin of type Admin

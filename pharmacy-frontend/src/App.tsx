@@ -10,12 +10,14 @@ import Pharm from './components/pharm-gui/Pharm';
 import PatientManager from './components/patient-gui/Patient';
 import Cashier from './components/cashier-gui/Cashier';
 import Profile from './components/profile-gui/Profile';
+import { UserProvider } from './components/UserContext'
 
 
 
 function App() {
   return (
     <div className="App">
+      <UserProvider>
       <BrowserRouter>
         <Routes>
           <Route index element={<LoginPage />}/>
@@ -30,7 +32,7 @@ function App() {
           <Route path='/ProfilePage' element={<Profile/>}/>
         </Routes>
       </BrowserRouter>
-      
+      </UserProvider>
     </div>
   );
 }

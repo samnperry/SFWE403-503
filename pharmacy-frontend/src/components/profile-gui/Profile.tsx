@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, Button, Box, TextField, Container, Paper } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { User } from '../../interfaces';
+import { useUserContext } from "../UserContext";
 
 function Profile() {
+    const currUser = useUserContext().user;
     const navigate = useNavigate();
     const { username } = useParams();
     const [user, setUser] = useState<User | null>(null);
@@ -49,6 +51,33 @@ function Profile() {
         }
     };
 
+    const handleLogout = async () => {
+        try {
+          const response = await fetch('http://localhost:5001/api/logout', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ currUser }), // Pass the user object in the request body
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+            console.log(data.message); // "Logout successful. Redirecting to login page..."
+      
+            // Redirect to the login page
+            window.location.href = data.redirect;
+          } else {
+            const errorData = await response.json();
+            console.error('Logout failed:', errorData.error);
+            alert(errorData.error); // Show error message to the user
+          }
+        } catch (error) {
+          console.error('Error during logout:', error);
+          alert('An unexpected error occurred. Please try again.');
+        }
+      };
+
     return (
         <div>
             <AppBar position="fixed">
@@ -59,7 +88,7 @@ function Profile() {
                     <Button color="inherit" onClick={() => navigate("/PatientManager")}>
                         Home
                     </Button>
-                    <Button color="inherit" onClick={() => navigate("/LoginPage")}>
+                    <Button color="inherit" onClick={handleLogout}>
                         Log Out
                     </Button>
                 </Toolbar>

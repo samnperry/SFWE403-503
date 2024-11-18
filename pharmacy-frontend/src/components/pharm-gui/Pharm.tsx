@@ -21,6 +21,7 @@ import {
   FormControl,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../UserContext";
 
 interface Medication {
   id: string;
@@ -32,6 +33,7 @@ interface Medication {
 }
 
 function Pharm() {
+  const user = useUserContext().user;
   const navigate = useNavigate();
   const [medications, setMedications] = useState<Medication[]>([]);
   const [selectedMedicationId, setSelectedMedicationId] = useState<string>("");
@@ -140,8 +142,31 @@ function Pharm() {
     navigate("/Pharm");
   };
 
-  const handleLogout = () => {
-    navigate("/LoginPage");
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/api/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user }), // Pass the user object in the request body
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.message); // "Logout successful. Redirecting to login page..."
+  
+        // Redirect to the login page
+        window.location.href = data.redirect;
+      } else {
+        const errorData = await response.json();
+        console.error('Logout failed:', errorData.error);
+        alert(errorData.error); // Show error message to the user
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+      alert('An unexpected error occurred. Please try again.');
+    }
   };
 
   const handleProfile = () => navigate("/ProfilePage");

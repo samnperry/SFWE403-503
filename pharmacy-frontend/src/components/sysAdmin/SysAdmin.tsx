@@ -14,13 +14,39 @@ import {
   Toolbar,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../UserContext";
 
 
 function SysAdminPage() {
+  const user = useUserContext().user;
   const navigate = useNavigate();
 
-  const handleLogOut = () => {
-    navigate("/LoginPage");
+  const handleLogout = async () => {
+    try {
+      console.log(user);
+      const response = await fetch('http://localhost:5001/api/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user }), // Pass the user object in the request body
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.message); // "Logout successful. Redirecting to login page..."
+  
+        // Redirect to the login page
+        window.location.href = data.redirect;
+      } else {
+        const errorData = await response.json();
+        console.error('Logout failed:', errorData.error);
+        alert(errorData.error); // Show error message to the user
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+      alert('An unexpected error occurred. Please try again.');
+    }
   };
 
   // State to track pharmacy form inputs
@@ -151,7 +177,7 @@ function SysAdminPage() {
         <Typography variant="h6">
           Pharmacy System
         </Typography>
-        <Button color="inherit" onClick={handleLogOut}>Log Out</Button>
+        <Button color="inherit" onClick={handleLogout}>Log Out</Button>
       </Toolbar>
     </AppBar>
 

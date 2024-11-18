@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { useUserContext } from "../UserContext";
 
 // Define the Medication interface
 interface Medication {
@@ -32,6 +33,7 @@ interface Medication {
 }
 
 function ManagerMain() {
+  const user = useUserContext().user;
   const navigate = useNavigate();
   const [expiredMedications, setExpiredMedications] = useState<Medication[]>([]);
   const [openDialog, setOpenDialog] = useState(false);
@@ -80,6 +82,33 @@ function ManagerMain() {
     setOpenDialog(true);
   };
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/api/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user }), // Pass the user object in the request body
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.message); // "Logout successful. Redirecting to login page..."
+  
+        // Redirect to the login page
+        window.location.href = data.redirect;
+      } else {
+        const errorData = await response.json();
+        console.error('Logout failed:', errorData.error);
+        alert(errorData.error); // Show error message to the user
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+      alert('An unexpected error occurred. Please try again.');
+    }
+  };
+
   return (
     <div className="manager-background" >
       {/* Fixed AppBar at the top */}
@@ -100,7 +129,7 @@ function ManagerMain() {
               <NotificationsIcon color="inherit" />
             </Badge>
           </IconButton>
-          <Button color="inherit" onClick={() => navigate('/LoginPage')}>Log Out</Button>
+          <Button color="inherit" onClick={handleLogout}>Log Out</Button>
 
         </Toolbar>
       </AppBar>
