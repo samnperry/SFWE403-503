@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Inventory.css';
-import { Box, Typography, Container, AppBar, Toolbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Typography, Container, AppBar, Toolbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions  } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -22,8 +22,6 @@ function Inventory() {
   const [editAmount, setEditAmount] = useState(0);
   const [editPrice, setEditPrice] = useState(0);
   const [editExpiration, setEditExpiration] = useState('');
-
-
 
   // Fetch inventory data from the backend server
   useEffect(() => {
@@ -482,6 +480,7 @@ function Inventory() {
       </Box>
     </div>
   );
+  
 }
 
 export default Inventory;
