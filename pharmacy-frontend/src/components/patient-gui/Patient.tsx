@@ -278,7 +278,7 @@ function PatientManager() {
       </AppBar>
       <Toolbar />
       <div className="">
-        <Container maxWidth="md" style={{ height: "80vh", alignItems: "start", display: 'block', marginTop: '0px' }}>
+        <Container maxWidth="lg" style={{ height: "80vh", alignItems: "start", display: 'block', marginTop: '0px' }}>
 
           <Typography variant="h4" gutterBottom>
             Manage Patients

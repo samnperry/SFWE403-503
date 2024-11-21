@@ -42,3 +42,14 @@ Date: 2024-11-18T21:36:40.262Z - Successful Login for User: admin
 Date: 2024-11-18T21:36:49.935Z - User: admin of type Admin
 Date: 2024-11-18T21:38:57.143Z - Successful Login for User: admin
 Date: 2024-11-18T21:38:58.809Z - User: admin of type Admin
+Date: 2024-11-20T22:50:23.973Z - New purchase added: {"itemId":"001","itemName":"Aspirin","quantityPurchased":"50","supplier":"HealthCo Pharma","pricePerUnit":1.28}
+Date: 2024-11-20T22:51:35.531Z - New purchase added: {"itemId":"001","itemName":"Aspirin","quantityPurchased":"50","supplier":"HealthCo Pharma","pricePerUnit":1.28}
+Date: 2024-11-21T00:17:54.082Z - Inventory removed: {"id":"023","name":"Duloxetine","amount":140,"supplier":"MediSupply Inc.","price_per_quantity":2.1,"expiration_date":"2024-12-20"}
+Date: 2024-11-21T00:20:23.226Z - New purchase added: {"itemId":"001","itemName":"Aspirin","quantityPurchased":"78","supplier":"HealthCo Pharma","pricePerUnit":1.28}
+Date: 2024-11-21T00:25:41.299Z - Inventory updated: {"id":"001","name":"Aspirin","amount":1500,"supplier":"HealthCo Pharma","price_per_quantity":0,"expiration_date":""}
+Date: 2024-11-21T00:25:53.130Z - Inventory updated: {"id":"001","name":"Aspirin","amount":0,"supplier":"HealthCo Pharma","price_per_quantity":0,"expiration_date":""}
+Date: 2024-11-21T00:29:57.043Z - Inventory updated: {"id":"002","name":"Ibuprofen","amount":800,"supplier":"MediSupply Inc.","price_per_quantity":0,"expiration_date":""}
+Date: 2024-11-21T00:30:00.388Z - Inventory updated: {"id":"001","name":"Aspirin","amount":0,"supplier":"HealthCo Pharma","price_per_quantity":0,"expiration_date":""}
+Date: 2024-11-21T00:31:21.010Z - Inventory updated: {"id":"002","name":"Ibuprofen","amount":0,"supplier":"MediSupply Inc.","price_per_quantity":0,"expiration_date":""}
+Date: 2024-11-21T00:34:51.473Z - Inventory updated: {"id":"001","name":"Aspirin","amount":80,"supplier":"HealthCo Pharma","price_per_quantity":0.15,"expiration_date":"2024-11-12"}
+Date: 2024-11-21T00:35:07.612Z - Inventory updated: {"id":"002","name":"Ibuprofen","amount":100,"supplier":"MediSupply Inc.","price_per_quantity":0.4,"expiration_date":"2024-11-18"}

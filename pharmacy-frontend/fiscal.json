@@ -47,5 +47,26 @@
     "quantityPurchased": "8",
     "supplier": "Tiuah",
     "pricePerUnit": "1000"
+  },
+  {
+    "itemId": "001",
+    "itemName": "Aspirin",
+    "quantityPurchased": "50",
+    "supplier": "HealthCo Pharma",
+    "pricePerUnit": 1.28
+  },
+  {
+    "itemId": "001",
+    "itemName": "Aspirin",
+    "quantityPurchased": "50",
+    "supplier": "HealthCo Pharma",
+    "pricePerUnit": 1.28
+  },
+  {
+    "itemId": "001",
+    "itemName": "Aspirin",
+    "quantityPurchased": "78",
+    "supplier": "HealthCo Pharma",
+    "pricePerUnit": 1.28
   }
 ]

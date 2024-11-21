@@ -2,18 +2,18 @@
   {
     "id": "001",
     "name": "Aspirin",
-    "amount": 150,
+    "amount": 80,
     "supplier": "HealthCo Pharma",
-    "price_per_quantity": 1.28,
-    "expiration_date": "2024-10-14"
+    "price_per_quantity": 0.15,
+    "expiration_date": "2024-11-12"
   },
   {
     "id": "002",
     "name": "Ibuprofen",
-    "amount": 80,
+    "amount": 100,
     "supplier": "MediSupply Inc.",
-    "price_per_quantity": 1.28,
-    "expiration_date": "2024-10-13"
+    "price_per_quantity": 0.4,
+    "expiration_date": "2024-11-18"
   },
   {
     "id": "003",
@@ -22,5 +22,157 @@
     "supplier": "SafeMeds Ltd.",
     "price_per_quantity": 10.28,
     "expiration_date": "2024-10-12"
+  },
+  {
+    "id": "004",
+    "name": "Amoxicillin",
+    "amount": 120,
+    "supplier": "HealthCo Pharma",
+    "price_per_quantity": 0.85,
+    "expiration_date": "2025-01-20"
+  },
+  {
+    "id": "005",
+    "name": "Clopidogrel",
+    "amount": 50,
+    "supplier": "MediSupply Inc.",
+    "price_per_quantity": 3.5,
+    "expiration_date": "2024-12-15"
+  },
+  {
+    "id": "006",
+    "name": "Lisinopril",
+    "amount": 300,
+    "supplier": "SafeMeds Ltd.",
+    "price_per_quantity": 0.92,
+    "expiration_date": "2025-03-10"
+  },
+  {
+    "id": "007",
+    "name": "Metformin",
+    "amount": 180,
+    "supplier": "HealthCo Pharma",
+    "price_per_quantity": 0.5,
+    "expiration_date": "2025-04-18"
+  },
+  {
+    "id": "008",
+    "name": "Atorvastatin",
+    "amount": 75,
+    "supplier": "MediSupply Inc.",
+    "price_per_quantity": 1.05,
+    "expiration_date": "2024-11-22"
+  },
+  {
+    "id": "009",
+    "name": "Losartan",
+    "amount": 95,
+    "supplier": "SafeMeds Ltd.",
+    "price_per_quantity": 1.15,
+    "expiration_date": "2024-12-01"
+  },
+  {
+    "id": "010",
+    "name": "Omeprazole",
+    "amount": 400,
+    "supplier": "HealthCo Pharma",
+    "price_per_quantity": 0.4,
+    "expiration_date": "2025-05-30"
+  },
+  {
+    "id": "011",
+    "name": "Simvastatin",
+    "amount": 130,
+    "supplier": "MediSupply Inc.",
+    "price_per_quantity": 0.75,
+    "expiration_date": "2025-02-14"
+  },
+  {
+    "id": "012",
+    "name": "Levothyroxine",
+    "amount": 220,
+    "supplier": "SafeMeds Ltd.",
+    "price_per_quantity": 0.68,
+    "expiration_date": "2024-12-29"
+  },
+  {
+    "id": "013",
+    "name": "Gabapentin",
+    "amount": 160,
+    "supplier": "HealthCo Pharma",
+    "price_per_quantity": 2.1,
+    "expiration_date": "2025-06-01"
+  },
+  {
+    "id": "014",
+    "name": "Hydrochlorothiazide",
+    "amount": 90,
+    "supplier": "MediSupply Inc.",
+    "price_per_quantity": 0.75,
+    "expiration_date": "2024-11-05"
+  },
+  {
+    "id": "015",
+    "name": "Furosemide",
+    "amount": 180,
+    "supplier": "SafeMeds Ltd.",
+    "price_per_quantity": 0.95,
+    "expiration_date": "2025-03-22"
+  },
+  {
+    "id": "016",
+    "name": "Zolpidem",
+    "amount": 120,
+    "supplier": "HealthCo Pharma",
+    "price_per_quantity": 1.1,
+    "expiration_date": "2024-12-10"
+  },
+  {
+    "id": "017",
+    "name": "Pantoprazole",
+    "amount": 150,
+    "supplier": "MediSupply Inc.",
+    "price_per_quantity": 0.95,
+    "expiration_date": "2025-02-25"
+  },
+  {
+    "id": "018",
+    "name": "Sertraline",
+    "amount": 100,
+    "supplier": "SafeMeds Ltd.",
+    "price_per_quantity": 2.5,
+    "expiration_date": "2024-11-18"
+  },
+  {
+    "id": "019",
+    "name": "Tamsulosin",
+    "amount": 130,
+    "supplier": "HealthCo Pharma",
+    "price_per_quantity": 1.2,
+    "expiration_date": "2025-01-30"
+  },
+  {
+    "id": "020",
+    "name": "Tramadol",
+    "amount": 80,
+    "supplier": "MediSupply Inc.",
+    "price_per_quantity": 3,
+    "expiration_date": "2025-04-10"
+  },
+  {
+    "id": "021",
+    "name": "Albuterol",
+    "amount": 60,
+    "supplier": "SafeMeds Ltd.",
+    "price_per_quantity": 2.8,
+    "expiration_date": "2025-06-05"
+  },
+  {
+    "id": "022",
+    "name": "Warfarin",
+    "amount": 200,
+    "supplier": "HealthCo Pharma",
+    "price_per_quantity": 1.3,
+    "expiration_date": "2025-03-15"
   }
 ]

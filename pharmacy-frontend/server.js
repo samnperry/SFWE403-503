@@ -387,6 +387,47 @@ app.put('/api/patients/:id', (req, res) => {
   });
 });
 
+app.put('/api/inventory/:id', (req, res) => {
+  const updatedItem = req.body;  // Get the updated item data from the request body
+  const itemId = req.params.id;  // Get the ID of the item to update from the URL params
+
+  fs.readFile(inventoryFilePath, 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error reading inventory file' });
+    }
+
+    let inventory = JSON.parse(data);
+
+    // Find the index of the item with the given ID
+    const itemIndex = inventory.findIndex(item => item.id === itemId);
+    if (itemIndex === -1) {
+      return res.status(404).json({ error: 'Item not found' });
+    }
+
+    // Update the item at the found index
+    inventory[itemIndex] = { ...inventory[itemIndex], ...updatedItem };
+
+    // Save the updated inventory back to the file
+    fs.writeFile(inventoryFilePath, JSON.stringify(inventory, null, 2), err => {
+      if (err) {
+        return res.status(500).json({ error: 'Error writing to inventory file' });
+      }
+
+      // Log the update to the system log
+      const logEntry = `Date: ${new Date().toISOString()} - Inventory updated: ${JSON.stringify(inventory[itemIndex])}\n`;
+      fs.appendFile(systemLogFilePath, logEntry, (err) => {
+        if (err) {
+          console.error('Error writing to system log file:', err);
+        }
+      });
+
+      // Respond with a success message
+      res.json({ message: 'Item updated successfully', updatedItem: inventory[itemIndex] });
+    });
+  });
+});
+
+
 
 /* Delete **************************************/
 // Remove an inventory item by ID
