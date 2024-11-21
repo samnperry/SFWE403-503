@@ -17,7 +17,22 @@ body {
     max-width: 800px;
     margin: auto;
     padding: 20px;
+    padding-bottom: 40px; /* Increase bottom padding to avoid overlap */
   }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-color: #ffffff;
+    padding: 20px;
+    padding-bottom: 30px; /* Adjust bottom padding for form */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px; /* Increase bottom margin */
+  }
+  
   
   /* AppBar styling */
   .MuiAppBar-root {
@@ -32,19 +47,6 @@ body {
   h4, h5, h6 {
     font-weight: 600;
     color: #333;
-  }
-  
-  /* Form styling */
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
   }
   
   .MuiTextField-root {
@@ -100,7 +102,8 @@ body {
   /* Button styling */
   button {
     margin-top: 15px;
-    padding: 10px 20px;
+    padding: 12px 24px; /* Adjust button padding if it's small */
+    min-width: 120px; /* Minimum width to avoid too small buttons */
   }
   
   button:disabled {

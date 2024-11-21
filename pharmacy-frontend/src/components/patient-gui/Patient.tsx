@@ -349,8 +349,8 @@ function PatientManager() {
             <Typography variant="h5" gutterBottom>
               Existing Patients
             </Typography>
-            <TableContainer component={Paper}>
-              <Table aria-label="patient table">
+            <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto' }}>
+              <Table size="small" sx={{ width: '100%' }} aria-label="patient table">
                 <TableHead>
                   <TableRow>
                     <TableCell>Name</TableCell>
@@ -369,26 +369,31 @@ function PatientManager() {
                       <TableCell>{patient.name}</TableCell>
                       <TableCell>{patient.id}</TableCell>
                       <TableCell>{patient.dateOfBirth}</TableCell>
-                      <TableCell>{patient.address}</TableCell>
+                      <TableCell sx={{ maxWidth: '150px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {patient.address}
+                      </TableCell>
                       <TableCell>{patient.phone}</TableCell>
                       <TableCell>{patient.email}</TableCell>
                       <TableCell>{patient.insurance}</TableCell>
                       <TableCell>
-                        <Button
-                          color="primary"
-                          onClick={() => handleOpenDialog(patient)}
-                          variant="contained"
-                        >
-                          Prescriptions
-                        </Button>
-                        <Button
-                          color="error"
-                          onClick={() => handleRemovePatient(patient.name)}
-                          variant="contained"
-                        >
-                          Remove
-                        </Button>
-
+                        <Box display="flex" gap={1} flexWrap="wrap">
+                          <Button
+                            color="primary"
+                            onClick={() => handleOpenDialog(patient)}
+                            variant="contained"
+                            size="small"
+                          >
+                            Prescriptions
+                          </Button>
+                          <Button
+                            color="error"
+                            onClick={() => handleRemovePatient(patient.name)}
+                            variant="contained"
+                            size="small"
+                          >
+                            Remove
+                          </Button>
+                        </Box>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -396,6 +401,7 @@ function PatientManager() {
               </Table>
             </TableContainer>
           </Box>
+
 
         </Container>
         <Dialog open={open} onClose={handleCloseDialog}>
