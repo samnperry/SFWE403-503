@@ -10,15 +10,28 @@
     "prescriptions": [
       {
         "name": "adderal",
-        "amount": 20
+        "amount": 20,
+        "filled": true
       },
       {
         "name": "fentynal",
-        "amount": 10000
+        "amount": 10000,
+        "filled": true
       },
       {
         "name": "pp",
-        "amount": 999
+        "amount": 999,
+        "filled": true
+      },
+      {
+        "name": "Omeprazole",
+        "amount": 40,
+        "filled": false
+      },
+      {
+        "name": "Hydrochlorothiazide",
+        "amount": 10,
+        "filled": false
       }
     ]
   },

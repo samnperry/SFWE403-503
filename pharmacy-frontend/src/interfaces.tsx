@@ -51,4 +51,5 @@ export interface Patient {
 export interface Prescription{
     name: string;
     amount: number;
+    filled: boolean;
 }

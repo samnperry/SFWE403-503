@@ -23,14 +23,15 @@ import {
   IconButton,
   DialogActions,
   ListItemText,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Checkbox,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete"
 import { useNavigate } from "react-router-dom";
-import { Patient } from '../../interfaces'; // Assuming the interfaces file is in a parent folder
-
-
-
-//PUT does not work rn
+import { InventoryItem, Patient } from '../../interfaces'; // Assuming the interfaces file is in a parent folder
 
 function PatientManager() {
   const navigate = useNavigate();
@@ -59,8 +60,10 @@ function PatientManager() {
   const [newPrescription, setNewPrescription] = useState({
     name: "",
     amount: 0,
+    filled: false,
   });
   const [nextID, setNextID] = useState(-1);
+  const [inventory, setInventory] = useState([]);
 
   useEffect(() => {
     const fetchAndSetPatients = async () => {
@@ -84,6 +87,14 @@ function PatientManager() {
     };
 
     fetchAndSetPatients();
+  }, []);
+
+  // Fetch inventory data
+  useEffect(() => {
+    fetch("http://localhost:5001/api/inventory")
+      .then((response) => response.json())
+      .then((data) => setInventory(data))
+      .catch((error) => console.error("Error fetching inventory:", error));
   }, []);
 
 
@@ -159,6 +170,38 @@ function PatientManager() {
   // Close dialog
   const handleCloseDialog = () => {
     setOpen(false);
+
+    setPatients((prevList) =>
+      prevList.map((patient) =>
+        patient.id === selectedPatient.id
+          ? { ...patient, prescriptions: selectedPatient.prescriptions }
+          : patient
+      )
+    );
+
+    // Fetch call to update the prescriptions for the selected patient
+    if (selectedPatient) {
+      fetch(`http://localhost:5001/api/patients/${selectedPatient.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prescriptions: selectedPatient.prescriptions }), // Send the updated prescriptions
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log('Prescriptions updated:', data);
+        })
+        .catch((error) => {
+          console.error('Error updating prescriptions:', error);
+        });
+    }
+
     setSelectedPatient({
       id: nextID,
       name: "",
@@ -172,6 +215,7 @@ function PatientManager() {
     setNewPrescription({
       name: "",
       amount: 0,
+      filled: false,
     });
   };
 
@@ -188,6 +232,7 @@ function PatientManager() {
     setNewPrescription({
       name: "",
       amount: 0,
+      filled: false,
     });
 
     try {
@@ -250,16 +295,15 @@ function PatientManager() {
     }
   };
 
-
-  function handleOpenPrescriptions(name: string): void {
-    throw new Error("Function not implemented.");
-  }
-
   const handleNavigateHome = () => navigate("/PatientManager");//Not real
   //Maybe naviage to Pharmacist Page instead?
   const handleProfile = () => navigate("/ProfilePage");
   const handleLogout = () => navigate("/LoginPage");
 
+
+  function handleCheckboxChange(index: number): void {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <div style={{ alignItems: "start" }}>
@@ -404,28 +448,74 @@ function PatientManager() {
 
 
         </Container>
-        <Dialog open={open} onClose={handleCloseDialog}>
+        <Dialog open={open} onClose={handleCloseDialog} maxWidth="md" fullWidth>
           <DialogTitle>Prescriptions for {selectedPatient?.name}</DialogTitle>
           <DialogContent>
             <List>
+              <ListItem>
+                <ListItemText
+                  primary={
+                    <Typography variant="h6" >
+                      Drug Name
+                    </Typography>
+                  }
+                />
+                <Box display="flex" justifyContent="space-between" alignItems="center" width="auto">
+                  <Typography variant="h6" sx={{  marginRight: 2 }}>
+                    Filled
+                  </Typography>
+                  <Typography variant="h6" >
+                    Delete
+                  </Typography>
+                </Box>
+              </ListItem>
               {selectedPatient?.prescriptions?.map((prescription, index) => (
-                <ListItem key={index} secondaryAction={
-                  <IconButton edge="end" color="error" onClick={() => handleDeletePrescription(index)}>
+                <ListItem key={index} secondaryAction={<Box>
+                  {/* Checkbox */}
+                  <Checkbox
+                    edge="end"
+                    color="primary"
+                    checked={prescription.filled}
+                    onChange={() =>
+                      setSelectedPatient(prev => ({
+                        ...prev,
+                        prescriptions: prev.prescriptions.map((item, i) =>
+                          i === index ? { ...item, filled: !item.filled } : item
+                        ),
+                      }))
+                    }
+                  />
+
+                  {/* Delete Button */}
+                  <IconButton
+                    edge="end"
+                    color="error"
+                    onClick={() => handleDeletePrescription(index)}
+                  >
                     <DeleteIcon />
                   </IconButton>
-                }>
+                </Box>}>
                   <ListItemText primary={prescription.name + ": " + prescription.amount} />
                 </ListItem>
               ))}
             </List>
 
-            <TextField
-              label="Prescription Name"
-              value={newPrescription.name}
-              onChange={(e) => setNewPrescription(prev => ({ ...prev, name: e.target.value }))}
-              fullWidth
-              margin="normal"
-            />
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="prescription-name-label">Prescription Name</InputLabel>
+              <Select
+                labelId="prescription-name-label"
+                value={newPrescription.name}
+                onChange={(e) =>
+                  setNewPrescription((prev) => ({ ...prev, name: e.target.value }))
+                }
+              >
+                {inventory.map((item: InventoryItem) => (
+                  <MenuItem key={item.id} value={item.name}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
             <TextField
               label="Amount"
