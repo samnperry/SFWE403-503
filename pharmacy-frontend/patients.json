@@ -32,6 +32,11 @@
         "name": "Hydrochlorothiazide",
         "amount": 10,
         "filled": false
+      },
+      {
+        "name": "",
+        "amount": 0,
+        "filled": false
       }
     ]
   },

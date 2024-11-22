@@ -362,16 +362,27 @@ app.put('/api/patients/:id', (req, res) => {
   const patientId = Number(req.params.id); // Get the ID from the URL
   const updatedPatientData = req.body; // Get the new data from the request body
 
+
   fs.readFile(patientFilePath, 'utf8', (err, data) => {
     if (err) {
       return res.status(500).json({ error: 'Error reading patient file' });
     }
 
-    let patients = JSON.parse(data);
+    let patients;
+    try {
+      patients = JSON.parse(data); // Try to parse the JSON
+    } catch (parseError) {
+      console.error("Error parsing patient data:", parseError);  // Log JSON parse error
+      return res.status(500).json({ error: 'Error parsing patient data' });
+    }
+
+    console.log("Patients loaded from file:", patients);  // Log the patients array to ensure it's correct
 
     // Find the index of the patient to update
     const patientIndex = patients.findIndex(patient => patient.id === patientId);
+
     if (patientIndex === -1) {
+      console.error("Patient not found with ID:", patientId);  // Log if patient is not found
       return res.status(404).json({ message: 'Patient not found' });
     }
 
@@ -380,12 +391,14 @@ app.put('/api/patients/:id', (req, res) => {
 
     fs.writeFile(patientFilePath, JSON.stringify(patients, null, 2), err => {
       if (err) {
+        console.error("Error writing to patient file:", err);  // Log error if file write fails
         return res.status(500).json({ error: 'Error writing to patient file' });
       }
       res.json({ message: 'Patient updated successfully', patients });
     });
   });
 });
+
 
 app.put('/api/inventory/:id', (req, res) => {
   const updatedItem = req.body;  // Get the updated item data from the request body

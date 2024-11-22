@@ -53,3 +53,4 @@ Date: 2024-11-21T00:30:00.388Z - Inventory updated: {"id":"001","name":"Aspirin"
 Date: 2024-11-21T00:31:21.010Z - Inventory updated: {"id":"002","name":"Ibuprofen","amount":0,"supplier":"MediSupply Inc.","price_per_quantity":0,"expiration_date":""}
 Date: 2024-11-21T00:34:51.473Z - Inventory updated: {"id":"001","name":"Aspirin","amount":80,"supplier":"HealthCo Pharma","price_per_quantity":0.15,"expiration_date":"2024-11-12"}
 Date: 2024-11-21T00:35:07.612Z - Inventory updated: {"id":"002","name":"Ibuprofen","amount":100,"supplier":"MediSupply Inc.","price_per_quantity":0.4,"expiration_date":"2024-11-18"}
+Date: 2024-11-22T05:55:18.870Z - Inventory updated: {"id":"010","name":"Omeprazole","amount":360,"supplier":"HealthCo Pharma","price_per_quantity":0.4,"expiration_date":"2025-05-30"}
