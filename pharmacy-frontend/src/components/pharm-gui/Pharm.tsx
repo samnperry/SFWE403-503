@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Pharm.css";
 import {
   Box,
@@ -19,7 +19,12 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
+import SignatureCanvas from "react-signature-canvas";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../UserContext";
 
@@ -41,6 +46,11 @@ function Pharm() {
   const [cart, setCart] = useState<{ medication: Medication; quantity: number }[]>(
     []
   );
+
+  // State for Signature Modal
+  const [isSignatureOpen, setIsSignatureOpen] = useState<boolean>(false);
+  const [signatureDataURL, setSignatureDataURL] = useState<string>("");
+  const signatureRef = useRef<SignatureCanvas>(null);
 
   useEffect(() => {
     const fetchInventory = async () => {
@@ -171,6 +181,35 @@ function Pharm() {
 
   const handleProfile = () => navigate("/ProfilePage");
 
+  // Handlers for Signature Modal
+  const openSignatureModal = () => {
+    setIsSignatureOpen(true);
+    setSignatureDataURL("");
+    if (signatureRef.current) {
+      signatureRef.current.clear();
+    }
+  };
+
+  const closeSignatureModal = () => {
+    setIsSignatureOpen(false);
+  };
+
+  const saveSignature = () => {
+    if (signatureRef.current) {
+      const trimmedDataURL = signatureRef.current.getTrimmedCanvas().toDataURL('image/png');
+      setSignatureDataURL(trimmedDataURL);
+      // You can handle the saved signature here (e.g., send it to the backend)
+      console.log("Signature saved:", trimmedDataURL);
+      closeSignatureModal();
+    }
+  };
+
+  const clearSignature = () => {
+    if (signatureRef.current) {
+      signatureRef.current.clear();
+    }
+  };
+
   return (
     <div className="pharm-background">
       <AppBar position="fixed">
@@ -186,6 +225,10 @@ function Pharm() {
           </Button>
           <Button color="inherit" onClick={handleLogout}>
             Log Out
+          </Button>
+          {/* Signature Test Button */}
+          <Button color="inherit" onClick={openSignatureModal}>
+            Signature Test
           </Button>
         </Toolbar>
       </AppBar>
@@ -296,10 +339,44 @@ function Pharm() {
       </Container>
       {/* Footer */}
       <footer style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#f1f1f1' }}>
-          <Typography variant="body2" color="textSecondary">
-            &copy; 2024 Pharmacy System. All rights reserved.
-          </Typography>
-        </footer>
+        <Typography variant="body2" color="textSecondary">
+          &copy; 2024 Pharmacy System. All rights reserved.
+        </Typography>
+      </footer>
+
+      {/* Signature Modal */}
+      <Dialog open={isSignatureOpen} onClose={closeSignatureModal} maxWidth="sm" fullWidth>
+        <DialogTitle>Signature Pad</DialogTitle>
+        <DialogContent>
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            minHeight="300px"
+          >
+            <SignatureCanvas
+              ref={signatureRef}
+              penColor="black"
+              canvasProps={{ width: 500, height: 300, className: 'signature-canvas' }}
+              backgroundColor="#f0f0f0"
+            />
+            <Box mt={2}>
+              <Button variant="outlined" onClick={clearSignature} style={{ marginRight: '1rem' }}>
+                Clear
+              </Button>
+              <Button variant="contained" color="primary" onClick={saveSignature}>
+                Save
+              </Button>
+            </Box>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeSignatureModal} color="secondary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
