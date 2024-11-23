@@ -10,6 +10,7 @@ import Pharm from './components/pharm-gui/Pharm';
 import PatientManager from './components/patient-gui/Patient';
 import Cashier from './components/cashier-gui/Cashier';
 import Profile from './components/profile-gui/Profile';
+import PharmacistInventory from './components/pharmacist-inv/PharmacistInventory';
 import { UserProvider } from './components/UserContext'
 
 
@@ -30,6 +31,7 @@ function App() {
           <Route path='/PatientManager' element={<PatientManager/>}/>
           <Route path='/Cashier' element={<Cashier/>}/>
           <Route path='/ProfilePage' element={<Profile/>}/>
+          <Route path='/PharmacistInventory' element={<PharmacistInventory/>}/>
         </Routes>
       </BrowserRouter>
       </UserProvider>

@@ -74,6 +74,10 @@ function LoginPage() {
     navigate("/Cashier");
   };
 
+  const handleNavigatePharmacistInventory = () => {
+    navigate("/PharmacistInventory");
+  };
+
   // Event handler for dev controls switch
   const handleDevChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDevEnabled(event.target.checked);
@@ -185,6 +189,7 @@ function LoginPage() {
             <Button onClick={handleNavigateSysAdmin}>SysAdmin Page</Button>
             <Button onClick={handleNavigateManager}>Manager Page</Button>
             <Button onClick={handleNavigateInventory}>Inventory</Button>
+            <Button onClick={handleNavigatePharmacistInventory}>PharmInv</Button>
           </ButtonGroup>
           <ButtonGroup variant="contained">
             <Button onClick={handleNavigateStaffOverview}>Staff Overview Page</Button>
