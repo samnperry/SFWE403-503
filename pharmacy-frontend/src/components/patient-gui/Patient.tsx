@@ -144,6 +144,50 @@ function PatientManager() {
     }
   };
 
+  const [editOpen, setEditOpen] = useState(false); // State for edit dialog
+  const [editingPatient, setEditingPatient] = useState<Partial<Patient>>({}); // State for the patient being edited
+  
+  // Open the edit dialog
+  const handleEditOpen = (patient: Patient) => {
+    setEditingPatient(patient);
+    setEditOpen(true);
+  };
+  
+  // Close the edit dialog
+  const handleEditClose = () => {
+    setEditOpen(false);
+    setEditingPatient({});
+  };
+  
+  // Update the patient information
+  const handleEditSubmit = async () => {
+    try {
+      const response = await fetch(`http://localhost:5001/api/patients/${editingPatient.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editingPatient),
+      });
+  
+      if (!response.ok) throw new Error("Error updating patient.");
+  
+      // Update the local state
+      setPatients((prevPatients) =>
+        prevPatients.map((patient) =>
+          patient.id === editingPatient.id
+            ? { ...patient, ...editingPatient } // Merge the existing patient with updates
+            : patient
+        )
+      );
+      
+  
+      alert("Patient updated successfully.");
+      handleEditClose();
+    } catch (error) {
+      console.error(error);
+      alert("Failed to update patient.");
+    }
+  };
+  
 
   const handleRemovePatient = async (name: string) => {
     try {
@@ -420,7 +464,7 @@ function PatientManager() {
                       <TableCell>{patient.email}</TableCell>
                       <TableCell>{patient.insurance}</TableCell>
                       <TableCell>
-                        <Box display="flex" gap={1} flexWrap="wrap">
+                        <Box display="flex" gap={1} flexWrap="nowrap">
                           <Button
                             color="primary"
                             onClick={() => handleOpenDialog(patient)}
@@ -437,6 +481,14 @@ function PatientManager() {
                           >
                             Remove
                           </Button>
+                          <Button
+                            color="primary"
+                            onClick={() => handleEditOpen(patient)}
+                            variant="contained"
+                            size="small"
+                          >
+                            Edit
+                          </Button>
                         </Box>
                       </TableCell>
                     </TableRow>
@@ -448,6 +500,74 @@ function PatientManager() {
 
 
         </Container>
+        <Dialog open={editOpen} onClose={handleEditClose} maxWidth="sm" fullWidth>
+      <DialogTitle>Edit Patient</DialogTitle>
+      <DialogContent>
+        <TextField
+          fullWidth
+          label="Name"
+          value={editingPatient.name || ""}
+          onChange={(e) =>
+            setEditingPatient((prev) => ({ ...prev, name: e.target.value }))
+          }
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          label="Date of Birth"
+          value={editingPatient.dateOfBirth || ""}
+          onChange={(e) =>
+            setEditingPatient((prev) => ({ ...prev, dateOfBirth: e.target.value }))
+          }
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          label="Address"
+          value={editingPatient.address || ""}
+          onChange={(e) =>
+            setEditingPatient((prev) => ({ ...prev, address: e.target.value }))
+          }
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          label="Phone"
+          value={editingPatient.phone || ""}
+          onChange={(e) =>
+            setEditingPatient((prev) => ({ ...prev, phone: e.target.value }))
+          }
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          label="Email"
+          value={editingPatient.email || ""}
+          onChange={(e) =>
+            setEditingPatient((prev) => ({ ...prev, email: e.target.value }))
+          }
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          label="Insurance"
+          value={editingPatient.insurance || ""}
+          onChange={(e) =>
+            setEditingPatient((prev) => ({ ...prev, insurance: e.target.value }))
+          }
+          margin="normal"
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleEditSubmit} variant="contained" color="primary">
+          Save Changes
+        </Button>
+        <Button onClick={handleEditClose} color="secondary">
+          Cancel
+        </Button>
+      </DialogActions>
+    </Dialog>
+
         <Dialog open={open} onClose={handleCloseDialog} maxWidth="md" fullWidth>
           <DialogTitle>Prescriptions for {selectedPatient?.name}</DialogTitle>
           <DialogContent>

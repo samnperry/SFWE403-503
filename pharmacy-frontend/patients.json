@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "William Rains",
-    "dateOfBirth": "04/14/2003",
+    "dateOfBirth": "04/14/2006",
     "address": "1605 N Fremont Ave.",
     "phone": "5204712355",
     "email": "willyrains424@gmail.com",
@@ -32,11 +32,6 @@
         "name": "Hydrochlorothiazide",
         "amount": 10,
         "filled": false
-      },
-      {
-        "name": "",
-        "amount": 0,
-        "filled": false
       }
     ]
   },
@@ -52,12 +47,12 @@
   },
   {
     "id": 3,
-    "name": "k",
-    "dateOfBirth": "k",
-    "address": "k",
+    "name": "Stupid Head",
+    "dateOfBirth": "06/14/2005",
+    "address": "4263 North Skibidi Loss",
     "phone": "k",
-    "email": "k",
-    "insurance": "k",
+    "email": "samureaal ",
+    "insurance": "William Rains",
     "prescriptions": []
   },
   {
