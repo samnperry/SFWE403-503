@@ -62,7 +62,7 @@ function ManagerMain() {
         });
 
         // Filter low-stock medications (less than 5 units)
-        const lowStockMeds = medications.filter((med) => med.amount < 5);
+        const lowStockMeds = medications.filter((med) => med.amount < 30);
 
         // Combine both expired and low stock medications for the alert
         const alertMeds = [...expiredMeds, ...lowStockMeds];
@@ -201,7 +201,7 @@ function ManagerMain() {
               <ul>
                 {expiredMedications.map((med) => (
                   <li key={med.id}>
-                    {med.name} ({med.amount < 5 ? "Low stock" : `Expired on ${med.expiration_date}`})
+                    {med.name} ({med.amount < 120 ? "Low stock" : `Expired on ${med.expiration_date}`})
                   </li>
                 ))}
               </ul>
