@@ -1,152 +1,31 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import "./Pharm.css";
 import {
   Box,
   Typography,
-  TextField,
   Button,
   Container,
   AppBar,
   Toolbar,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
+  Grid,
+  Card,
+  CardContent,
+  CardActionArea,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import SignatureCanvas from "react-signature-canvas";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../UserContext";
-
-interface Medication {
-  id: string;
-  name: string;
-  amount: string; // Amount is stored as a string in inventory.json
-  supplier: string;
-  price_per_quantity: number;
-  expiration_date: string;
-}
+import SignatureCanvas from "react-signature-canvas";
 
 function Pharm() {
   const user = useUserContext().user;
   const navigate = useNavigate();
-  const [medications, setMedications] = useState<Medication[]>([]);
-  const [selectedMedicationId, setSelectedMedicationId] = useState<string>("");
-  const [quantity, setQuantity] = useState<number>(1);
-  const [cart, setCart] = useState<{ medication: Medication; quantity: number }[]>(
-    []
-  );
-
-  // State for Signature Modal
-  const [isSignatureOpen, setIsSignatureOpen] = useState<boolean>(false);
-  const [signatureDataURL, setSignatureDataURL] = useState<string>("");
-  const signatureRef = useRef<SignatureCanvas>(null);
-
-  useEffect(() => {
-    const fetchInventory = async () => {
-      try {
-        const response = await fetch("http://localhost:5001/api/inventory");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const medicationsData: Medication[] = await response.json();
-        setMedications(medicationsData);
-      } catch (error) {
-        console.error("Error fetching inventory:", error);
-      }
-    };
-
-    fetchInventory();
-  }, []);
-
-  const handleAddToCart = () => {
-    if (!selectedMedicationId || quantity < 1) return;
-
-    const medication = medications.find(
-      (med) => med.id === selectedMedicationId
-    );
-
-    if (!medication) return;
-
-    const availableAmount = parseInt(medication.amount);
-
-    // Check if the quantity requested is available
-    if (quantity > availableAmount) {
-      alert(
-        `Only ${availableAmount} units of ${medication.name} are available.`
-      );
-      return;
-    }
-
-    // Add to cart
-    setCart((prevCart) => [...prevCart, { medication, quantity }]);
-
-    // Reset selection
-    setSelectedMedicationId("");
-    setQuantity(1);
-  };
-
-  const handleRemoveFromCart = (index: number) => {
-    setCart((prevCart) => prevCart.filter((_, i) => i !== index));
-  };
-
-  const handleProcessPurchase = async () => {
-    try {
-      // Prepare data to send to the backend
-      const purchaseData = cart.map((item) => ({
-        medication_id: item.medication.id,
-        quantity: item.quantity,
-      }));
-
-      const response = await fetch("http://localhost:5001/api/purchase", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ purchaseItems: purchaseData }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
-      }
-
-      // Optionally, you can get the response data
-      const result = await response.json();
-
-      // Update the inventory state to reflect the new quantities
-      setMedications((prevMedications) =>
-        prevMedications.map((med) => {
-          const purchasedItem = cart.find(
-            (item) => item.medication.id === med.id
-          );
-          if (purchasedItem) {
-            const newAmount = parseInt(med.amount) - purchasedItem.quantity;
-            return { ...med, amount: newAmount.toString() };
-          }
-          return med;
-        })
-      );
-
-      // Clear the cart
-      setCart([]);
-
-      alert("Purchase processed successfully!");
-    } catch (error: any) {
-      console.error("Error processing purchase:", error);
-      alert(`An error occurred while processing the purchase: ${error.message}`);
-    }
-  };
+  const [openSignaturePad, setOpenSignaturePad] = useState(false);
+  const [signatureData, setSignatureData] = useState<string | null>(null);
+  const sigPad = useRef<SignatureCanvas>(null);
 
   const handleNavigateHome = () => {
     navigate("/Pharm");
@@ -154,59 +33,53 @@ function Pharm() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/logout', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5001/api/logout", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user }), // Pass the user object in the request body
+        body: JSON.stringify({ user }),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
-        console.log(data.message); // "Logout successful. Redirecting to login page..."
-  
-        // Redirect to the login page
+        console.log(data.message);
+
         window.location.href = data.redirect;
       } else {
         const errorData = await response.json();
-        console.error('Logout failed:', errorData.error);
-        alert(errorData.error); // Show error message to the user
+        console.error("Logout failed:", errorData.error);
+        alert(errorData.error);
       }
     } catch (error) {
-      console.error('Error during logout:', error);
-      alert('An unexpected error occurred. Please try again.');
+      console.error("Error during logout:", error);
+      alert("An unexpected error occurred. Please try again.");
     }
   };
 
   const handleProfile = () => navigate("/ProfilePage");
 
-  // Handlers for Signature Modal
-  const openSignatureModal = () => {
-    setIsSignatureOpen(true);
-    setSignatureDataURL("");
-    if (signatureRef.current) {
-      signatureRef.current.clear();
+  const handleOpenSignaturePad = () => {
+    setOpenSignaturePad(true);
+  };
+
+  const handleCloseSignaturePad = () => {
+    setOpenSignaturePad(false);
+  };
+
+  const handleSaveSignature = () => {
+    if (sigPad.current && sigPad.current.isEmpty()) {
+      alert("Please provide a signature before saving.");
+    } else if (sigPad.current) {
+      setSignatureData(sigPad.current.getTrimmedCanvas().toDataURL("image/png"));
+      setOpenSignaturePad(false);
+      // You can handle the saved signature data here
     }
   };
 
-  const closeSignatureModal = () => {
-    setIsSignatureOpen(false);
-  };
-
-  const saveSignature = () => {
-    if (signatureRef.current) {
-      const trimmedDataURL = signatureRef.current.getTrimmedCanvas().toDataURL('image/png');
-      setSignatureDataURL(trimmedDataURL);
-      // You can handle the saved signature here (e.g., send it to the backend)
-      console.log("Signature saved:", trimmedDataURL);
-      closeSignatureModal();
-    }
-  };
-
-  const clearSignature = () => {
-    if (signatureRef.current) {
-      signatureRef.current.clear();
+  const handleClearSignature = () => {
+    if (sigPad.current) {
+      sigPad.current.clear();
     }
   };
 
@@ -226,10 +99,6 @@ function Pharm() {
           <Button color="inherit" onClick={handleLogout}>
             Log Out
           </Button>
-          {/* Signature Test Button */}
-          <Button color="inherit" onClick={openSignatureModal}>
-            Signature Test
-          </Button>
         </Toolbar>
       </AppBar>
       {/* Spacer to prevent content from being hidden behind the AppBar */}
@@ -237,146 +106,106 @@ function Pharm() {
 
       <Container maxWidth="md">
         <Box mt={5} textAlign="center">
-          <Typography variant="h4" gutterBottom>
-            Process Prescription Items
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            Select medications and add them to the purchase list.
-          </Typography>
-
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleAddToCart();
-            }}
-          >
-            <FormControl fullWidth margin="normal">
-              <InputLabel id="medication-label">Medication</InputLabel>
-              <Select
-                labelId="medication-label"
-                value={selectedMedicationId}
-                label="Medication"
-                onChange={(e) =>
-                  setSelectedMedicationId(e.target.value as string)
-                }
-              >
-                {medications.map((med) => (
-                  <MenuItem key={med.id} value={med.id}>
-                    {med.name} (Available: {med.amount})
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <TextField
-              fullWidth
-              type="number"
-              label="Quantity"
-              variant="outlined"
-              margin="normal"
-              value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-              inputProps={{ min: 1 }}
-            />
-
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              disabled={!selectedMedicationId || quantity < 1}
-            >
-              Add to Cart
-            </Button>
-          </form>
-
-          {/* Display Cart */}
-          {cart.length > 0 && (
-            <Box mt={5}>
-              <Typography variant="h5" gutterBottom>
-                Purchase List
-              </Typography>
-              <TableContainer component={Paper}>
-                <Table aria-label="cart table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Medication</TableCell>
-                      <TableCell align="right">Quantity</TableCell>
-                      <TableCell align="right">Actions</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {cart.map((item, index) => (
-                      <TableRow key={index}>
-                        <TableCell component="th" scope="row">
-                          {item.medication.name}
-                        </TableCell>
-                        <TableCell align="right">{item.quantity}</TableCell>
-                        <TableCell align="right">
-                          <Button
-                            color="secondary"
-                            onClick={() => handleRemoveFromCart(index)}
-                          >
-                            Remove
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-
-              <Button
-                variant="contained"
-                color="success"
-                onClick={handleProcessPurchase}
-                style={{ marginTop: "1rem" }}
-              >
-                Process Purchase
-              </Button>
-            </Box>
-          )}
+          {/* Cool Homepage Content */}
+          <Box mt={5}>
+            <Grid container spacing={4} mt={2}>
+              <Grid item xs={12} sm={6} md={4}>
+                <Card>
+                  <CardContent>
+                    <Typography gutterBottom variant="h6" component="div">
+                      Manage Inventory
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Keep track of medications and supplies with our efficient
+                      inventory system.
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <Card>
+                  <CardContent>
+                    <Typography gutterBottom variant="h6" component="div">
+                      Patient Records
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Access and manage patient information securely and
+                      conveniently.
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <Card>
+                  <CardContent>
+                    <Typography gutterBottom variant="h6" component="div">
+                      Analytics
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Gain insights with our comprehensive analytics tools.
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              {/* New Add Signature Card */}
+              <Grid item xs={12} sm={6} md={4}>
+                <Card>
+                  <CardActionArea onClick={handleOpenSignaturePad}>
+                    <CardContent>
+                      <Typography gutterBottom variant="h6" component="div">
+                        Add Signature
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Draw and save your signature for prescriptions and
+                        documents.
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            </Grid>
+          </Box>
         </Box>
       </Container>
+      {/* Signature Pad Dialog */}
+      <Dialog
+        open={openSignaturePad}
+        onClose={handleCloseSignaturePad}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>Draw Your Signature</DialogTitle>
+        <DialogContent>
+          <SignatureCanvas
+            penColor="black"
+            canvasProps={{ width: 500, height: 200, className: "sigCanvas" }}
+            ref={sigPad}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClearSignature}>Clear</Button>
+          <Button onClick={handleCloseSignaturePad}>Cancel</Button>
+          <Button
+            onClick={handleSaveSignature}
+            variant="contained"
+            color="primary"
+          >
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
       {/* Footer */}
-      <footer style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#f1f1f1' }}>
+      <footer
+        style={{
+          textAlign: "center",
+          padding: "1rem",
+          backgroundColor: "#f1f1f1",
+        }}
+      >
         <Typography variant="body2" color="textSecondary">
           &copy; 2024 Pharmacy System. All rights reserved.
         </Typography>
       </footer>
-
-      {/* Signature Modal */}
-      <Dialog open={isSignatureOpen} onClose={closeSignatureModal} maxWidth="sm" fullWidth>
-        <DialogTitle>Signature Pad</DialogTitle>
-        <DialogContent>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            minHeight="300px"
-          >
-            <SignatureCanvas
-              ref={signatureRef}
-              penColor="black"
-              canvasProps={{ width: 500, height: 300, className: 'signature-canvas' }}
-              backgroundColor="#f0f0f0"
-            />
-            <Box mt={2}>
-              <Button variant="outlined" onClick={clearSignature} style={{ marginRight: '1rem' }}>
-                Clear
-              </Button>
-              <Button variant="contained" color="primary" onClick={saveSignature}>
-                Save
-              </Button>
-            </Box>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeSignatureModal} color="secondary">
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 }
