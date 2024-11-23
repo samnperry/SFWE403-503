@@ -18,11 +18,10 @@ import {
   Badge,
   IconButton,
 } from "@mui/material";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useNavigate } from "react-router-dom";
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useUserContext } from "../UserContext";
 
-// Define the Medication interface
 interface Medication {
   id: string;
   name: string;
@@ -39,14 +38,14 @@ function ManagerMain() {
   const [openDialog, setOpenDialog] = useState(false);
 
   function parseDate(dateString: string): Date {
-    const [year, month, day] = dateString.split('-').map(Number);
-    return new Date(year, month - 1, day); // Month is 0-indexed
+    const [year, month, day] = dateString.split("-").map(Number);
+    return new Date(year, month - 1, day);
   }
 
   useEffect(() => {
     const fetchInventory = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/inventory');
+        const response = await fetch("http://localhost:5001/api/inventory");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -55,23 +54,20 @@ function ManagerMain() {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        // Filter expired medications
         const expiredMeds = medications.filter((med) => {
           const expDate = parseDate(med.expiration_date);
           return expDate < today;
         });
 
-        // Filter low-stock medications (less than 5 units)
         const lowStockMeds = medications.filter((med) => med.amount < 30);
 
-        // Combine both expired and low stock medications for the alert
         const alertMeds = [...expiredMeds, ...lowStockMeds];
 
         if (alertMeds.length > 0) {
-          setExpiredMedications(alertMeds); // Reuse the existing state for simplicity
+          setExpiredMedications(alertMeds);
         }
       } catch (error) {
-        console.error('Error fetching inventory:', error);
+        console.error("Error fetching inventory:", error);
       }
     };
 
@@ -84,112 +80,155 @@ function ManagerMain() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/logout', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5001/api/logout", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user }), // Pass the user object in the request body
+        body: JSON.stringify({ user }),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
-        console.log(data.message); // "Logout successful. Redirecting to login page..."
-  
-        // Redirect to the login page
         window.location.href = data.redirect;
       } else {
         const errorData = await response.json();
-        console.error('Logout failed:', errorData.error);
-        alert(errorData.error); // Show error message to the user
+        alert(errorData.error);
       }
     } catch (error) {
-      console.error('Error during logout:', error);
-      alert('An unexpected error occurred. Please try again.');
+      alert("An unexpected error occurred. Please try again.");
     }
   };
 
   return (
-    <div className="manager-background" >
-      {/* Fixed AppBar at the top */}
-      <AppBar position="fixed">
+    <Box
+      className="manager-background"
+      sx={{
+        backgroundColor: "#f7f9fc",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {/* AppBar */}
+      <AppBar position="fixed" sx={{ backgroundColor: "#00796b"}}>
         <Toolbar>
-          <Typography variant="h6" style={{ flexGrow: 1 }}>
-            Manager View
+          <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: "bold"}}>
+            Manager Dashboard
           </Typography>
-          {/* Notification Button */}
           <IconButton
             color={expiredMedications.length > 0 ? "error" : "inherit"}
             onClick={handleNotificationClick}
           >
             <Badge
-              badgeContent={expiredMedications.length > 0 ? expiredMedications.length : null}
+              badgeContent={
+                expiredMedications.length > 0 ? expiredMedications.length : null
+              }
               color="error"
             >
-              <NotificationsIcon color="inherit" />
+              <NotificationsIcon />
             </Badge>
           </IconButton>
-          <Button color="inherit" onClick={handleLogout}>Log Out</Button>
-
+          <Button
+            color="inherit"
+            onClick={handleLogout}
+            sx={{ textTransform: "none", fontWeight: "bold" }}
+          >
+            Log Out
+          </Button>
         </Toolbar>
       </AppBar>
 
-      {/* Add padding to account for the fixed AppBar */}
-      <Box component="section" className="box-background" sx={{ p: 2, mt: 8 }}>
-        {/* Main Content Section */}
-        <Container component="main" style={{ padding: "2rem" }}>
-          <Typography variant="h5" gutterBottom>
-            Manage Pharmacy Personnel
-          </Typography>
-
-          {/* Features Section */}
-          <Grid container spacing={4} style={{ marginTop: "2rem" }}>
-            <Grid item xs={12} sm={6}>
-              <ButtonBase
-                onClick={() => navigate("/StaffOverview")}
-                style={{ width: "100%" }}
+      {/* Main Content */}
+      <Container
+        maxWidth="lg"
+        sx={{
+          marginTop: "6rem",
+          padding: "2rem",
+          flex: 1,
+        }}
+      >
+        <Typography variant="h4" sx={{ fontWeight: "bold", marginBottom: "2rem" }}>
+          Welcome, {user?.name || "Manager"}!
+        </Typography>
+        <Grid container spacing={4}>
+          {/* Staff Overview */}
+          <Grid item xs={12} sm={6}>
+            <ButtonBase
+              onClick={() => navigate("/StaffOverview")}
+              sx={{
+                width: "100%",
+                display: "block",
+                borderRadius: 2,
+                overflow: "hidden",
+                boxShadow: 2,
+              }}
+            >
+              <Paper
+                sx={{
+                  padding: "2rem",
+                  textAlign: "center",
+                  backgroundColor: "#ffffff",
+                  ":hover": { backgroundColor: "#e0f2f1" },
+                }}
               >
-                <Paper elevation={3} style={{ padding: "1rem" }}>
-                  <Typography variant="h6">Staff Overview</Typography>
-                  <Typography variant="body2">
-                    View and manage the staff involved in the pharmacy
-                    operations.
-                  </Typography>
-                </Paper>
-              </ButtonBase>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <ButtonBase
-                onClick={() => navigate("/Inventory")}
-                style={{ width: "100%" }}
-              >
-                <Paper elevation={3} style={{ padding: "1rem", width: "100%" }}>
-                  <Typography variant="h6">Manage Inventory</Typography>
-                  <Typography variant="body2">
-                    Keep track of your medication stock and update inventory as
-                    needed.
-                  </Typography>
-                </Paper>
-              </ButtonBase>
-            </Grid>
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                  Staff Overview
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  View and manage pharmacy staff details.
+                </Typography>
+              </Paper>
+            </ButtonBase>
           </Grid>
-        </Container>
+          {/* Inventory Management */}
+          <Grid item xs={12} sm={6}>
+            <ButtonBase
+              onClick={() => navigate("/Inventory")}
+              sx={{
+                width: "100%",
+                display: "block",
+                borderRadius: 2,
+                overflow: "hidden",
+                boxShadow: 2,
+              }}
+            >
+              <Paper
+                sx={{
+                  padding: "2rem",
+                  textAlign: "center",
+                  backgroundColor: "#ffffff",
+                  ":hover": { backgroundColor: "#e0f2f1" },
+                }}
+              >
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                  Manage Inventory
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Track and update medication stock.
+                </Typography>
+              </Paper>
+            </ButtonBase>
+          </Grid>
+        </Grid>
+      </Container>
 
-        {/* Footer */}
-        <footer
-          style={{
-            textAlign: "center",
-            padding: "1rem",
-            backgroundColor: "#f1f1f1",
-          }}
-        >
-          <Typography variant="body2" color="textSecondary">
-            &copy; 2024 Pharmacy System. All rights reserved.
-          </Typography>
-        </footer>
+      {/* Footer */}
+      <Box
+        component="footer"
+        sx={{
+          backgroundColor: "#004d40",
+          padding: "1rem",
+          textAlign: "center",
+          color: "white",
+        }}
+      >
+        <Typography variant="body2">
+          &copy; 2024 Pharmacy System. All rights reserved.
+        </Typography>
       </Box>
 
-      {/* Dialog for Expired and Low-Stock Medications */}
+      {/* Inventory Alerts Dialog */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>Inventory Alerts</DialogTitle>
         <DialogContent>
@@ -201,7 +240,10 @@ function ManagerMain() {
               <ul>
                 {expiredMedications.map((med) => (
                   <li key={med.id}>
-                    {med.name} ({med.amount < 120 ? "Low stock" : `Expired on ${med.expiration_date}`})
+                    {med.name}{" "}
+                    ({med.amount < 30
+                      ? "Low stock"
+                      : `Expired on ${med.expiration_date}`})
                   </li>
                 ))}
               </ul>
@@ -221,13 +263,7 @@ function ManagerMain() {
           </Button>
         </DialogActions>
       </Dialog>
-      {/* Footer */}
-      <footer style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#f1f1f1' }}>
-          <Typography variant="body2" color="textSecondary">
-            &copy; 2024 Pharmacy System. All rights reserved.
-          </Typography>
-        </footer>
-    </div>
+    </Box>
   );
 }
 

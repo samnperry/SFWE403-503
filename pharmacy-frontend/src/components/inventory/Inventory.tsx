@@ -326,6 +326,7 @@ function Inventory() {
             Inventory Management
           </Typography>
           <Button color="inherit" href='/ManagerMain'>Home</Button>
+          <Button color="inherit" href='/StaffOverview'>Staff Overview</Button>
           <Button color="inherit" onClick={handleLogout}>Log Out</Button>
         </Toolbar>
       </AppBar>
