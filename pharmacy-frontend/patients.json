@@ -32,6 +32,11 @@
         "name": "Hydrochlorothiazide",
         "amount": 10,
         "filled": false
+      },
+      {
+        "name": "Expiredin",
+        "amount": 8,
+        "filled": false
       }
     ]
   },
@@ -74,5 +79,26 @@
     "email": "p",
     "insurance": "p",
     "prescriptions": []
+  },
+  {
+    "id": 6,
+    "name": "Max Test",
+    "dateOfBirth": "06/14/2005",
+    "address": "Here",
+    "phone": "5206033971",
+    "email": "Maximilianmace@gmail.com",
+    "insurance": "Max.co",
+    "prescriptions": [
+      {
+        "name": "Aspirin",
+        "amount": 3,
+        "filled": false
+      },
+      {
+        "name": "Expiredin",
+        "amount": 9,
+        "filled": false
+      }
+    ]
   }
 ]

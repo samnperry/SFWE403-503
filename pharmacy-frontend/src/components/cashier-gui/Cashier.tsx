@@ -43,7 +43,6 @@ function Cashier() {
   const navigate = useNavigate();
   const [inventory, setInventory] = useState<Item[]>([]);
   const [patients, setPatients] = useState<Patient[]>([]);
-  const [selectedItemId, setSelectedItemId] = useState<string>("");
   const [selectedPrescriptionName, setSelectedPrescriptionName] = useState<string>("");
   const [selectedPatientId, setSelectedPatientId] = useState<number>(-1);
   const [quantity, setQuantity] = useState<number>(1);
@@ -99,7 +98,7 @@ function Cashier() {
   }, [cart]);
 
   useEffect(() => {
-    if (selectedPatientId) {
+    if (selectedPatientId !== -1) {
       const selectedPatient = patients.find(
         (patient) => patient.id === selectedPatientId
       );
@@ -108,7 +107,7 @@ function Cashier() {
     } else {
       setPatientPrescriptions([]); // Clear prescriptions when no patient is selected
     }
-  }, [selectedPatientId]);
+  }, [selectedPatientId, patients]);
 
   useEffect(() => {
     if (selectedPrescriptionName) {
@@ -119,14 +118,14 @@ function Cashier() {
     } else {
       setQuantity(0); // Reset quantity if no prescription is selected
     }
-  }, [selectedPrescriptionName]); // Trigger effect whenever selectedPrescriptionName changes
+  }, [selectedPrescriptionName, patientPrescriptions]); // Trigger effect whenever selectedPrescriptionName changes
 
   const handleAddToCart = () => {
     const item = inventory.find((invItem) => invItem.name === selectedPrescriptionName);
     if (!item) {
-      alert(`${selectedPrescriptionName} not found in inventory`)
-      return
-    };
+      alert(`${selectedPrescriptionName} not found in inventory`);
+      return;
+    }
 
     const availableAmount = parseInt(item.amount);
     if (quantity > availableAmount) {
@@ -134,11 +133,11 @@ function Cashier() {
       return;
     }
 
-    const existingCartItem = cart.find((cartItem) => cartItem.item.id === selectedItemId);
+    const existingCartItem = cart.find((cartItem) => cartItem.item.id === item.id);
     if (existingCartItem) {
       setCart((prevCart) =>
         prevCart.map((cartItem) =>
-          cartItem.item.id === selectedItemId
+          cartItem.item.id === item.id
             ? { ...cartItem, quantity: cartItem.quantity + quantity }
             : cartItem
         )
@@ -146,81 +145,115 @@ function Cashier() {
     } else {
       setCart((prevCart) => [...prevCart, { item, quantity }]);
     }
-    
-    setSelectedItemId("");
+
+    // Reset selections
+    setSelectedPrescriptionName("");
     setQuantity(1);
   };
 
   const handleNonDrug = () => {
-  // Validate inputs
-  if (!itemName || !amount || !pricePerItem) {
-    alert("Please fill out all fields for the non-prescription item.");
-    return;
-  }
+    // Validate inputs
+    if (!itemName || !amount || !pricePerItem) {
+      alert("Please fill out all fields for the non-prescription item.");
+      return;
+    }
 
-  const parsedAmount = parseInt(amount, 10);
-  const parsedPrice = parseFloat(pricePerItem);
+    const parsedAmount = parseInt(amount, 10);
+    const parsedPrice = parseFloat(pricePerItem);
 
-  if (isNaN(parsedAmount) || parsedAmount <= 0) {
-    alert("Please enter a valid amount (a positive number).");
-    return;
-  }
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      alert("Please enter a valid amount (a positive number).");
+      return;
+    }
 
-  if (isNaN(parsedPrice) || parsedPrice <= 0) {
-    alert("Please enter a valid price per item (a positive number).");
-    return;
-  }
+    if (isNaN(parsedPrice) || parsedPrice <= 0) {
+      alert("Please enter a valid price per item (a positive number).");
+      return;
+    }
 
-  // Create a new item
-  const newItem: Item = {
-    id: Date.now().toString(), // Generate a unique ID
-    name: itemName,
-    amount: parsedAmount.toString(),
-    supplier: "Unknown", // Default value for supplier
-    price_per_quantity: parsedPrice.toString(),
-    expiration_date: "N/A", // Default value for expiration date
+    // Create a new item
+    const newItem: Item = {
+      id: Date.now().toString(), // Generate a unique ID
+      name: itemName,
+      amount: parsedAmount.toString(),
+      supplier: "Unknown", // Default value for supplier
+      price_per_quantity: parsedPrice.toString(),
+      expiration_date: "N/A", // Default value for expiration date
+    };
+
+    // Check if the item is already in the cart
+    const existingCartItem = cart.find((cartItem) => cartItem.item.name === newItem.name);
+
+    if (existingCartItem) {
+      // Update quantity if item exists
+      setCart((prevCart) =>
+        prevCart.map((cartItem) =>
+          cartItem.item.name === newItem.name
+            ? { ...cartItem, quantity: cartItem.quantity + parsedAmount }
+            : cartItem
+        )
+      );
+    } else {
+      setCart((prevCart) => [...prevCart, { item: newItem, quantity: parsedAmount }]);
+    }
+
+    // Reset the input fields
+    setItemName("");
+    setAmount("");
+    setPricePerItem("");
   };
-
-  // Check if the item is already in the cart
-  const existingCartItem = cart.find((cartItem) => cartItem.item.name === newItem.name);
-
-  if (existingCartItem) {
-    // Update quantity if item exists
-    setCart((prevCart) =>
-      prevCart.map((cartItem) =>
-        cartItem.item.name === newItem.name
-          ? { ...cartItem, quantity: cartItem.quantity + parsedAmount }
-          : cartItem
-      )
-    );
-  } else {
-    setCart((prevCart) => [...prevCart, { item: newItem, quantity: parsedAmount }]);
-  }
-
-  // Reset the input fields
-  setItemName("");
-  setAmount("");
-  setPricePerItem("");
-};
-
-  
 
   const handleRemoveFromCart = (id: string) => {
     setCart((prevCart) => prevCart.filter((cartItem) => cartItem.item.id !== id));
   };
 
-  const handleCompletePurchase = () => {
-    updateFilledPrescriptions();
+  const handleCompletePurchase = async () => {
+    // Check for expired items
+    const currentDate = new Date();
+    const expiredItems = cart.filter((cartItem) => {
+      const expirationDateStr = cartItem.item.expiration_date;
+      if (!expirationDateStr || expirationDateStr === "N/A") {
+        // No expiration date, assume not expired
+        return false;
+      }
+
+      const [yearStr, monthStr, dayStr] = expirationDateStr.split("-");
+      const year = parseInt(yearStr, 10);
+      const month = parseInt(monthStr, 10);
+      const day = parseInt(dayStr, 10);
+
+      // Ensure parsing was successful
+      if (isNaN(year) || isNaN(month) || isNaN(day)) {
+        console.error(`Invalid expiration date format for item ${cartItem.item.name}: ${expirationDateStr}`);
+        return false; // Treat invalid date formats as non-expired
+      }
+
+      const expirationDate = new Date(year, month - 1, day);
+
+      // Compare dates
+      return expirationDate < currentDate;
+    });
+
+    if (expiredItems.length > 0) {
+      const expiredItemNames = expiredItems.map((item) => item.item.name).join(", ");
+      alert(`Warning: The following items are expired: ${expiredItemNames}`);
+      return; // Prevent purchase completion if expired items are in the cart
+    }
+
+    // Proceed with purchase
+    await updateFilledPrescriptions(); // Ensure this function is called
     setCart([]);
     setSelectedPatientId(-1);
     setSelectedPrescriptionName("");
     setTotalCost(0);
     alert("Purchase completed successfully!");
+
+    // Refresh patients data
     const fetchPatients = async () => {
       try {
         const response = await fetch("http://localhost:5001/api/patients");
         if (!response.ok) throw new Error("Error fetching patients.");
-        const data: Patient[] = await response.json();
+        const data = await response.json();
         setPatients(data);
       } catch (error) {
         console.error(error);
@@ -228,12 +261,10 @@ function Cashier() {
       }
     };
     fetchPatients();
-
-
   };
 
   const updateFilledPrescriptions = async () => {
-    if (!selectedPatientId) {
+    if (selectedPatientId === -1) {
       console.error("No patient selected.");
       return;
     }
@@ -243,20 +274,17 @@ function Cashier() {
       const updatedPrescriptions = patientPrescriptions.map((prescription) => {
         const cartItemMatch = cart.find((item) => item.item.name === prescription.name);
         if (cartItemMatch) {
-          return { ...prescription, filled: false }; // Update `filled` to `false`
+          return { ...prescription, filled: true }; // Set filled to true after filling
         }
         return prescription; // Leave unchanged if no match
       });
 
-      const updatedInventory = inventory.map(async (inventoryItem) => {
-        // Iterate over each cart item and check if there's a match with the inventory item
-        const cartItemMatch = cart.find((cartItem) => cartItem.item.name === inventoryItem.name);
+      // Update inventory amounts
+      const updatedInventoryPromises = inventory.map(async (inventoryItem) => {
+        const cartItemMatch = cart.find((cartItem) => cartItem.item.id === inventoryItem.id);
 
         if (cartItemMatch) {
-          // If a match is found, decrease the inventory amount by the quantity in the cart
           const updatedAmount = Number(inventoryItem.amount) - cartItemMatch.quantity;
-
-          // Ensure the inventory doesn't go below zero
           const newAmount = Math.max(updatedAmount, 0);
 
           // Send a PUT request to update the inventory on the server
@@ -265,38 +293,24 @@ function Cashier() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ amount: newAmount }),
-          })
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error('Failed to update inventory');
-              }
-              console.log(`Updated inventory for ${inventoryItem.name}: ${newAmount}`);
-            })
-            .catch((error) => {
-              console.error('Error updating inventory:', error);
-            });
+            body: JSON.stringify({ amount: newAmount.toString() }),
+          });
 
           // Return the updated inventory item with the new amount
-          return { ...inventoryItem, amount: newAmount };
+          return { ...inventoryItem, amount: newAmount.toString() };
         }
 
         // If no match, return the inventory item unchanged
         return inventoryItem;
       });
 
-      // Wait for all async fetch operations to complete
-      Promise.all(updatedInventory)
-        .then((updatedInventoryItems) => {
-          console.log('All inventory items updated:', updatedInventoryItems);
-        })
-        .catch((error) => {
-          console.error('Error updating inventory:', error);
-        });
+      // Wait for all inventory updates to complete
+      const updatedInventoryItems = await Promise.all(updatedInventoryPromises);
+      setInventory(updatedInventoryItems); // Update the inventory state
 
       // Prepare the updated data object to send to the server
       const updatedPatientData = {
-        prescriptions: updatedPrescriptions
+        prescriptions: updatedPrescriptions,
       };
 
       // Make a PUT request to update the prescriptions on the server
@@ -314,6 +328,15 @@ function Cashier() {
 
       const data = await response.json();
       console.log("Prescriptions updated successfully:", data);
+
+      // Update the local patients state
+      setPatients((prevPatients) =>
+        prevPatients.map((patient) =>
+          patient.id === selectedPatientId
+            ? { ...patient, prescriptions: updatedPrescriptions }
+            : patient
+        )
+      );
     } catch (error) {
       console.error("Error updating prescriptions:", error);
     }
@@ -364,14 +387,14 @@ function Cashier() {
       </AppBar>
       <Toolbar />
 
-      <Container maxWidth="lg" style={{height: "80vh", alignItems: "start", display: 'block', marginTop: '20px' }}>
+      <Container maxWidth="lg" style={{ height: "80vh", alignItems: "start", display: 'block', marginTop: '20px' }}>
 
         <Typography variant="h3" gutterBottom>
           Patient Cart
         </Typography>
 
         <Typography variant="h5" gutterBottom>
-          Filled Prescriptions
+          Unfilled Prescriptions
         </Typography>
 
         {/* Select Patients from Patients */}
@@ -401,7 +424,7 @@ function Cashier() {
             onChange={(e) => setSelectedPrescriptionName(e.target.value as string)}
           >
             {patientPrescriptions
-              .filter((prescription) => prescription.filled === true) // Filter prescriptions with `filled` true
+              .filter((prescription) => prescription.filled === false) // Corrected filter
               .map((prescription) => (
                 <MenuItem key={prescription.name} value={prescription.name}>
                   {prescription.name}
@@ -470,7 +493,6 @@ function Cashier() {
         <Button variant="contained" color="primary" onClick={handleNonDrug}>
           Add Non-Prescription Item
         </Button>
-
 
         {/* Cart Section */}
         <Box mt={5} maxWidth={"lg"} width={"80vw"}>
