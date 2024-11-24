@@ -146,10 +146,64 @@ function Cashier() {
     } else {
       setCart((prevCart) => [...prevCart, { item, quantity }]);
     }
-
+    
     setSelectedItemId("");
     setQuantity(1);
   };
+
+  const handleNonDrug = () => {
+  // Validate inputs
+  if (!itemName || !amount || !pricePerItem) {
+    alert("Please fill out all fields for the non-prescription item.");
+    return;
+  }
+
+  const parsedAmount = parseInt(amount, 10);
+  const parsedPrice = parseFloat(pricePerItem);
+
+  if (isNaN(parsedAmount) || parsedAmount <= 0) {
+    alert("Please enter a valid amount (a positive number).");
+    return;
+  }
+
+  if (isNaN(parsedPrice) || parsedPrice <= 0) {
+    alert("Please enter a valid price per item (a positive number).");
+    return;
+  }
+
+  // Create a new item
+  const newItem: Item = {
+    id: Date.now().toString(), // Generate a unique ID
+    name: itemName,
+    amount: parsedAmount.toString(),
+    supplier: "Unknown", // Default value for supplier
+    price_per_quantity: parsedPrice.toString(),
+    expiration_date: "N/A", // Default value for expiration date
+  };
+
+  // Check if the item is already in the cart
+  const existingCartItem = cart.find((cartItem) => cartItem.item.name === newItem.name);
+
+  if (existingCartItem) {
+    // Update quantity if item exists
+    setCart((prevCart) =>
+      prevCart.map((cartItem) =>
+        cartItem.item.name === newItem.name
+          ? { ...cartItem, quantity: cartItem.quantity + parsedAmount }
+          : cartItem
+      )
+    );
+  } else {
+    setCart((prevCart) => [...prevCart, { item: newItem, quantity: parsedAmount }]);
+  }
+
+  // Reset the input fields
+  setItemName("");
+  setAmount("");
+  setPricePerItem("");
+};
+
+  
 
   const handleRemoveFromCart = (id: string) => {
     setCart((prevCart) => prevCart.filter((cartItem) => cartItem.item.id !== id));
@@ -380,10 +434,6 @@ function Cashier() {
           Non-prescription items
         </Typography>
 
-        <Typography variant="body1" gutterBottom mt={"40px"}>
-          Hey sam I got you started here, but feel free to change anything you'd like. good luck!
-        </Typography>
-
         {/* Item Name Text Area */}
         <TextField
           label="Item Name"
@@ -416,6 +466,11 @@ function Cashier() {
           margin="normal"
           variant="outlined"
         />
+
+        <Button variant="contained" color="primary" onClick={handleNonDrug}>
+          Add Non-Prescription Item
+        </Button>
+
 
         {/* Cart Section */}
         <Box mt={5} maxWidth={"lg"} width={"80vw"}>
