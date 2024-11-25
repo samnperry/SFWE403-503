@@ -11,7 +11,7 @@
       {
         "name": "Omeprazole",
         "amount": 40,
-        "filled": false
+        "filled": true
       },
       {
         "name": "Hydrochlorothiazide",
