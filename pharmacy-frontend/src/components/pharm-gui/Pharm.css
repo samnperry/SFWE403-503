@@ -16,3 +16,9 @@
     padding: 20px;
     background-color: aliceblue; /* Make sure the content area is aliceblue as well */
 }
+
+.sigCanvas {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+  
