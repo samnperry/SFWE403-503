@@ -1,4 +1,4 @@
-Things this log tracks:     :
+Things this log tracks:     
 FilledPrescription          :
 InventoryUpdate: Add Remove :Done
 LogIn                       :Done
@@ -69,3 +69,4 @@ Date: 2024-11-23T19:14:35.766Z - Inventory removed: {"id":"012","name":"Levothyr
 Date: 2024-11-23T19:14:35.963Z - Inventory removed: {"id":"013","name":"Gabapentin","amount":160,"supplier":"HealthCo Pharma","price_per_quantity":2.1,"expiration_date":"2025-06-01"}
 Date: 2024-11-23T19:14:36.138Z - Inventory removed: {"id":"014","name":"Hydrochlorothiazide","amount":90,"supplier":"MediSupply Inc.","price_per_quantity":0.75,"expiration_date":"2024-11-05"}
 Date: 2024-11-23T19:14:36.302Z - Inventory removed: {"id":"015","name":"Furosemide","amount":180,"supplier":"SafeMeds Ltd.","price_per_quantity":0.95,"expiration_date":"2025-03-22"}
+Date: 2024-11-25T03:34:04.443Z - Inventory updated: {"id":"010","name":"Omeprazole","amount":320,"supplier":"HealthCo Pharma","price_per_quantity":0.4,"expiration_date":"2025-05-30"}

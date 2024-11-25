@@ -9,21 +9,6 @@
     "insurance": "BCBS",
     "prescriptions": [
       {
-        "name": "adderal",
-        "amount": 20,
-        "filled": true
-      },
-      {
-        "name": "fentynal",
-        "amount": 10000,
-        "filled": true
-      },
-      {
-        "name": "pp",
-        "amount": 999,
-        "filled": true
-      },
-      {
         "name": "Omeprazole",
         "amount": 40,
         "filled": false
@@ -31,6 +16,11 @@
       {
         "name": "Hydrochlorothiazide",
         "amount": 10,
+        "filled": false
+      },
+      {
+        "name": "",
+        "amount": 0,
         "filled": false
       }
     ]

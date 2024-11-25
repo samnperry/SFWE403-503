@@ -74,7 +74,7 @@
   {
     "id": "010",
     "name": "Omeprazole",
-    "amount": 360,
+    "amount": 320,
     "supplier": "HealthCo Pharma",
     "price_per_quantity": 0.4,
     "expiration_date": "2025-05-30"
