@@ -547,14 +547,6 @@ function Cashier() {
           </Button>
         </Box>
       </Container>
-
-      {/* Footer */}
-      <footer style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#f1f1f1' }}>
-        <Typography variant="body2" color="textSecondary">
-          &copy; 2024 Pharmacy System. All rights reserved.
-        </Typography>
-      </footer>
-
     </div>
   );
 }

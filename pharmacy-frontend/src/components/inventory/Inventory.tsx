@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Inventory.css';
-import { Box, Typography, Container, AppBar, Toolbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions  } from '@mui/material';
+import { Box, Typography, Container, AppBar, Toolbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -100,7 +100,7 @@ function Inventory() {
     setOpenDialog(false);
     setPurchaseQuantity('');
   };
-  
+
   // Function to open dialog with the selected item
   const handleOpenEditDialog = (item: InventoryItem) => {
     setSelectedItem(item);
@@ -109,7 +109,7 @@ function Inventory() {
     setEditExpiration(item.expiration_date);
     setOpenEditDialog(true);
   };
-  
+
   // Function to close dialog
   const handleCloseEditDialog = () => {
     setOpenEditDialog(false);
@@ -163,7 +163,7 @@ function Inventory() {
         price_per_quantity: editPrice,
         expiration_date: editExpiration,
       };
-  
+
       fetch(`http://localhost:5001/api/inventory/${selectedItem.id}`, {
         method: 'PUT',
         headers: {
@@ -185,7 +185,7 @@ function Inventory() {
           console.error('Error updating inventory item:', error);
         });
     }
-  };  
+  };
 
   const addReportHeader = (doc: jsPDF, reportTitle: string) => {
     // Set pharmacy data and current date
@@ -317,6 +317,14 @@ function Inventory() {
     }
   };
 
+  const handleNavigateManager = () => {
+    navigate("/ManagerMain");
+  };
+
+  const handleNavigateStaffOverview = () => {
+    navigate("/StaffOverview");
+  };
+
   return (
     <div className="inventory-background" style={{ alignItems: "start" }}>
       {/* Fixed AppBar at the top */}
@@ -325,8 +333,8 @@ function Inventory() {
           <Typography variant="h6" style={{ flexGrow: 1 }}>
             Inventory Management
           </Typography>
-          <Button color="inherit" href='/ManagerMain'>Home</Button>
-          <Button color="inherit" href='/StaffOverview'>Staff Overview</Button>
+          <Button color="inherit" onClick={handleNavigateManager}>Home</Button>
+          <Button color="inherit" onClick={handleNavigateStaffOverview}>Staff Overview</Button>
           <Button color="inherit" onClick={handleLogout}>Log Out</Button>
         </Toolbar>
       </AppBar>
@@ -339,7 +347,7 @@ function Inventory() {
               Pharmacy Inventory
             </Typography>
             <div>
-              <Button variant="contained" color="primary" onClick={handleFiscalReport}>
+              <Button variant="contained" color="primary" onClick={handleFiscalReport} style={{ marginRight: '10px' }}>
                 Generate Fiscal Report
               </Button>
               <Button variant="contained" color="primary" onClick={handleInventoryReport}>
@@ -371,16 +379,32 @@ function Inventory() {
                     <TableCell>${item.price_per_quantity}</TableCell> {/* Add $ sign */}
                     <TableCell>{item.expiration_date}</TableCell>
                     <TableCell>
-                      <Button variant="contained" color="primary" onClick={() => handleOpenDialog(item)}>
-                        Purchase
-                      </Button>
-                      <Button variant="contained" color="info" onClick={() => handleOpenEditDialog(item)}>
-                        Edit
-                      </Button>
-                      <Button sx={{ marginRight: '1rem' }} variant="contained" color="error" onClick={() => handleRemoveItem(item.id)}>
-                        Remove
-                      </Button>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handleOpenDialog(item)}
+                        >
+                          Purchase
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="info"
+                          onClick={() => handleOpenEditDialog(item)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          sx={{ marginRight: '1rem' }}
+                          variant="contained"
+                          color="error"
+                          onClick={() => handleRemoveItem(item.id)}
+                        >
+                          Remove
+                        </Button>
+                      </div>
                     </TableCell>
+
                   </TableRow>
                 ))}
               </TableBody>
@@ -479,9 +503,9 @@ function Inventory() {
           </Typography>
         </footer>
       </Box>
-    </div>
+    </div >
   );
-  
+
 }
 
 export default Inventory;

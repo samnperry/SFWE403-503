@@ -100,6 +100,10 @@ function ManagerMain() {
     }
   };
 
+  const handleNavigateManager = () => {
+    navigate("/ManagerMain");
+  };
+
   return (
     <Box
       className="manager-background"
@@ -111,19 +115,18 @@ function ManagerMain() {
       }}
     >
       {/* AppBar */}
-      <AppBar position="fixed" sx={{ backgroundColor: "#00796b"}}>
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: "bold"}}>
+      <AppBar position="fixed" sx={{ backgroundColor: "#00796b" }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Typography variant="h6">
             Manager Dashboard
           </Typography>
+          <Box sx={{ flexGrow: 1 }} />  {/* This will push items on the right */}
           <IconButton
             color={expiredMedications.length > 0 ? "error" : "inherit"}
             onClick={handleNotificationClick}
           >
             <Badge
-              badgeContent={
-                expiredMedications.length > 0 ? expiredMedications.length : null
-              }
+              badgeContent={expiredMedications.length > 0 ? expiredMedications.length : null}
               color="error"
             >
               <NotificationsIcon />

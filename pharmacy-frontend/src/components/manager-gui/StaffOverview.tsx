@@ -222,6 +222,14 @@ function StaffOverview() {
     }
   };
 
+  const handleNavigateManager = () => {
+    navigate("/ManagerMain");
+  };
+
+  const handleNavigateInventory = () => {
+    navigate("/Inventory");
+  };
+
   return (
     <div style={{ width: '150vh', height: '100%' }}>
       {/* Navigation Bar */}
@@ -245,8 +253,8 @@ function StaffOverview() {
 
           {/* Right-aligned buttons */}
           <div style={{ display: 'flex' }}>
-            <Button color="inherit" href='/ManagerMain'>Home</Button>
-            <Button color="inherit" href='/Inventory'>Inventory</Button>
+            <Button color="inherit" onClick={handleNavigateManager}>Home</Button>
+            <Button color="inherit" onClick={handleNavigateInventory}>Inventory</Button>
             <Button color="inherit" onClick={handleLogout}>Log Out</Button>
           </div>
         </Toolbar>
