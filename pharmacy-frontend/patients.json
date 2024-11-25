@@ -11,7 +11,7 @@
       {
         "name": "Omeprazole",
         "amount": 40,
-        "filled": false
+        "filled": true
       },
       {
         "name": "Hydrochlorothiazide",
@@ -21,6 +21,16 @@
       {
         "name": "Expiredin",
         "amount": 8,
+        "filled": false
+      },
+      {
+        "name": "Warfarin",
+        "amount": 91,
+        "filled": false
+      },
+      {
+        "name": "",
+        "amount": 0,
         "filled": false
       }
     ]

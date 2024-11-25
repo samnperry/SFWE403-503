@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"; 
 import "./Cashier.css";
 import {
   Box,
@@ -19,10 +19,15 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../UserContext";
 import { Patient, Prescription } from "../../interfaces";
+import { jsPDF } from 'jspdf'; // Import jsPDF
 
 interface Item {
   id: string;
@@ -53,6 +58,9 @@ function Cashier() {
   const [itemName, setItemName] = useState('');
   const [amount, setAmount] = useState('');
   const [pricePerItem, setPricePerItem] = useState('');
+
+  const [purchaseHistory, setPurchaseHistory] = useState<any[]>([]);
+  const [showPurchaseHistory, setShowPurchaseHistory] = useState(false);
 
   // Fetch inventory from the server
   useEffect(() => {
@@ -97,6 +105,7 @@ function Cashier() {
     setTotalCost(calculateTotal);
   }, [cart]);
 
+  // Update patient prescriptions based on selected patient
   useEffect(() => {
     if (selectedPatientId !== -1) {
       const selectedPatient = patients.find(
@@ -109,17 +118,19 @@ function Cashier() {
     }
   }, [selectedPatientId, patients]);
 
+  // Update quantity based on selected prescription
   useEffect(() => {
     if (selectedPrescriptionName) {
       const selectedPrescription = patientPrescriptions.find(
         (prescription) => prescription.name === selectedPrescriptionName
       );
-      setQuantity(selectedPrescription?.amount || 0); // Set quantity to amount or 0 if not found
+      setQuantity(selectedPrescription?.amount ? Number(selectedPrescription.amount) : 0); // Set quantity to amount or 0 if not found
     } else {
       setQuantity(0); // Reset quantity if no prescription is selected
     }
   }, [selectedPrescriptionName, patientPrescriptions]); // Trigger effect whenever selectedPrescriptionName changes
 
+  // Handle adding prescription item to cart
   const handleAddToCart = () => {
     const item = inventory.find((invItem) => invItem.name === selectedPrescriptionName);
     if (!item) {
@@ -151,6 +162,7 @@ function Cashier() {
     setQuantity(1);
   };
 
+  // Handle adding non-prescription item to cart
   const handleNonDrug = () => {
     // Validate inputs
     if (!itemName || !amount || !pricePerItem) {
@@ -203,11 +215,13 @@ function Cashier() {
     setPricePerItem("");
   };
 
+  // Handle removing an item from the cart
   const handleRemoveFromCart = (id: string) => {
     setCart((prevCart) => prevCart.filter((cartItem) => cartItem.item.id !== id));
   };
 
-  const handleCompletePurchase = async () => {
+  // Handle completing the purchase
+  const handleCompletePurchase = async (checkoutType: String = "Cash") => {
     // Check for expired items
     const currentDate = new Date();
     const expiredItems = cart.filter((cartItem) => {
@@ -240,8 +254,49 @@ function Cashier() {
       return; // Prevent purchase completion if expired items are in the cart
     }
 
+    // Prompt the user if they want a receipt
+    const wantsReceipt = window.confirm("Do you want a receipt?");
+
+    if (wantsReceipt) {
+      generateReceiptPDF(checkoutType);
+    }
+
+    // Prepare purchase data
+    const purchaseData = {
+      id: Date.now().toString(), // Unique ID for the purchase
+      date: new Date().toISOString(),
+      paymentMethod: checkoutType,
+      items: cart.map(cartItem => ({
+        id: cartItem.item.id,
+        name: cartItem.item.name,
+        quantity: cartItem.quantity,
+        price: parseFloat(cartItem.item.price_per_quantity),
+        total: parseFloat(cartItem.item.price_per_quantity) * cartItem.quantity,
+      })),
+      totalCost: totalCost,
+    };
+
+    // Send purchase data to the server
+    try {
+      const response = await fetch('http://localhost:5001/api/fiscal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(purchaseData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to record purchase');
+      }
+    } catch (error) {
+      console.error('Error recording purchase:', error);
+      alert('An error occurred while recording the purchase.');
+      return; // Exit the function if purchase recording failed
+    }
+
     // Proceed with purchase
-    await updateFilledPrescriptions(); // Ensure this function is called
+    await updateFilledPrescriptions();
     setCart([]);
     setSelectedPatientId(-1);
     setSelectedPrescriptionName("");
@@ -263,6 +318,69 @@ function Cashier() {
     fetchPatients();
   };
 
+  // Generate PDF Receipt
+  const generateReceiptPDF = (checkoutType: String) => {
+    const doc = new jsPDF();
+
+    // Set initial y position
+    let yPosition = 20;
+
+    // Add header
+    doc.setFontSize(16);
+    doc.text("Receipt", 10, yPosition);
+    yPosition += 10;
+
+    // Add date and payment method
+    const date = new Date().toLocaleString();
+    doc.setFontSize(12);
+    doc.text(`Date: ${date}`, 10, yPosition);
+    yPosition += 10;
+    doc.text(`Payment Method: ${checkoutType}`, 10, yPosition);
+    yPosition += 10;
+
+    // Add items header
+    doc.text("Items Purchased:", 10, yPosition);
+    yPosition += 10;
+
+    // Add table headers
+    doc.setFont("helvetica", "bold");
+    doc.text("Item", 10, yPosition);
+    doc.text("Qty", 80, yPosition);
+    doc.text("Price", 100, yPosition);
+    doc.text("Total", 130, yPosition);
+    doc.setFont("helvetica", "normal");
+    yPosition += 10;
+
+    // Add cart items
+    cart.forEach((cartItem, index) => {
+      const itemName = cartItem.item.name;
+      const quantity = cartItem.quantity;
+      const price = parseFloat(cartItem.item.price_per_quantity).toFixed(2);
+      const total = (parseFloat(cartItem.item.price_per_quantity) * cartItem.quantity).toFixed(2);
+
+      doc.text(itemName, 10, yPosition);
+      doc.text(quantity.toString(), 80, yPosition);
+      doc.text(`$${price}`, 100, yPosition);
+      doc.text(`$${total}`, 130, yPosition);
+      yPosition += 10;
+
+      // Add new page if necessary
+      if (yPosition > 270) {
+        doc.addPage();
+        yPosition = 20;
+      }
+    });
+
+    // Add total cost
+    yPosition += 10;
+    doc.setFontSize(14);
+    doc.text(`Grand Total: $${totalCost.toFixed(2)}`, 10, yPosition);
+
+    // Save the PDF
+    doc.save("receipt.pdf");
+  };
+
+  // Update filled prescriptions
   const updateFilledPrescriptions = async () => {
     if (selectedPatientId === -1) {
       console.error("No patient selected.");
@@ -342,7 +460,10 @@ function Cashier() {
     }
   };
 
+  // Navigate to Home
   const handleNavigateHome = () => navigate("/Cashier");
+
+  // Handle Logout
   const handleLogout = async () => {
     try {
       const response = await fetch('http://localhost:5001/api/logout', {
@@ -370,8 +491,25 @@ function Cashier() {
     }
   };
 
+  // Handle viewing purchase history
+  const handleViewPurchaseHistory = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/api/purchases');
+      if (!response.ok) {
+        throw new Error('Failed to fetch purchase history');
+      }
+      const data = await response.json();
+      setPurchaseHistory(data);
+      setShowPurchaseHistory(true);
+    } catch (error) {
+      console.error('Error fetching purchase history:', error);
+      alert('An error occurred while fetching the purchase history.');
+    }
+  };
+
   return (
     <div style={{ alignItems: "start" }}>
+      {/* AppBar */}
       <AppBar position="fixed">
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
@@ -380,6 +518,9 @@ function Cashier() {
           <Button color="inherit" onClick={handleNavigateHome}>
             Home
           </Button>
+          <Button color="inherit" onClick={handleViewPurchaseHistory}>
+            Generate Report
+          </Button>
           <Button color="inherit" onClick={handleLogout}>
             Log Out
           </Button>
@@ -387,6 +528,7 @@ function Cashier() {
       </AppBar>
       <Toolbar />
 
+      {/* Main Container */}
       <Container maxWidth="lg" style={{ height: "80vh", alignItems: "start", display: 'block', marginTop: '20px' }}>
 
         <Typography variant="h3" gutterBottom>
@@ -397,7 +539,7 @@ function Cashier() {
           Unfilled Prescriptions
         </Typography>
 
-        {/* Select Patients from Patients */}
+        {/* Select Patient */}
         <FormControl fullWidth margin="normal">
           <InputLabel id="patient-label">Patient</InputLabel>
           <Select
@@ -414,7 +556,7 @@ function Cashier() {
           </Select>
         </FormControl>
 
-        {/* Select Items from Inventory */}
+        {/* Select Prescription Item */}
         <FormControl fullWidth margin="normal" disabled={selectedPatientId === -1}>
           <InputLabel id="item-label">Item</InputLabel>
           <Select
@@ -424,7 +566,7 @@ function Cashier() {
             onChange={(e) => setSelectedPrescriptionName(e.target.value as string)}
           >
             {patientPrescriptions
-              .filter((prescription) => prescription.filled === false) // Corrected filter
+              .filter((prescription) => prescription.filled === false)
               .map((prescription) => (
                 <MenuItem key={prescription.name} value={prescription.name}>
                   {prescription.name}
@@ -433,6 +575,7 @@ function Cashier() {
           </Select>
         </FormControl>
 
+        {/* Quantity Field */}
         <TextField
           fullWidth
           disabled
@@ -444,20 +587,22 @@ function Cashier() {
           inputProps={{ min: 1 }}
         />
 
+        {/* Add Prescription Item to Cart Button */}
         <Button
           variant="contained"
           color="primary"
           onClick={handleAddToCart}
           disabled={!selectedPrescriptionName || quantity < 1}
         >
-          Add prescription item to cart
+          Add Prescription Item to Cart
         </Button>
 
+        {/* Non-Prescription Items Section */}
         <Typography variant="h5" gutterBottom mt={"40px"}>
-          Non-prescription items
+          Non-Prescription Items
         </Typography>
 
-        {/* Item Name Text Area */}
+        {/* Item Name Field */}
         <TextField
           label="Item Name"
           value={itemName}
@@ -468,7 +613,7 @@ function Cashier() {
           variant="outlined"
         />
 
-        {/* Amount Text Area */}
+        {/* Amount Field */}
         <TextField
           label="Amount"
           value={amount}
@@ -479,7 +624,7 @@ function Cashier() {
           variant="outlined"
         />
 
-        {/* Price per Item Text Area */}
+        {/* Price per Item Field */}
         <TextField
           label="Price per Item"
           value={pricePerItem}
@@ -490,6 +635,7 @@ function Cashier() {
           variant="outlined"
         />
 
+        {/* Add Non-Prescription Item to Cart Button */}
         <Button variant="contained" color="primary" onClick={handleNonDrug}>
           Add Non-Prescription Item
         </Button>
@@ -536,17 +682,85 @@ function Cashier() {
             Total: ${totalCost.toFixed(2)}
           </Typography>
 
-          <Button
-            variant="contained"
-            color="success"
-            onClick={handleCompletePurchase}
-            disabled={cart.length === 0}
-            style={{ marginTop: "1rem" }}
-          >
-            Complete Purchase
-          </Button>
+          {/* Checkout Buttons */}
+          <Box mt={2}>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => handleCompletePurchase("Cash")}
+              disabled={cart.length === 0}
+              style={{ marginRight: "1rem" }}
+            >
+              Checkout: Cash
+            </Button>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => handleCompletePurchase("Credit")}
+              disabled={cart.length === 0}
+              style={{ marginRight: "1rem" }}
+            >
+              Checkout: Credit
+            </Button>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => handleCompletePurchase("Debit")}
+              disabled={cart.length === 0}
+              style={{ marginRight: "1rem" }}
+            >
+              Checkout: Debit
+            </Button>
+          </Box>
         </Box>
       </Container>
+
+      {/* Purchase History Dialog */}
+      <Dialog
+        open={showPurchaseHistory}
+        onClose={() => setShowPurchaseHistory(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle>Purchase History</DialogTitle>
+        <DialogContent>
+          {purchaseHistory.length === 0 ? (
+            <Typography>No purchases found.</Typography>
+          ) : (
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Date</TableCell>
+                  <TableCell>Payment Method</TableCell>
+                  <TableCell>Items</TableCell>
+                  <TableCell>Total Cost</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {purchaseHistory.map((purchase, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{new Date(purchase.date).toLocaleString()}</TableCell>
+                    <TableCell>{purchase.paymentMethod}</TableCell>
+                    <TableCell>
+                      {purchase.items.map((item: any, idx: number) => (
+                        <div key={idx}>
+                          {item.name} x {item.quantity} @ ${item.price.toFixed(2)} = ${item.total.toFixed(2)}
+                        </div>
+                      ))}
+                    </TableCell>
+                    <TableCell>${purchase.totalCost.toFixed(2)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowPurchaseHistory(false)} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

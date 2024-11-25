@@ -68,5 +68,50 @@
     "quantityPurchased": "78",
     "supplier": "HealthCo Pharma",
     "pricePerUnit": 1.28
+  },
+  {
+    "id": "1732569569834",
+    "date": "2024-11-25T21:19:29.834Z",
+    "paymentMethod": "Cash",
+    "items": [
+      {
+        "id": "010",
+        "name": "Omeprazole",
+        "quantity": 40,
+        "price": 0.4,
+        "total": 16
+      }
+    ],
+    "totalCost": 16
+  },
+  {
+    "id": "1732569713222",
+    "date": "2024-11-25T21:21:53.222Z",
+    "paymentMethod": "Credit",
+    "items": [
+      {
+        "id": "1732569708478",
+        "name": "Yesy",
+        "quantity": 120,
+        "price": 50,
+        "total": 6000
+      }
+    ],
+    "totalCost": 6000
+  },
+  {
+    "id": "1732569835535",
+    "date": "2024-11-25T21:23:55.535Z",
+    "paymentMethod": "Cash",
+    "items": [
+      {
+        "id": "1732569830572",
+        "name": "123",
+        "quantity": 932132135,
+        "price": 31313546846451324,
+        "total": 2.918836327640519e+25
+      }
+    ],
+    "totalCost": 2.918836327640519e+25
   }
 ]
