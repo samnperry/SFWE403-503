@@ -111,6 +111,8 @@ function LoginPage() {
             navigate('/SysAdminPage');
           } else if (user.type === 'Manager') {
             navigate('/ManagerMain');
+          } else if (user.type === 'Pharmacist') {
+            navigate('/Pharm');            
           } else if (user.type === 'Cashier') {
             navigate('/Cashier');
           }
@@ -146,7 +148,17 @@ function LoginPage() {
       if (response.ok) {
         setOpenDialog(false);  // Close the dialog after successful update
         const data = await response.json();
-        navigate(data.type === 'Admin' ? '/SysAdminPage' : data.type === 'Manager' ? '/ManagerMain' : '/Cashier'); // Navigate after updating password
+        // Define routes for user types
+        const routes: Record<string, string> = {
+          Admin: '/SysAdminPage',
+          Manager: '/ManagerMain',
+          Cashier: '/Cashier',
+          Pharmacist: '/Pharm', // Add other types as needed
+        };
+
+        // Navigate to the correct page based on user type
+        const targetRoute = routes[data.type] || '/';
+        navigate(targetRoute); // Default to "/" if type is not recognized
       } else {
         setError('Failed to update password. Please try again.');
       }

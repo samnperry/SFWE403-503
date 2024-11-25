@@ -69,4 +69,36 @@ Date: 2024-11-23T19:14:35.766Z - Inventory removed: {"id":"012","name":"Levothyr
 Date: 2024-11-23T19:14:35.963Z - Inventory removed: {"id":"013","name":"Gabapentin","amount":160,"supplier":"HealthCo Pharma","price_per_quantity":2.1,"expiration_date":"2025-06-01"}
 Date: 2024-11-23T19:14:36.138Z - Inventory removed: {"id":"014","name":"Hydrochlorothiazide","amount":90,"supplier":"MediSupply Inc.","price_per_quantity":0.75,"expiration_date":"2024-11-05"}
 Date: 2024-11-23T19:14:36.302Z - Inventory removed: {"id":"015","name":"Furosemide","amount":180,"supplier":"SafeMeds Ltd.","price_per_quantity":0.95,"expiration_date":"2025-03-22"}
-Date: 2024-11-25T03:34:04.443Z - Inventory updated: {"id":"010","name":"Omeprazole","amount":320,"supplier":"HealthCo Pharma","price_per_quantity":0.4,"expiration_date":"2025-05-30"}
+Date: 2024-11-24T00:23:09.304Z - Successful Login for User: manager
+Date: 2024-11-24T00:26:28.257Z - User "manager" of type "Manager" has successfully logged out.
+Date: 2024-11-24T00:27:19.554Z - Successful Login for User: manager
+Date: 2024-11-24T00:27:22.917Z - User "manager" of type "Manager" has successfully logged out.
+Date: 2024-11-24T00:28:26.032Z - Successful Login for User: manager
+Date: 2024-11-24T00:28:51.375Z - Successful Login for User: manager
+Date: 2024-11-24T00:29:01.646Z - User "manager" of type "Manager" has successfully logged out.
+Date: 2024-11-24T00:29:19.882Z - Successful Login for User: manager
+Date: 2024-11-24T00:31:01.355Z - User "manager" of type "Manager" has successfully logged out.
+Date: 2024-11-24T00:33:50.669Z - Successful Login for User: manager
+Date: 2024-11-24T00:34:24.500Z - Successful Login for User: manager
+Date: 2024-11-24T00:36:05.961Z - Successful Login for User: manager
+Date: 2024-11-24T00:36:08.858Z - User "manager" of type "Manager" has successfully logged out.
+Date: 2024-11-24T00:36:28.995Z - Successful Login for User: manager
+Date: 2024-11-24T00:36:37.869Z - User "manager" of type "Manager" has successfully logged out.
+Date: 2024-11-24T00:36:43.289Z - Unsuccessful Login Attempt by User: manager
+Date: 2024-11-24T00:36:44.543Z - Unsuccessful Login Attempt by User: manager
+Date: 2024-11-24T00:36:48.047Z - Successful Login for User: manager
+Date: 2024-11-24T00:36:49.713Z - User "manager" of type "Manager" has successfully logged out.
+Date: 2024-11-24T00:37:11.929Z - Successful Login for User: manager
+Date: 2024-11-24T00:37:14.251Z - User "manager" of type "Manager" has successfully logged out.
+Date: 2024-11-24T00:38:22.091Z - Successful Login for User: manager
+Date: 2024-11-24T00:38:25.032Z - User "manager" of type "Manager" has successfully logged out.
+Date: 2024-11-24T00:39:36.094Z - Successful Login for User: manager
+Date: 2024-11-24T00:39:49.048Z - Unsuccessful Login Attempt by User: manager
+Date: 2024-11-24T00:39:52.050Z - Successful Login for User: manager
+Date: 2024-11-24T00:48:29.661Z - User "manager" of type "Manager" has successfully logged out.
+Date: 2024-11-24T00:54:58.473Z - Successful Login for User: manager
+Date: 2024-11-24T00:55:07.009Z - Successful Login for User: manager
+Date: 2024-11-24T18:42:56.602Z - User "manager" of type "Manager" has successfully logged out.
+Date: 2024-11-24T18:43:15.039Z - Successful Login for User: manager
+Date: 2024-11-24T18:43:20.310Z - Unsuccessful Login Attempt by User: manager
+Date: 2024-11-24T18:43:23.517Z - Successful Login for User: manager

@@ -60,7 +60,7 @@ function SysAdminPage() {
     closingTime: "",
   });
   const [managerData, setManagerData] = useState({
-    id: '1', type: 'Manager', name: '', username: '', password: '', disabled: true, locked: false, attempted: 0
+    id: '1', type: 'Manager', name: '', username: '', password: '', disabled: true, locked: false, attempted: 0,  firstTimeLogin: true
   });
 
   const handlePharmacyInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,12 +148,17 @@ function SysAdminPage() {
   // Function to handle form submission
   const handleManagerSubmit = async () => {
     try {
+
+      const updatedManagerData = {
+        ...managerData,
+        firstTimeLogin: true,
+      };
       const response = await fetch("http://localhost:5001/api/staff/1", {
         method: "PUT", // Using PUT since you're updating an existing record
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(managerData), // Send the pharmacy data as JSON
+        body: JSON.stringify(updatedManagerData), // Send the pharmacy data as JSON
       });
 
       if (!response.ok) {

@@ -14,10 +14,11 @@
     "type": "Manager",
     "name": "manager",
     "username": "manager",
-    "password": "manager",
+    "password": "yes",
     "disabled": true,
     "locked": false,
-    "attempted": 0
+    "attempted": 0,
+    "firstTimeLogin": false
   },
   {
     "id": "2",
