@@ -78,6 +78,10 @@ function Profile() {
         }
       };
 
+      const handleNavigateHome = () => {
+        navigate("/Pharm");
+      };
+
     return (
         <div>
             <AppBar position="fixed">
@@ -85,9 +89,9 @@ function Profile() {
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
                         Profile
                     </Typography>
-                    <Button color="inherit" onClick={() => navigate("/PatientManager")}>
-                        Home
-                    </Button>
+                    <Button color="inherit" onClick={handleNavigateHome}>
+            Home
+          </Button>
                     <Button color="inherit" onClick={handleLogout}>
                         Log Out
                     </Button>

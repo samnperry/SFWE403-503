@@ -1,6 +1,5 @@
 .sysadmin-background {
     background-color: white; 
-    background-image: url('../Assets/pink-background.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -12,4 +11,16 @@
     /* align-items: center; */
     /* justify-content: center; */
 }
+
+footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: #f1f1f1;
+    text-align: center;
+    padding: 1rem 0; /* Optional shadow for a subtle effect */
+}
+
+
 

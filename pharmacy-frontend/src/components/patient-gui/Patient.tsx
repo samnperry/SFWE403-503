@@ -146,19 +146,19 @@ function PatientManager() {
 
   const [editOpen, setEditOpen] = useState(false); // State for edit dialog
   const [editingPatient, setEditingPatient] = useState<Partial<Patient>>({}); // State for the patient being edited
-  
+
   // Open the edit dialog
   const handleEditOpen = (patient: Patient) => {
     setEditingPatient(patient);
     setEditOpen(true);
   };
-  
+
   // Close the edit dialog
   const handleEditClose = () => {
     setEditOpen(false);
     setEditingPatient({});
   };
-  
+
   // Update the patient information
   const handleEditSubmit = async () => {
     try {
@@ -167,9 +167,9 @@ function PatientManager() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editingPatient),
       });
-  
+
       if (!response.ok) throw new Error("Error updating patient.");
-  
+
       // Update the local state
       setPatients((prevPatients) =>
         prevPatients.map((patient) =>
@@ -178,8 +178,8 @@ function PatientManager() {
             : patient
         )
       );
-      
-  
+
+
       alert("Patient updated successfully.");
       handleEditClose();
     } catch (error) {
@@ -187,7 +187,7 @@ function PatientManager() {
       alert("Failed to update patient.");
     }
   };
-  
+
 
   const handleRemovePatient = async (name: string) => {
     try {
@@ -339,7 +339,9 @@ function PatientManager() {
     }
   };
 
-  const handleNavigateHome = () => navigate("/PatientManager");//Not real
+  const handleNavigateHome = () => {
+    navigate("/Pharm");
+  };
   //Maybe naviage to Pharmacist Page instead?
   const handleProfile = () => navigate("/ProfilePage");
   const handleLogout = () => navigate("/LoginPage");
@@ -501,72 +503,72 @@ function PatientManager() {
 
         </Container>
         <Dialog open={editOpen} onClose={handleEditClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Edit Patient</DialogTitle>
-      <DialogContent>
-        <TextField
-          fullWidth
-          label="Name"
-          value={editingPatient.name || ""}
-          onChange={(e) =>
-            setEditingPatient((prev) => ({ ...prev, name: e.target.value }))
-          }
-          margin="normal"
-        />
-        <TextField
-          fullWidth
-          label="Date of Birth"
-          value={editingPatient.dateOfBirth || ""}
-          onChange={(e) =>
-            setEditingPatient((prev) => ({ ...prev, dateOfBirth: e.target.value }))
-          }
-          margin="normal"
-        />
-        <TextField
-          fullWidth
-          label="Address"
-          value={editingPatient.address || ""}
-          onChange={(e) =>
-            setEditingPatient((prev) => ({ ...prev, address: e.target.value }))
-          }
-          margin="normal"
-        />
-        <TextField
-          fullWidth
-          label="Phone"
-          value={editingPatient.phone || ""}
-          onChange={(e) =>
-            setEditingPatient((prev) => ({ ...prev, phone: e.target.value }))
-          }
-          margin="normal"
-        />
-        <TextField
-          fullWidth
-          label="Email"
-          value={editingPatient.email || ""}
-          onChange={(e) =>
-            setEditingPatient((prev) => ({ ...prev, email: e.target.value }))
-          }
-          margin="normal"
-        />
-        <TextField
-          fullWidth
-          label="Insurance"
-          value={editingPatient.insurance || ""}
-          onChange={(e) =>
-            setEditingPatient((prev) => ({ ...prev, insurance: e.target.value }))
-          }
-          margin="normal"
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleEditSubmit} variant="contained" color="primary">
-          Save Changes
-        </Button>
-        <Button onClick={handleEditClose} color="secondary">
-          Cancel
-        </Button>
-      </DialogActions>
-    </Dialog>
+          <DialogTitle>Edit Patient</DialogTitle>
+          <DialogContent>
+            <TextField
+              fullWidth
+              label="Name"
+              value={editingPatient.name || ""}
+              onChange={(e) =>
+                setEditingPatient((prev) => ({ ...prev, name: e.target.value }))
+              }
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Date of Birth"
+              value={editingPatient.dateOfBirth || ""}
+              onChange={(e) =>
+                setEditingPatient((prev) => ({ ...prev, dateOfBirth: e.target.value }))
+              }
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Address"
+              value={editingPatient.address || ""}
+              onChange={(e) =>
+                setEditingPatient((prev) => ({ ...prev, address: e.target.value }))
+              }
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Phone"
+              value={editingPatient.phone || ""}
+              onChange={(e) =>
+                setEditingPatient((prev) => ({ ...prev, phone: e.target.value }))
+              }
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Email"
+              value={editingPatient.email || ""}
+              onChange={(e) =>
+                setEditingPatient((prev) => ({ ...prev, email: e.target.value }))
+              }
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Insurance"
+              value={editingPatient.insurance || ""}
+              onChange={(e) =>
+                setEditingPatient((prev) => ({ ...prev, insurance: e.target.value }))
+              }
+              margin="normal"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleEditSubmit} variant="contained" color="primary">
+              Save Changes
+            </Button>
+            <Button onClick={handleEditClose} color="secondary">
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
 
         <Dialog open={open} onClose={handleCloseDialog} maxWidth="md" fullWidth>
           <DialogTitle>Prescriptions for {selectedPatient?.name}</DialogTitle>
@@ -581,7 +583,7 @@ function PatientManager() {
                   }
                 />
                 <Box display="flex" justifyContent="space-between" alignItems="center" width="auto">
-                  <Typography variant="h6" sx={{  marginRight: 2 }}>
+                  <Typography variant="h6" sx={{ marginRight: 2 }}>
                     Filled
                   </Typography>
                   <Typography variant="h6" >

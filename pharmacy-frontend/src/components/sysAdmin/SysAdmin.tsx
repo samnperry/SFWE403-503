@@ -31,11 +31,11 @@ function SysAdminPage() {
         },
         body: JSON.stringify({ user }), // Pass the user object in the request body
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         console.log(data.message); // "Logout successful. Redirecting to login page..."
-  
+
         // Redirect to the login page
         window.location.href = data.redirect;
       } else {
@@ -60,7 +60,7 @@ function SysAdminPage() {
     closingTime: "",
   });
   const [managerData, setManagerData] = useState({
-    id: '1', type: 'Manager', name: '', username: '', password: '', disabled: true, locked: false, attempted: 0,  firstTimeLogin: true
+    id: '1', type: 'Manager', name: '', username: '', password: '', disabled: true, locked: false, attempted: 0, firstTimeLogin: true
   });
 
   const handlePharmacyInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -175,14 +175,37 @@ function SysAdminPage() {
   return <div className="sysadmin-background">
     {/* Header */}
     <AppBar position="static">
-      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Typography variant="h6">
+      <Toolbar
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          position: 'relative',
+          minHeight: '64px', // Ensure there's enough height for both elements
+        }}
+      >
+        {/* Left-aligned text */}
+        <Typography variant="h6" sx={{ flexShrink: 0 }}>
           System Administrator
         </Typography>
-        <Typography variant="h6">
+
+        {/* Centered text */}
+        <Typography
+          variant="h6"
+          sx={{
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'inline-block', // Ensures it's treated as an inline block
+          }}
+        >
           Pharmacy System
         </Typography>
-        <Button color="inherit" onClick={handleLogout}>Log Out</Button>
+
+        {/* Right-aligned button */}
+        <Button color="inherit" onClick={handleLogout}>
+          Log Out
+        </Button>
       </Toolbar>
     </AppBar>
 
@@ -249,10 +272,10 @@ function SysAdminPage() {
     </Box>
     {/* Footer */}
     <footer style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#f1f1f1' }}>
-          <Typography variant="body2" color="textSecondary">
-            &copy; 2024 Pharmacy System. All rights reserved.
-          </Typography>
-        </footer>
+      <Typography variant="body2" color="textSecondary">
+        &copy; 2024 Pharmacy System. All rights reserved.
+      </Typography>
+    </footer>
   </div>;
 }
 

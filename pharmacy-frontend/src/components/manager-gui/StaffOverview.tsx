@@ -25,7 +25,7 @@ interface StaffItem {
 function StaffOverview() {
   const user = useUserContext().user;
   const [staffList, setStaff] = useState<StaffItem[]>([]);
-  const [newItem, setNewStaff] = useState<StaffItem>({ id: '', type: '', name: '', username: '', password: '', disabled: true, locked: false, attempted: 0, firstTimeLogin: true});
+  const [newItem, setNewStaff] = useState<StaffItem>({ id: '', type: '', name: '', username: '', password: '', disabled: true, locked: false, attempted: 0, firstTimeLogin: true });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -204,11 +204,11 @@ function StaffOverview() {
         },
         body: JSON.stringify({ user }), // Pass the user object in the request body
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         console.log(data.message); // "Logout successful. Redirecting to login page..."
-  
+
         // Redirect to the login page
         window.location.href = data.redirect;
       } else {
@@ -223,18 +223,35 @@ function StaffOverview() {
   };
 
   return (
-    <div style={{ width: '150vh', height: '100%'}}>
+    <div style={{ width: '150vh', height: '100%' }}>
       {/* Navigation Bar */}
       <AppBar position="fixed" sx={{ zIndex: 1400 }}>
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography variant="h6" style={{ flexGrow: 1 }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
+          {/* Left-aligned buttons */}
+          <div style={{ flexGrow: 1 }}></div> {/* Empty div to push content to the right */}
+
+          {/* Centered "Pharmacy Manager" text */}
+          <Typography
+            variant="h6"
+            sx={{
+              position: 'absolute',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              display: 'inline-block',
+            }}
+          >
             Pharmacy Manager
           </Typography>
-          <Button color="inherit" href='/ManagerMain'>Home</Button>
-          <Button color="inherit" href='/Inventory'>Inventory</Button>
-          <Button color="inherit" onClick={handleLogout}>Log Out</Button>
+
+          {/* Right-aligned buttons */}
+          <div style={{ display: 'flex' }}>
+            <Button color="inherit" href='/ManagerMain'>Home</Button>
+            <Button color="inherit" href='/Inventory'>Inventory</Button>
+            <Button color="inherit" onClick={handleLogout}>Log Out</Button>
+          </div>
         </Toolbar>
       </AppBar>
+
       <div className='staffoverview-background'>
         {/* Main content */}
         <Container
