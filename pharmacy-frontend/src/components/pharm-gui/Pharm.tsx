@@ -44,7 +44,6 @@ function Pharm() {
       if (response.ok) {
         const data = await response.json();
         console.log(data.message);
-
         window.location.href = data.redirect;
       } else {
         const errorData = await response.json();
@@ -85,30 +84,46 @@ function Pharm() {
 
   return (
     <div className="pharm-background">
-      <AppBar position="fixed">
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Pharmacy Page
-          </Typography>
-          <Button color="inherit" onClick={handleNavigateHome}>
-            Home
-          </Button>
-          <Button color="inherit" onClick={handleProfile}>
-            Profile
-          </Button>
-          <Button color="inherit" onClick={handleLogout}>
-            Log Out
-          </Button>
-        </Toolbar>
-      </AppBar>
-      {/* Spacer to prevent content from being hidden behind the AppBar */}
-      <Toolbar />
+      <Box
+        className="pharm-background"
+        sx={{
+          backgroundColor: "#f7f9fc",
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <AppBar position="fixed">
+          <Toolbar>
+            <Typography variant="h6" sx={{ flexGrow: 1 }}>
+              Pharmacy Page
+            </Typography>
+            <Button color="inherit" onClick={handleNavigateHome}>
+              Home
+            </Button>
+            <Button color="inherit" onClick={handleProfile}>
+              Profile
+            </Button>
+            <Button color="inherit" onClick={handleLogout}>
+              Log Out
+            </Button>
+          </Toolbar>
+        </AppBar>
 
-      <Container maxWidth="md">
-        <Box mt={5} textAlign="center">
-          {/* Cool Homepage Content */}
-          <Box mt={5}>
-            <Grid container spacing={4} mt={2}>
+        {/* Spacer to prevent content from being hidden behind the AppBar */}
+        <Toolbar />
+
+        <Container
+        maxWidth="lg"
+        sx={{
+          marginTop: "6rem",
+          padding: "2rem",
+          flex: 1,
+        }}
+      >
+          {/* Ensure the grid is at the top */}
+          <Box mt={2} sx={{ flexGrow: 1 }}>
+            <Grid container spacing={4}>
               <Grid item xs={12} sm={6} md={4}>
                 <Card>
                   <CardContent>
@@ -165,8 +180,9 @@ function Pharm() {
               </Grid>
             </Grid>
           </Box>
-        </Box>
-      </Container>
+        </Container>
+      </Box>
+
       {/* Signature Pad Dialog */}
       <Dialog
         open={openSignaturePad}
@@ -194,6 +210,7 @@ function Pharm() {
           </Button>
         </DialogActions>
       </Dialog>
+
       {/* Footer */}
       <footer
         style={{

@@ -25,10 +25,21 @@
     "type": "Pharmacist",
     "name": "Willy",
     "username": "Willy",
-    "password": "Willy",
+    "password": "yes",
     "disabled": true,
     "locked": false,
     "attempted": 0,
-    "firstTimeLogin": true
+    "firstTimeLogin": false
+  },
+  {
+    "id": "3",
+    "type": "Cashier",
+    "name": "silly",
+    "username": "silly",
+    "password": "silly",
+    "disabled": true,
+    "locked": false,
+    "attempted": 0,
+    "firstTimeLogin": false
   }
 ]

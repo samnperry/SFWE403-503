@@ -308,7 +308,6 @@ function StaffOverview() {
                       disabled={staff.disabled}
                     >
                       <MenuItem value="Pharmacist">Pharmacist</MenuItem>
-                      <MenuItem value="Pharmacist Technician">Pharmacist Technician</MenuItem>
                       <MenuItem value="Cashier">Cashier</MenuItem>
                     </Select>
                   </FormControl>
