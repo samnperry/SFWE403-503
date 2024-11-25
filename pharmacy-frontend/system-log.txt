@@ -102,3 +102,4 @@ Date: 2024-11-24T18:42:56.602Z - User "manager" of type "Manager" has successful
 Date: 2024-11-24T18:43:15.039Z - Successful Login for User: manager
 Date: 2024-11-24T18:43:20.310Z - Unsuccessful Login Attempt by User: manager
 Date: 2024-11-24T18:43:23.517Z - Successful Login for User: manager
+Date: 2024-11-25T20:53:03.603Z - Inventory updated: {"id":"010","name":"Omeprazole","amount":"280","supplier":"HealthCo Pharma","price_per_quantity":0.4,"expiration_date":"2025-05-30"}

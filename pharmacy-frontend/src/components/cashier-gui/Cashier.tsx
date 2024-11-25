@@ -23,6 +23,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../UserContext";
 import { Patient, Prescription } from "../../interfaces";
+import { jsPDF } from 'jspdf'; // Import jsPDF here
 
 interface Item {
   id: string;
@@ -240,8 +241,15 @@ function Cashier() {
       return; // Prevent purchase completion if expired items are in the cart
     }
 
+    // Prompt the user if they want a receipt
+    const wantsReceipt = window.confirm("Do you want a receipt?");
+
+    if (wantsReceipt) {
+      generateReceiptPDF(checkoutType);
+    }
+
     // Proceed with purchase
-    await updateFilledPrescriptions(); // Ensure this function is called
+    await updateFilledPrescriptions();
     setCart([]);
     setSelectedPatientId(-1);
     setSelectedPrescriptionName("");
@@ -261,6 +269,67 @@ function Cashier() {
       }
     };
     fetchPatients();
+  };
+
+  const generateReceiptPDF = (checkoutType: String) => {
+    const doc = new jsPDF();
+
+    // Set initial y position
+    let yPosition = 20;
+
+    // Add header
+    doc.setFontSize(16);
+    doc.text("Receipt", 10, yPosition);
+    yPosition += 10;
+
+    // Add date and payment method
+    const date = new Date().toLocaleString();
+    doc.setFontSize(12);
+    doc.text(`Date: ${date}`, 10, yPosition);
+    yPosition += 10;
+    doc.text(`Payment Method: ${checkoutType}`, 10, yPosition);
+    yPosition += 10;
+
+    // Add items header
+    doc.text("Items Purchased:", 10, yPosition);
+    yPosition += 10;
+
+    // Add table headers
+    doc.setFont("helvetica", "bold");
+    doc.text("Item", 10, yPosition);
+    doc.text("Qty", 80, yPosition);
+    doc.text("Price", 100, yPosition);
+    doc.text("Total", 130, yPosition);
+    doc.setFont("helvetica", "normal");
+    yPosition += 10;
+
+    // Add cart items
+    cart.forEach((cartItem, index) => {
+      const itemName = cartItem.item.name;
+      const quantity = cartItem.quantity;
+      const price = parseFloat(cartItem.item.price_per_quantity).toFixed(2);
+      const total = (parseFloat(cartItem.item.price_per_quantity) * cartItem.quantity).toFixed(2);
+
+      doc.text(itemName, 10, yPosition);
+      doc.text(quantity.toString(), 80, yPosition);
+      doc.text(`$${price}`, 100, yPosition);
+      doc.text(`$${total}`, 130, yPosition);
+      yPosition += 10;
+
+      // Add new page if necessary
+      if (yPosition > 270) {
+        doc.addPage();
+        yPosition = 20;
+      }
+    });
+
+    // Add total cost
+    yPosition += 10;
+    doc.setFontSize(14);
+    doc.text(`Grand Total: $${totalCost.toFixed(2)}`, 10, yPosition);
+
+    // Save the PDF
+    doc.save("receipt.pdf");
   };
 
   const updateFilledPrescriptions = async () => {
@@ -541,7 +610,7 @@ function Cashier() {
             color="success"
             onClick={() => handleCompletePurchase("Cash")}
             disabled={cart.length === 0}
-            style={{ marginTop: "1rem" }}
+            style={{ marginTop: "1rem", marginRight: "1rem" }}
           >
             Checkout: Cash
           </Button>
@@ -550,7 +619,7 @@ function Cashier() {
             color="success"
             onClick={() => handleCompletePurchase("Credit")}
             disabled={cart.length === 0}
-            style={{ marginTop: "1rem" }}
+            style={{ marginTop: "1rem", marginRight: "1rem" }}
           >
             Checkout: Credit
           </Button>
