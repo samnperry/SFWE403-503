@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect, useRef } from "react"; 
 import "./Cashier.css";
 import {
   Box,
@@ -28,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../UserContext";
 import { Patient, Prescription } from "../../interfaces";
 import { jsPDF } from 'jspdf'; // Import jsPDF
+import SignatureCanvas from "react-signature-canvas";
 
 interface Item {
   id: string;
@@ -61,6 +62,11 @@ function Cashier() {
 
   const [purchaseHistory, setPurchaseHistory] = useState<any[]>([]);
   const [showPurchaseHistory, setShowPurchaseHistory] = useState(false);
+
+  const [openSignaturePad, setOpenSignaturePad] = useState(false);
+  const [signatureData, setSignatureData] = useState<string | null>(null);
+  const sigPad = useRef<SignatureCanvas>(null);
+
 
   // Fetch inventory from the server
   useEffect(() => {
@@ -162,6 +168,9 @@ function Cashier() {
     setQuantity(1);
   };
 
+  const handleOpenSignaturePad = () => setOpenSignaturePad(true);
+  const handleCloseSignaturePad = () => setOpenSignaturePad(false);
+
   // Handle adding non-prescription item to cart
   const handleNonDrug = () => {
     // Validate inputs
@@ -215,6 +224,15 @@ function Cashier() {
     setPricePerItem("");
   };
 
+  const handleSaveSignature = () => {
+    if (sigPad.current && sigPad.current.isEmpty()) {
+      alert("Please provide a signature before saving.");
+    } else if (sigPad.current) {
+      setSignatureData(sigPad.current.getTrimmedCanvas().toDataURL("image/png"));
+      setOpenSignaturePad(false);
+    }
+  };
+
   // Handle removing an item from the cart
   const handleRemoveFromCart = (id: string) => {
     setCart((prevCart) => prevCart.filter((cartItem) => cartItem.item.id !== id));
@@ -222,6 +240,8 @@ function Cashier() {
 
   // Handle completing the purchase
   const handleCompletePurchase = async (checkoutType: String = "Cash") => {
+    setOpenSignaturePad(true);
+
     // Check for expired items
     const currentDate = new Date();
     const expiredItems = cart.filter((cartItem) => {
@@ -507,6 +527,9 @@ function Cashier() {
     }
   };
 
+  const handleClearSignature = () => sigPad.current?.clear();
+
+
   return (
     <div style={{ alignItems: "start" }}>
       {/* AppBar */}
@@ -758,6 +781,29 @@ function Cashier() {
         <DialogActions>
           <Button onClick={() => setShowPurchaseHistory(false)} color="primary">
             Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Signature Pad Dialog */}
+      <Dialog open={openSignaturePad} onClose={handleCloseSignaturePad} maxWidth="sm" fullWidth>
+        <DialogTitle>Draw Your Signature</DialogTitle>
+        <DialogContent sx={{ textAlign: "center" }}>
+          <SignatureCanvas
+            penColor="black"
+            canvasProps={{
+              width: 500,
+              height: 200,
+              className: "sigCanvas",
+            }}
+            ref={sigPad}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClearSignature}>Clear</Button>
+          <Button onClick={handleCloseSignaturePad}>Cancel</Button>
+          <Button onClick={handleSaveSignature} variant="contained" color="primary">
+            Save
           </Button>
         </DialogActions>
       </Dialog>

@@ -170,7 +170,7 @@
   {
     "id": "022",
     "name": "Warfarin",
-    "amount": 200,
+    "amount": "109",
     "supplier": "HealthCo Pharma",
     "price_per_quantity": 1.3,
     "expiration_date": "2025-03-15"
