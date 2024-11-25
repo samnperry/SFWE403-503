@@ -207,7 +207,7 @@ function Cashier() {
     setCart((prevCart) => prevCart.filter((cartItem) => cartItem.item.id !== id));
   };
 
-  const handleCompletePurchase = async () => {
+  const handleCompletePurchase = async (checkoutType: String = "Cash") => {
     // Check for expired items
     const currentDate = new Date();
     const expiredItems = cart.filter((cartItem) => {
@@ -539,11 +539,29 @@ function Cashier() {
           <Button
             variant="contained"
             color="success"
-            onClick={handleCompletePurchase}
+            onClick={() => handleCompletePurchase("Cash")}
             disabled={cart.length === 0}
             style={{ marginTop: "1rem" }}
           >
-            Complete Purchase
+            Checkout: Cash
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => handleCompletePurchase("Credit")}
+            disabled={cart.length === 0}
+            style={{ marginTop: "1rem" }}
+          >
+            Checkout: Credit
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => handleCompletePurchase("Debit")}
+            disabled={cart.length === 0}
+            style={{ marginTop: "1rem" }}
+          >
+            Checkout: Debit
           </Button>
         </Box>
       </Container>
