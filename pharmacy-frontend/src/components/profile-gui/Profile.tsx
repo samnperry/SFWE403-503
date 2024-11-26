@@ -14,7 +14,7 @@ function Profile() {
     const [confirmPassword, setConfirmPassword] = useState("");
 
     useEffect(() => {
-        fetch(`http://localhost:5001/api/user/${username}`)
+        fetch(`http://localhost:5001/api/user/${currUser?.name}`)
             .then(response => {
                 if (!response.ok) throw new Error("Error fetching user data.");
                 return response.json();
@@ -34,9 +34,9 @@ function Profile() {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    username,
-                    currentPassword,
-                    newPassword,
+                    username: currUser?.name,
+                    currentPassword: currentPassword,
+                    newPassword: newPassword,
                 }),
             });
             if (!response.ok) throw new Error("Error updating password.");

@@ -594,7 +594,10 @@ app.put('/api/user/password', (req, res) => {
     const users = JSON.parse(data);
     const userIndex = users.findIndex(u => u.username === username);
 
-    if (userIndex === -1 || users[userIndex].password !== currentPassword) {
+    if (userIndex === -1 ) {
+      return res.status(400).send("User not found.");
+    }
+    else if (users[userIndex].password !== currentPassword){
       return res.status(400).send("Incorrect current password.");
     }
 
