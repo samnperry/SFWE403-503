@@ -126,15 +126,15 @@ function Pharm() {
           }}
         >
           <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: "2rem" }}>
-            Welcome to the Pharmacy System
+            Welcome, {user?.name || "Pharmacist"}!
           </Typography>
           <Grid container spacing={4}>
             <Grid item xs={12} sm={6} md={6}>
-              <Card sx={{ boxShadow: 3, "&:hover": { boxShadow: 6 } }}
+              <Card sx={{ boxShadow: 3, "&:hover": { boxShadow: 6 }, ":hover": { backgroundColor: "#e0f2f1" } }}
                 onClick={handleNavigatePharmacistInventory}>
                 <CardActionArea>
                   <CardContent>
-                    <Typography variant="h6" gutterBottom>
+                    <Typography variant="h6" gutterBottom >
                       Manage Inventory
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
@@ -145,7 +145,7 @@ function Pharm() {
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
-              <Card sx={{ boxShadow: 3, "&:hover": { boxShadow: 6 } }}
+              <Card sx={{ boxShadow: 3, "&:hover": { boxShadow: 6 }, ":hover": { backgroundColor: "#e0f2f1" } }}
                 onClick={handleNavigatePatientManager}>
                 <CardActionArea>
                   <CardContent>
@@ -160,7 +160,7 @@ function Pharm() {
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
-              <Card sx={{ boxShadow: 3, "&:hover": { boxShadow: 6 } }}
+              <Card sx={{ boxShadow: 3, "&:hover": { boxShadow: 6 }, ":hover": { backgroundColor: "#e0f2f1" } }}
                 onClick={handleNavigatePharmCashier}>
                 <CardActionArea>
                   <CardContent>
@@ -176,7 +176,7 @@ function Pharm() {
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
               <Card
-                sx={{ boxShadow: 3, "&:hover": { boxShadow: 6 } }}
+                sx={{ boxShadow: 3, "&:hover": { boxShadow: 6 }, ":hover": { backgroundColor: "#e0f2f1" } }}
                 onClick={handleOpenSignaturePad}
               >
                 <CardActionArea>

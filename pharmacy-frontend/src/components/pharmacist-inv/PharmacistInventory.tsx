@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './PharmacistInventory.css';
-import { Box, Typography, Container, AppBar, Toolbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions  } from '@mui/material';
+import { Box, Typography, Container, AppBar, Toolbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { InventoryItem, PharmacyDetails } from '../../interfaces'; // Assuming the interfaces file is in a parent folder
 import { useUserContext } from '../UserContext'
@@ -94,7 +93,7 @@ function PharmacistInventory() {
       </AppBar>
 
       {/* Add padding to account for the fixed AppBar */}
-      <Box component="section" className="box-background" sx={{ p: 2, mt: 8, alignItems: 'start', height: '80vh',  width: '70vw' }}>
+      <Box component="section" className="box-background" sx={{ p: 2, mt: 8, alignItems: 'start', height: '80vh', width: '70vw' }}>
         <Container component="main" style={{ padding: '2rem', maxWidth: '1500px' }}> {/* Increased maxWidth */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
             <Typography variant="h5" gutterBottom>
@@ -102,7 +101,7 @@ function PharmacistInventory() {
             </Typography>
           </div>
           {/* Inventory Table */}
-          <TableContainer component={Paper} style={{ alignItems: "start" }}>
+          <TableContainer component={Paper} style={{ maxHeight: '60vh', overflowY: 'auto' }} >
             <Table>
               <TableHead sx={{ backgroundColor: "#00796b" }}>
                 <TableRow>
@@ -121,28 +120,18 @@ function PharmacistInventory() {
                     <TableCell>{item.name}</TableCell>
                     <TableCell>{item.amount}</TableCell>
                     <TableCell>{item.supplier}</TableCell>
-                    <TableCell>${item.price_per_quantity}</TableCell> {/* Add $ sign */}
+                    <TableCell>${item.price_per_quantity}</TableCell>
                     <TableCell>{item.expiration_date}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
-
-         
-        </Container>
-
-      
-        {/* Footer */}
-        <footer style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#f1f1f1' }}>
-          <Typography variant="body2" color="textSecondary">
-            &copy; 2024 Pharmacy System. All rights reserved.
-          </Typography>
-        </footer>
+          </Container>
       </Box>
     </div>
   );
-  
+
 }
 
 export default PharmacistInventory;
