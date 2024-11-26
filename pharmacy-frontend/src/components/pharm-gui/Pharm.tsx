@@ -67,7 +67,7 @@ function Pharm() {
 
   const handleNavigatePharmacistInventory = () => navigate("/PharmacistInventory");
   const handleNavigatePatientManager = () => navigate("/PatientManager");
-  const handleNavigateCashier = () => navigate("/Cashier");
+  const handleNavigatePharmCashier = () => navigate("/PharmacistCashier");
 
   return (
     <Box
@@ -81,19 +81,27 @@ function Pharm() {
     >
       {/* AppBar */}
       <AppBar position="fixed" sx={{ backgroundColor: "#00796b" }}>
-        <Toolbar sx={{ display: "flex", justifyContent: "center" }}>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+        <Toolbar>
+          {/* Spacer to push the content to the center */}
+          <Box sx={{ flexGrow: 1 }} />
+
+          {/* Centered Title */}
+          <Typography variant="h6" sx={{ textAlign: 'center', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
             Pharmacy Dashboard
           </Typography>
-          <Button color="inherit" onClick={handleNavigateHome}>
-            Home
-          </Button>
-          <Button color="inherit" onClick={handleProfile}>
-            Profile
-          </Button>
-          <Button color="inherit" onClick={handleLogout}>
-            Log Out
-          </Button>
+
+          {/* Buttons aligned to the right */}
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}>
+            <Button color="inherit" onClick={handleNavigateHome}>
+              Home
+            </Button>
+            <Button color="inherit" onClick={handleProfile}>
+              Profile
+            </Button>
+            <Button color="inherit" onClick={handleLogout}>
+              Log Out
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
 
@@ -124,7 +132,7 @@ function Pharm() {
             <Grid item xs={12} sm={6} md={6}>
               <Card sx={{ boxShadow: 3, "&:hover": { boxShadow: 6 } }}
                 onClick={handleNavigatePharmacistInventory}>
-                <CardActionArea>  
+                <CardActionArea>
                   <CardContent>
                     <Typography variant="h6" gutterBottom>
                       Manage Inventory
@@ -153,7 +161,7 @@ function Pharm() {
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
               <Card sx={{ boxShadow: 3, "&:hover": { boxShadow: 6 } }}
-                onClick={handleNavigateCashier}> 
+                onClick={handleNavigatePharmCashier}>
                 <CardActionArea>
                   <CardContent>
                     <Typography variant="h6" gutterBottom>
@@ -210,9 +218,9 @@ function Pharm() {
           </Button>
         </DialogActions>
       </Dialog>
-      
+
     </Box>
-    
+
   );
 }
 

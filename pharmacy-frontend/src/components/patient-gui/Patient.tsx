@@ -32,8 +32,10 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete"
 import { useNavigate } from "react-router-dom";
 import { InventoryItem, Patient } from '../../interfaces'; // Assuming the interfaces file is in a parent folder
+import { useUserContext } from "../UserContext";
 
 function PatientManager() {
+  const currUser = useUserContext().user;
   const navigate = useNavigate();
   const [patients, setPatients] = useState<Patient[]>([]);
   const [newPatient, setNewPatient] = useState<Partial<Patient>>({
@@ -339,34 +341,59 @@ function PatientManager() {
     }
   };
 
-  const handleNavigateHome = () => {
-    navigate("/Pharm");
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:5001/api/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ currUser }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        window.location.href = data.redirect;
+      } else {
+        const errorData = await response.json();
+        alert(errorData.error);
+      }
+    } catch (error) {
+      alert("An unexpected error occurred. Please try again.");
+    }
   };
-  //Maybe naviage to Pharmacist Page instead?
-  const handleProfile = () => navigate("/ProfilePage");
-  const handleLogout = () => navigate("/LoginPage");
 
-
-  function handleCheckboxChange(index: number): void {
-    throw new Error("Function not implemented.");
-  }
+  const handleNavigateHome = () => navigate("/Pharm");
+  const handleNavigatePharmacistInventory = () => navigate("/PharmacistInventory");
+  const handleNavigateCashier = () => navigate("/Cashier");
 
   return (
     <div style={{ alignItems: "start" }}>
       <AppBar position="fixed">
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {/* Left Side (Buttons) */}
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', flexGrow: 1 }}>
+            <Button color="inherit" onClick={handleNavigateHome}>
+              Home
+            </Button>
+            <Button color="inherit" onClick={handleNavigatePharmacistInventory}>
+              Inventory
+            </Button>
+            <Button color="inherit" onClick={handleNavigateCashier}>
+              Checkout
+            </Button>
+            <Button color="inherit" onClick={handleLogout}>
+              Log Out
+            </Button>
+          </Box>
+
+          {/* Centered Typography */}
+          <Typography variant="h6" sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
             Patient Management
           </Typography>
-          <Button color="inherit" onClick={handleNavigateHome}>
-            Home
-          </Button>
-          <Button color="inherit" onClick={handleLogout}>
-            Log Out
-          </Button>
         </Toolbar>
       </AppBar>
-      <Toolbar />
+
       <div className="">
         <Container maxWidth="lg" style={{ height: "80vh", alignItems: "start", display: 'block', marginTop: '0px' }}>
 

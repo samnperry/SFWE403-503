@@ -4,7 +4,7 @@ import { Box, Typography, Container, AppBar, Toolbar, Table, TableBody, TableCel
 import { useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { InventoryItem, FiscalItem, PharmacyDetails } from '../../interfaces'; // Assuming the interfaces file is in a parent folder
+import { InventoryItem, FiscalItem, PharmacyDetails } from '../../interfaces';
 import { useUserContext } from '../UserContext'
 import { isTemplateHead } from 'typescript';
 

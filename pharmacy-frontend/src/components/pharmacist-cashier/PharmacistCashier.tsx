@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./Cashier.css";
+import "./PharmacistCashier.css";
 import {
   Box,
   Typography,
@@ -31,7 +31,7 @@ import { jsPDF } from 'jspdf'; // Import jsPDF
 import { Item, CartItem } from '../../interfaces';
 import SignatureCanvas from "react-signature-canvas";
 
-function Cashier() {
+function PharmacistCashier() {
   const user = useUserContext().user;
   const navigate = useNavigate();
   const [inventory, setInventory] = useState<Item[]>([]);
@@ -468,7 +468,7 @@ function Cashier() {
   };
 
   // Navigate to Home
-  const handleNavigateHome = () => navigate("/Cashier");
+  const handleNavigateHome = () => navigate("/Pharm");
 
   // Handle Logout
   const handleLogout = async () => {
@@ -515,6 +515,8 @@ function Cashier() {
   };
 
   const handleClearSignature = () => sigPad.current?.clear();
+  const handleNavigatePharmacistInventory = () => navigate("/PharmacistInventory");
+  const handleNavigatePatients = () => navigate("/PatientManager");
 
 
   return (
@@ -523,6 +525,15 @@ function Cashier() {
       <AppBar position="fixed">
         <Toolbar>
           <Box sx={{ flexGrow: 1 }} />
+          <Button color="inherit" onClick={handleNavigateHome}>
+            Home
+          </Button>
+          <Button color="inherit" onClick={handleNavigatePharmacistInventory}>
+              Inventory
+            </Button>
+            <Button color="inherit" onClick={handleNavigatePatients}>
+              Patients
+            </Button>
           <Button color="inherit" onClick={handleViewPurchaseHistory}>
             Generate Report
           </Button>
@@ -793,4 +804,4 @@ function Cashier() {
   );
 }
 
-export default Cashier;
+export default PharmacistCashier;

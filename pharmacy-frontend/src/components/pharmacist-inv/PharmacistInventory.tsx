@@ -61,16 +61,35 @@ function PharmacistInventory() {
     }
   };
 
+  const handleNavigateHome = () => navigate("/Pharm");
+  const handleNavigatePatients = () => navigate("/PatientManager");
+  const handleNavigateCashier = () => navigate("/Cashier");
+
   return (
     <div className="inventory-background" style={{ alignItems: "start" }}>
       {/* Fixed AppBar at the top */}
       <AppBar position="fixed">
-        <Toolbar>
-          <Typography variant="h6" style={{ flexGrow: 1 }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {/* Left Side (Buttons) */}
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', flexGrow: 1 }}>
+            <Button color="inherit" onClick={handleNavigateHome}>
+              Home
+            </Button>
+            <Button color="inherit" onClick={handleNavigatePatients}>
+              Patients
+            </Button>
+            <Button color="inherit" onClick={handleNavigateCashier}>
+              Checkout
+            </Button>
+            <Button color="inherit" onClick={handleLogout}>
+              Log Out
+            </Button>
+          </Box>
+
+          {/* Centered Typography */}
+          <Typography variant="h6" sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
             Inventory Management
           </Typography>
-          <Button color="inherit" href='/ManagerMain'>Home</Button>
-          <Button color="inherit" onClick={handleLogout}>Log Out</Button>
         </Toolbar>
       </AppBar>
 
@@ -79,7 +98,7 @@ function PharmacistInventory() {
         <Container component="main" style={{ padding: '2rem', maxWidth: '1500px' }}> {/* Increased maxWidth */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
             <Typography variant="h5" gutterBottom>
-              Pharmacist Inventory
+              Pharmacy Inventory
             </Typography>
           </div>
           {/* Inventory Table */}

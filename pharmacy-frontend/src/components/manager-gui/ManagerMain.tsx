@@ -100,10 +100,6 @@ function ManagerMain() {
     }
   };
 
-  const handleNavigateManager = () => {
-    navigate("/ManagerMain");
-  };
-
   return (
     <Box
       className="manager-background"
@@ -116,29 +112,33 @@ function ManagerMain() {
     >
       {/* AppBar */}
       <AppBar position="fixed" sx={{ backgroundColor: "#00796b" }}>
-        <Toolbar sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Typography variant="h6">
+        <Toolbar>
+          {/* Spacer to push the content to the center */}
+          <Box sx={{ flexGrow: 1 }} />
+
+          {/* Centered Title */}
+          <Typography variant="h6" sx={{ textAlign: 'center', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
             Manager Dashboard
           </Typography>
-          <Box sx={{ flexGrow: 1 }} />  {/* This will push items on the right */}
-          <IconButton
-            color={expiredMedications.length > 0 ? "error" : "inherit"}
-            onClick={handleNotificationClick}
-          >
-            <Badge
-              badgeContent={expiredMedications.length > 0 ? expiredMedications.length : null}
-              color="error"
+
+          {/* Buttons aligned to the right */}
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}>
+            <Box sx={{ flexGrow: 1 }} />  {/* This will push items on the right */}
+            <IconButton
+              color={expiredMedications.length > 0 ? "error" : "inherit"}
+              onClick={handleNotificationClick}
             >
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <Button
-            color="inherit"
-            onClick={handleLogout}
-            sx={{ textTransform: "none", fontWeight: "bold" }}
-          >
-            Log Out
-          </Button>
+              <Badge
+                badgeContent={expiredMedications.length > 0 ? expiredMedications.length : null}
+                color="error"
+              >
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            <Button color="inherit" onClick={handleLogout}>
+              Log Out
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
 
