@@ -1,13 +1,3 @@
-.pharm-background {
-    background-color: aliceblue; /* Make the background aliceblue */
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column; /* Align children vertically */
-    min-height: 100vh; /* Ensure it stretches to full page height */
-}
 
 .box-background {
     position: relative; /* Ensure the box is positioned relative for the pseudo-element */

@@ -105,7 +105,6 @@ function ManagerMain() {
 
   return (
     <Box
-      className="manager-background"
       sx={{
         backgroundColor: "#f7f9fc",
         minHeight: "100vh",

@@ -1,15 +1,21 @@
-/* Pharm background styling */
-.pharm-background {
-    background-color: aliceblue; /* Make the background aliceblue */
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column; /* Align children vertically */
-    min-height: 100vh; /* Ensure it stretches to full page height */
+
+.box-background {
+    position: relative; /* Ensure the box is positioned relative for the pseudo-element */
+    z-index: 1; /* Ensure it’s above the background */
 }
 
+
+.box-background::before {
+    content: '';
+    position: absolute; /* Position it absolutely within the parent */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: aliceblue; /* Background color you want */
+    opacity: 0.7; /* Set opacity (0 to 1 scale) */
+    z-index: -1; /* Position it behind the content */
+}
 /* Ensure content is adjusted below the AppBar */
 .pharm-content {
     flex: 1; /* Take up all remaining space */
