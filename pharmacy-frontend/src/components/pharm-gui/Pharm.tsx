@@ -208,15 +208,15 @@ function Pharm() {
                 flexDirection: 'column', // Align content vertically
                 height: '100%', // Ensures the card takes up full height available in the grid
               }}
-              onClick={handleOpenSignaturePad}
+              onClick={handleProfile}
             >
               <CardActionArea sx={{ flexGrow: 1 }}>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
-                    Patient Records
+                    Edit Profile
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Draw and save your signature for prescriptions and documents.
+                    Update your account information.
                   </Typography>
                 </CardContent>
               </CardActionArea>

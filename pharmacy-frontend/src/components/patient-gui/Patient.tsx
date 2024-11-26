@@ -365,7 +365,7 @@ function PatientManager() {
 
   const handleNavigateHome = () => navigate("/Pharm");
   const handleNavigatePharmacistInventory = () => navigate("/PharmacistInventory");
-  const handleNavigateCashier = () => navigate("/Cashier");
+  const handleNavigateCashier = () => navigate("/PharmacistCashier");
 
   return (
     <div style={{ alignItems: "start" }}>

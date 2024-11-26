@@ -62,7 +62,7 @@ function PharmacistInventory() {
 
   const handleNavigateHome = () => navigate("/Pharm");
   const handleNavigatePatients = () => navigate("/PatientManager");
-  const handleNavigateCashier = () => navigate("/Cashier");
+  const handleNavigateCashier = () => navigate("/PharmacistCashier");
 
   return (
     <div className="inventory-background" style={{ alignItems: "start" }}>

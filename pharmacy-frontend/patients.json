@@ -53,7 +53,13 @@
     "phone": "k",
     "email": "samureaal ",
     "insurance": "William Rains",
-    "prescriptions": []
+    "prescriptions": [
+      {
+        "name": "Omeprazole",
+        "amount": 10,
+        "filled": true
+      }
+    ]
   },
   {
     "id": 4,

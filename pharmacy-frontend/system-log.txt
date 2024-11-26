@@ -109,3 +109,27 @@ Date: 2024-11-25T21:21:53.229Z - New purchase added: {"id":"1732569713222","date
 Date: 2024-11-25T21:23:55.578Z - New purchase added: {"id":"1732569835535","date":"2024-11-25T21:23:55.535Z","paymentMethod":"Cash","items":[{"id":"1732569830572","name":"123","quantity":932132135,"price":31313546846451324,"total":2.918836327640519e+25}],"totalCost":2.918836327640519e+25}
 Date: 2024-11-25T22:15:47.448Z - New purchase added: {"id":"1732572947407","date":"2024-11-25T22:15:47.407Z","paymentMethod":"Credit","items":[{"id":"022","name":"Warfarin","quantity":91,"price":1.3,"total":118.3},{"id":"1732572941635","name":"Cheese","quantity":10,"price":1,"total":10}],"totalCost":128.3}
 Date: 2024-11-25T22:15:47.677Z - Inventory updated: {"id":"022","name":"Warfarin","amount":"109","supplier":"HealthCo Pharma","price_per_quantity":1.3,"expiration_date":"2025-03-15"}
+Date: 2024-11-26T05:24:12.608Z - Unsuccessful Login Attempt by User: Willy
+Date: 2024-11-26T05:24:13.285Z - Unsuccessful Login Attempt by User: Willy
+Date: 2024-11-26T05:24:13.535Z - Unsuccessful Login Attempt by User: Willy
+Date: 2024-11-26T05:24:13.667Z - Unsuccessful Login Attempt by User: Willy
+Date: 2024-11-26T05:24:13.821Z - Unsuccessful Login Attempt by User: Willy
+Date: 2024-11-26T05:24:13.942Z - Locked Login Attempted by User: Willy
+Date: 2024-11-26T05:24:14.108Z - Locked Login Attempted by User: Willy
+Date: 2024-11-26T05:24:14.783Z - Locked Login Attempted by User: Willy
+Date: 2024-11-26T05:24:15.050Z - Locked Login Attempted by User: Willy
+Date: 2024-11-26T05:24:15.184Z - Locked Login Attempted by User: Willy
+Date: 2024-11-26T05:24:15.317Z - Locked Login Attempted by User: Willy
+Date: 2024-11-26T05:24:15.465Z - Locked Login Attempted by User: Willy
+Date: 2024-11-26T05:24:15.618Z - Locked Login Attempted by User: Willy
+Date: 2024-11-26T05:24:15.768Z - Locked Login Attempted by User: Willy
+Date: 2024-11-26T05:24:32.631Z - Unsuccessful Login Attempt by User: Willy
+Date: 2024-11-26T05:24:33.435Z - Unsuccessful Login Attempt by User: Willy
+Date: 2024-11-26T05:24:33.636Z - Unsuccessful Login Attempt by User: Willy
+Date: 2024-11-26T05:24:33.819Z - Unsuccessful Login Attempt by User: Willy
+Date: 2024-11-26T05:24:34.133Z - Unsuccessful Login Attempt by User: Willy
+Date: 2024-11-26T05:24:36.236Z - Locked Login Attempted by User: Willy
+Date: 2024-11-26T05:24:36.547Z - Locked Login Attempted by User: Willy
+Date: 2024-11-26T05:24:39.870Z - Locked Login Attempted by User: Willy
+Date: 2024-11-26T05:26:15.085Z - New purchase added: {"id":"1732598775053","date":"2024-11-26T05:26:15.053Z","paymentMethod":"Cash","items":[{"id":"1732598755058","name":"oh","quantity":10,"price":10,"total":100}],"totalCost":100}
+Date: 2024-11-26T05:26:49.211Z - New purchase added: {"id":"1732598809203","date":"2024-11-26T05:26:49.203Z","paymentMethod":"Cash","items":[{"id":"1732598804707","name":"po","quantity":2,"price":2,"total":4}],"totalCost":4}

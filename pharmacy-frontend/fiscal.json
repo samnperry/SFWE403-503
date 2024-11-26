@@ -135,5 +135,35 @@
       }
     ],
     "totalCost": 128.3
+  },
+  {
+    "id": "1732598775053",
+    "date": "2024-11-26T05:26:15.053Z",
+    "paymentMethod": "Cash",
+    "items": [
+      {
+        "id": "1732598755058",
+        "name": "oh",
+        "quantity": 10,
+        "price": 10,
+        "total": 100
+      }
+    ],
+    "totalCost": 100
+  },
+  {
+    "id": "1732598809203",
+    "date": "2024-11-26T05:26:49.203Z",
+    "paymentMethod": "Cash",
+    "items": [
+      {
+        "id": "1732598804707",
+        "name": "po",
+        "quantity": 2,
+        "price": 2,
+        "total": 4
+      }
+    ],
+    "totalCost": 4
   }
 ]
