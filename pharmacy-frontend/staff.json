@@ -25,7 +25,7 @@
     "type": "Pharmacist",
     "name": "Willy",
     "username": "Willy",
-    "password": "yes",
+    "password": "no",
     "disabled": true,
     "locked": false,
     "attempted": 0,

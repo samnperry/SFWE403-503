@@ -109,3 +109,17 @@ Date: 2024-11-25T21:21:53.229Z - New purchase added: {"id":"1732569713222","date
 Date: 2024-11-25T21:23:55.578Z - New purchase added: {"id":"1732569835535","date":"2024-11-25T21:23:55.535Z","paymentMethod":"Cash","items":[{"id":"1732569830572","name":"123","quantity":932132135,"price":31313546846451324,"total":2.918836327640519e+25}],"totalCost":2.918836327640519e+25}
 Date: 2024-11-25T22:15:47.448Z - New purchase added: {"id":"1732572947407","date":"2024-11-25T22:15:47.407Z","paymentMethod":"Credit","items":[{"id":"022","name":"Warfarin","quantity":91,"price":1.3,"total":118.3},{"id":"1732572941635","name":"Cheese","quantity":10,"price":1,"total":10}],"totalCost":128.3}
 Date: 2024-11-25T22:15:47.677Z - Inventory updated: {"id":"022","name":"Warfarin","amount":"109","supplier":"HealthCo Pharma","price_per_quantity":1.3,"expiration_date":"2025-03-15"}
+Date: 2024-11-26T04:53:22.680Z - Unsuccessful Login Attempt by User: Willy
+Date: 2024-11-26T04:53:26.444Z - Unsuccessful Login Attempt by User: Willy
+Date: 2024-11-26T04:53:27.711Z - Unsuccessful Login Attempt by User: Willy
+Date: 2024-11-26T04:53:48.430Z - Unsuccessful Login Attempt by User: manager
+Date: 2024-11-26T04:53:55.395Z - Unsuccessful Login Attempt by User: manager
+Date: 2024-11-26T04:54:36.623Z - Successful Login for User: manager
+Date: 2024-11-26T04:54:38.120Z - User "manager" of type "Manager" has successfully logged out.
+Date: 2024-11-26T04:54:43.213Z - Successful Login for User: Willy
+Date: 2024-11-26T04:57:39.032Z - Successful Login for User: Willy
+Date: 2024-11-26T05:03:43.211Z - User "Willy" of type "Pharmacist" has successfully logged out.
+Date: 2024-11-26T05:03:47.561Z - Successful Login for User: Willy
+Date: 2024-11-26T05:08:44.993Z - Successful Login for User: Willy
+Date: 2024-11-26T05:11:56.551Z - Successful Login for User: Willy
+Date: 2024-11-26T05:12:39.183Z - Successful Login for User: Willy
