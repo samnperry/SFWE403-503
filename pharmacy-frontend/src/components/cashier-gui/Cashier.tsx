@@ -520,7 +520,7 @@ function Cashier() {
   return (
     <div style={{ alignItems: "start" }}>
       {/* AppBar */}
-      <AppBar position="fixed">
+      <AppBar position="fixed" sx={{ backgroundColor: "#00796b" }}>
         <Toolbar>
           <Box sx={{ flexGrow: 1 }} />
           <Button color="inherit" onClick={handleViewPurchaseHistory}>
@@ -653,7 +653,7 @@ function Cashier() {
         </Typography>
           <TableContainer component={Paper}>
             <Table aria-label="cart table">
-              <TableHead>
+              <TableHead sx={{ backgroundColor: "#00796b" }}>
                 <TableRow>
                   <TableCell>Item</TableCell>
                   <TableCell>Quantity</TableCell>

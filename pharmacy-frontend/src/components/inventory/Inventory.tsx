@@ -328,16 +328,29 @@ function Inventory() {
   return (
     <div className="inventory-background" style={{ alignItems: "start" }}>
       {/* Fixed AppBar at the top */}
-      <AppBar position="fixed">
-        <Toolbar>
-          <Typography variant="h6" style={{ flexGrow: 1 }}>
+      <AppBar position="fixed" sx={{ backgroundColor: "#00796b" }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {/* Buttons Container */}
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', flexGrow: 1 }}>
+            <Button color="inherit" onClick={handleNavigateManager}>
+              Home
+            </Button>
+            <Button color="inherit" onClick={handleNavigateStaffOverview}>
+              Staff Overview
+            </Button>
+            <Button color="inherit" onClick={handleLogout}>
+              Log Out
+            </Button>
+          </Box>
+
+          {/* Centered Typography */}
+          <Typography variant="h6" sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', }}>
             Inventory Management
           </Typography>
-          <Button color="inherit" onClick={handleNavigateManager}>Home</Button>
-          <Button color="inherit" onClick={handleNavigateStaffOverview}>Staff Overview</Button>
-          <Button color="inherit" onClick={handleLogout}>Log Out</Button>
         </Toolbar>
       </AppBar>
+
+
 
       {/* Add padding to account for the fixed AppBar */}
       <Box component="section" className="box-background" sx={{ p: 2, mt: 8, alignItems: 'start', height: '80vh', }}>
@@ -358,7 +371,7 @@ function Inventory() {
           {/* Inventory Table */}
           <TableContainer component={Paper} style={{ alignItems: "start" }}>
             <Table>
-              <TableHead>
+              <TableHead sx={{ backgroundColor: "#00796b" }}>
                 <TableRow>
                   <TableCell>ID</TableCell>
                   <TableCell>Name</TableCell>

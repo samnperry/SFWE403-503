@@ -369,7 +369,7 @@ function PatientManager() {
 
   return (
     <div style={{ alignItems: "start" }}>
-      <AppBar position="fixed">
+      <AppBar position="fixed" sx={{ backgroundColor: "#00796b" }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Left Side (Buttons) */}
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', flexGrow: 1 }}>
@@ -468,7 +468,7 @@ function PatientManager() {
             </Typography>
             <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto' }}>
               <Table size="small" sx={{ width: '100%' }} aria-label="patient table">
-                <TableHead>
+                <TableHead sx={{ backgroundColor: "#00796b" }}>
                   <TableRow>
                     <TableCell>Name</TableCell>
                     <TableCell>ID</TableCell>

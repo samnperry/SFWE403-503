@@ -68,7 +68,7 @@ function PharmacistInventory() {
   return (
     <div className="inventory-background" style={{ alignItems: "start" }}>
       {/* Fixed AppBar at the top */}
-      <AppBar position="fixed">
+      <AppBar position="fixed" sx={{ backgroundColor: "#00796b" }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Left Side (Buttons) */}
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', flexGrow: 1 }}>
@@ -104,7 +104,7 @@ function PharmacistInventory() {
           {/* Inventory Table */}
           <TableContainer component={Paper} style={{ alignItems: "start" }}>
             <Table>
-              <TableHead>
+              <TableHead sx={{ backgroundColor: "#00796b" }}>
                 <TableRow>
                   <TableCell>ID</TableCell>
                   <TableCell>Name</TableCell>

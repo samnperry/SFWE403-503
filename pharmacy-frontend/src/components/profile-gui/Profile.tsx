@@ -84,7 +84,7 @@ function Profile() {
 
     return (
         <div>
-            <AppBar position="fixed">
+            <AppBar position="fixed" sx={{ backgroundColor: "#00796b" }}>
             <Toolbar>
                 <Box sx={{ flexGrow: 1 }} />
                 <Button color="inherit" onClick={handleNavigateHome}>
