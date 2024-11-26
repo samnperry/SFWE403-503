@@ -53,56 +53,55 @@ function Profile() {
 
     const handleLogout = async () => {
         try {
-          const response = await fetch('http://localhost:5001/api/logout', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ currUser }), // Pass the user object in the request body
-          });
-      
-          if (response.ok) {
-            const data = await response.json();
-            console.log(data.message); // "Logout successful. Redirecting to login page..."
-      
-            // Redirect to the login page
-            window.location.href = data.redirect;
-          } else {
-            const errorData = await response.json();
-            console.error('Logout failed:', errorData.error);
-            alert(errorData.error); // Show error message to the user
-          }
-        } catch (error) {
-          console.error('Error during logout:', error);
-          alert('An unexpected error occurred. Please try again.');
-        }
-      };
+            const response = await fetch('http://localhost:5001/api/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ currUser }), // Pass the user object in the request body
+            });
 
-      const handleNavigateHome = () => {
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data.message); // "Logout successful. Redirecting to login page..."
+
+                // Redirect to the login page
+                window.location.href = data.redirect;
+            } else {
+                const errorData = await response.json();
+                console.error('Logout failed:', errorData.error);
+                alert(errorData.error); // Show error message to the user
+            }
+        } catch (error) {
+            console.error('Error during logout:', error);
+            alert('An unexpected error occurred. Please try again.');
+        }
+    };
+
+    const handleNavigateHome = () => {
         navigate("/Pharm");
-      };
+    };
 
     return (
         <div>
-            <AppBar position="fixed">
-                <Toolbar>
-                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                        Profile
-                    </Typography>
-                    <Button color="inherit" onClick={handleNavigateHome}>
-            Home
-          </Button>
-                    <Button color="inherit" onClick={handleLogout}>
-                        Log Out
-                    </Button>
-                </Toolbar>
-            </AppBar>
-            <Toolbar />
+            <AppBar position="fixed" sx={{ backgroundColor: "#00796b" }}>
+            <Toolbar>
+                <Box sx={{ flexGrow: 1 }} />
+                <Button color="inherit" onClick={handleNavigateHome}>
+                    Home
+                </Button>
+                <Button color="inherit" onClick={handleLogout}>
+                    Log Out
+                </Button>
+            </Toolbar>
+        </AppBar>
 
             <Container maxWidth="sm" sx={{ mt: 8 }}>
                 <Paper sx={{ padding: 4 }}>
                     <Box mb={4} textAlign="center">
-                        <Typography variant="h4">User Profile</Typography>
+                        <Typography variant="h4" sx={{ fontWeight: "bold", marginBottom: "2rem" }}>
+                            {user?.name || "User"} Profile
+                        </Typography>
                     </Box>
 
                     {user && (
@@ -146,11 +145,11 @@ function Profile() {
                 </Paper>
             </Container>
             {/* Footer */}
-        <footer style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#f1f1f1' }}>
-          <Typography variant="body2" color="textSecondary">
-            &copy; 2024 Pharmacy System. All rights reserved.
-          </Typography>
-        </footer>
+            <footer style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#f1f1f1' }}>
+                <Typography variant="body2" color="textSecondary">
+                    &copy; 2024 Pharmacy System. All rights reserved.
+                </Typography>
+            </footer>
         </div>
     );
 }

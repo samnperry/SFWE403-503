@@ -53,3 +53,17 @@ export interface Prescription{
     amount: number;
     filled: boolean;
 }
+
+export interface Item {
+    id: string;
+    name: string;
+    amount: string; // Stock amount as a string in inventory.json
+    supplier: string;
+    price_per_quantity: string; // Price per item as a string
+    expiration_date: string;
+  }
+
+export interface CartItem {
+    item: Item;
+    quantity: number;
+  }

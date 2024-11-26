@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './PharmacistInventory.css';
-import { Box, Typography, Container, AppBar, Toolbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions  } from '@mui/material';
+import { Box, Typography, Container, AppBar, Toolbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { InventoryItem, PharmacyDetails } from '../../interfaces'; // Assuming the interfaces file is in a parent folder
 import { useUserContext } from '../UserContext'
@@ -61,31 +60,50 @@ function PharmacistInventory() {
     }
   };
 
+  const handleNavigateHome = () => navigate("/Pharm");
+  const handleNavigatePatients = () => navigate("/PatientManager");
+  const handleNavigateCashier = () => navigate("/Cashier");
+
   return (
     <div className="inventory-background" style={{ alignItems: "start" }}>
       {/* Fixed AppBar at the top */}
-      <AppBar position="fixed">
-        <Toolbar>
-          <Typography variant="h6" style={{ flexGrow: 1 }}>
+      <AppBar position="fixed" sx={{ backgroundColor: "#00796b" }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {/* Left Side (Buttons) */}
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', flexGrow: 1 }}>
+            <Button color="inherit" onClick={handleNavigateHome}>
+              Home
+            </Button>
+            <Button color="inherit" onClick={handleNavigatePatients}>
+              Patients
+            </Button>
+            <Button color="inherit" onClick={handleNavigateCashier}>
+              Checkout
+            </Button>
+            <Button color="inherit" onClick={handleLogout}>
+              Log Out
+            </Button>
+          </Box>
+
+          {/* Centered Typography */}
+          <Typography variant="h6" sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
             Inventory Management
           </Typography>
-          <Button color="inherit" href='/ManagerMain'>Home</Button>
-          <Button color="inherit" onClick={handleLogout}>Log Out</Button>
         </Toolbar>
       </AppBar>
 
       {/* Add padding to account for the fixed AppBar */}
-      <Box component="section" className="box-background" sx={{ p: 2, mt: 8, alignItems: 'start', height: '80vh',  width: '70vw' }}>
+      <Box component="section" className="box-background" sx={{ p: 2, mt: 8, alignItems: 'start', height: '80vh', width: '70vw' }}>
         <Container component="main" style={{ padding: '2rem', maxWidth: '1500px' }}> {/* Increased maxWidth */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
             <Typography variant="h5" gutterBottom>
-              Pharmacist Inventory
+              Pharmacy Inventory
             </Typography>
           </div>
           {/* Inventory Table */}
-          <TableContainer component={Paper} style={{ alignItems: "start" }}>
+          <TableContainer component={Paper} style={{ maxHeight: '60vh', overflowY: 'auto' }} >
             <Table>
-              <TableHead>
+              <TableHead sx={{ backgroundColor: "#00796b" }}>
                 <TableRow>
                   <TableCell>ID</TableCell>
                   <TableCell>Name</TableCell>
@@ -102,28 +120,18 @@ function PharmacistInventory() {
                     <TableCell>{item.name}</TableCell>
                     <TableCell>{item.amount}</TableCell>
                     <TableCell>{item.supplier}</TableCell>
-                    <TableCell>${item.price_per_quantity}</TableCell> {/* Add $ sign */}
+                    <TableCell>${item.price_per_quantity}</TableCell>
                     <TableCell>{item.expiration_date}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
-
-         
-        </Container>
-
-      
-        {/* Footer */}
-        <footer style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#f1f1f1' }}>
-          <Typography variant="body2" color="textSecondary">
-            &copy; 2024 Pharmacy System. All rights reserved.
-          </Typography>
-        </footer>
+          </Container>
       </Box>
     </div>
   );
-  
+
 }
 
 export default PharmacistInventory;

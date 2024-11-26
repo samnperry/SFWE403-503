@@ -67,11 +67,11 @@ function Pharm() {
 
   const handleNavigatePharmacistInventory = () => navigate("/PharmacistInventory");
   const handleNavigatePatientManager = () => navigate("/PatientManager");
-  const handleNavigateCashier = () => navigate("/Cashier");
+  const handleNavigatePharmCashier = () => navigate("/PharmacistCashier");
 
   return (
+
     <Box
-      className="pharm-background"
       sx={{
         backgroundColor: "#f7f9fc",
         minHeight: "100vh",
@@ -81,19 +81,22 @@ function Pharm() {
     >
       {/* AppBar */}
       <AppBar position="fixed" sx={{ backgroundColor: "#00796b" }}>
-        <Toolbar sx={{ display: "flex", justifyContent: "center" }}>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Pharmacy Dashboard
+        <Toolbar>
+          {/* Spacer to push the content to the center */}
+          <Box sx={{ flexGrow: 1 }} />
+
+          {/* Centered Title */}
+          <Typography variant="h6" sx={{ textAlign: 'center', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+            Pharmacist Dashboard
           </Typography>
-          <Button color="inherit" onClick={handleNavigateHome}>
-            Home
-          </Button>
-          <Button color="inherit" onClick={handleProfile}>
-            Profile
-          </Button>
-          <Button color="inherit" onClick={handleLogout}>
-            Log Out
-          </Button>
+
+          {/* Buttons aligned to the right */}
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}>
+            <Box sx={{ flexGrow: 1 }} />  {/* This will push items on the right */}
+            <Button color="inherit" onClick={handleLogout}>
+              Log Out
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
 
@@ -102,93 +105,129 @@ function Pharm() {
         maxWidth="lg"
         sx={{
           marginTop: "6rem",
+          padding: "2rem",
           flex: 1,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Box
-          sx={{
-            background: "white",
-            width: "100%",
-            borderRadius: 2,
-            padding: "2rem",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          }}
-        >
-          <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: "2rem" }}>
-            Welcome to the Pharmacy System
-          </Typography>
-          <Grid container spacing={4}>
-            <Grid item xs={12} sm={6} md={6}>
-              <Card sx={{ boxShadow: 3, "&:hover": { boxShadow: 6 } }}
-                onClick={handleNavigatePharmacistInventory}>
-                <CardActionArea>  
-                  <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                      Manage Inventory
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Keep track of medications and supplies with our efficient inventory system.
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={6}>
-              <Card sx={{ boxShadow: 3, "&:hover": { boxShadow: 6 } }}
-                onClick={handleNavigatePatientManager}>
-                <CardActionArea>
-                  <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                      Patient Records
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Access and manage patient information securely and conveniently.
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={6}>
-              <Card sx={{ boxShadow: 3, "&:hover": { boxShadow: 6 } }}
-                onClick={handleNavigateCashier}> 
-                <CardActionArea>
-                  <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                      Cashier
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Checkout a customer for either OTC items or prescriptions.
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={6}>
-              <Card
-                sx={{ boxShadow: 3, "&:hover": { boxShadow: 6 } }}
-                onClick={handleOpenSignaturePad}
-              >
-                <CardActionArea>
-                  <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                      Add Signature
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Draw and save your signature for prescriptions and documents.
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
+        <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: "2rem" }}>
+          Welcome, {user?.name || "Pharmacist"}!
+        </Typography>
+
+        <Grid container spacing={4}>
+          {/* Staff Overview Card */}
+          <Grid item xs={12} sm={6} md={6}>
+            <Card
+              sx={{
+                boxShadow: 3,
+                "&:hover": { boxShadow: 6 },
+                ":hover": { backgroundColor: "#e0f2f1" },
+                display: 'flex', // Ensures the card uses flexbox
+                flexDirection: 'column', // Align content vertically
+                height: '100%', // Ensures the card takes up full height available in the grid
+              }}
+              onClick={handleNavigatePharmacistInventory}
+            >
+              <CardActionArea sx={{ flexGrow: 1 }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Manage Inventory
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Keep track of medications and supplies with our efficient inventory system.
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
           </Grid>
-        </Box>
+
+          {/* Inventory Management Card */}
+          <Grid item xs={12} sm={6} md={6}>
+            <Card
+              sx={{
+                boxShadow: 3,
+                "&:hover": { boxShadow: 6 },
+                ":hover": { backgroundColor: "#e0f2f1" },
+                display: 'flex', // Ensures the card uses flexbox
+                flexDirection: 'column', // Align content vertically
+                height: '100%', // Ensures the card takes up full height available in the grid
+              }}
+              onClick={handleNavigatePatientManager}
+            >
+              <CardActionArea sx={{ flexGrow: 1 }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Patient Records
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Access and manage patient information securely and conveniently.
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+
+
+          {/* Inventory Management Card */}
+          <Grid item xs={12} sm={6} md={6}>
+            <Card
+              sx={{
+                boxShadow: 3,
+                "&:hover": { boxShadow: 6 },
+                ":hover": { backgroundColor: "#e0f2f1" },
+                display: 'flex', // Ensures the card uses flexbox
+                flexDirection: 'column', // Align content vertically
+                height: '100%', // Ensures the card takes up full height available in the grid
+              }}
+              onClick={handleNavigatePharmCashier}
+            >
+              <CardActionArea sx={{ flexGrow: 1 }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Cashier
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Checkout a customer for either OTC items or prescriptions.
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+
+
+          {/* Inventory Management Card */}
+          <Grid item xs={12} sm={6} md={6}>
+            <Card
+              sx={{
+                boxShadow: 3,
+                "&:hover": { boxShadow: 6 },
+                ":hover": { backgroundColor: "#e0f2f1" },
+                display: 'flex', // Ensures the card uses flexbox
+                flexDirection: 'column', // Align content vertically
+                height: '100%', // Ensures the card takes up full height available in the grid
+              }}
+              onClick={handleOpenSignaturePad}
+            >
+              <CardActionArea sx={{ flexGrow: 1 }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Patient Records
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Draw and save your signature for prescriptions and documents.
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+
+        </Grid>
       </Container>
 
 
-      {/* Signature Pad Dialog */}
+      {/* Dialog Stuff */}
       <Dialog open={openSignaturePad} onClose={handleCloseSignaturePad} maxWidth="sm" fullWidth>
         <DialogTitle>Draw Your Signature</DialogTitle>
         <DialogContent sx={{ textAlign: "center" }}>
@@ -210,9 +249,12 @@ function Pharm() {
           </Button>
         </DialogActions>
       </Dialog>
-      
+
+
+{/* Got rid of header :p */}
+
     </Box>
-    
+
   );
 }
 

@@ -4,7 +4,7 @@ import { Box, Typography, Container, AppBar, Toolbar, Table, TableBody, TableCel
 import { useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { InventoryItem, FiscalItem, PharmacyDetails } from '../../interfaces'; // Assuming the interfaces file is in a parent folder
+import { InventoryItem, FiscalItem, PharmacyDetails } from '../../interfaces';
 import { useUserContext } from '../UserContext'
 import { isTemplateHead } from 'typescript';
 
@@ -328,20 +328,30 @@ function Inventory() {
   return (
     <div className="inventory-background" style={{ alignItems: "start" }}>
       {/* Fixed AppBar at the top */}
-      <AppBar position="fixed">
-        <Toolbar>
-          <Typography variant="h6" style={{ flexGrow: 1 }}>
+      <AppBar position="fixed" sx={{ backgroundColor: "#00796b" }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {/* Buttons Container */}
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', flexGrow: 1 }}>
+            <Button color="inherit" onClick={handleNavigateManager}>
+              Home
+            </Button>
+            <Button color="inherit" onClick={handleNavigateStaffOverview}>
+              Staff Overview
+            </Button>
+            <Button color="inherit" onClick={handleLogout}>
+              Log Out
+            </Button>
+          </Box>
+
+          {/* Centered Typography */}
+          <Typography variant="h6" sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
             Inventory Management
           </Typography>
-          <Button color="inherit" onClick={handleNavigateManager}>Home</Button>
-          <Button color="inherit" onClick={handleNavigateStaffOverview}>Staff Overview</Button>
-          <Button color="inherit" onClick={handleLogout}>Log Out</Button>
         </Toolbar>
       </AppBar>
 
-      {/* Add padding to account for the fixed AppBar */}
-      <Box component="section" className="box-background" sx={{ p: 2, mt: 8, alignItems: 'start', height: '80vh', }}>
-        <Container component="main" style={{ padding: '2rem', maxWidth: '1500px' }}> {/* Increased maxWidth */}
+      <Box component="section" className="box-background" sx={{ p: 2, mt: 8, alignItems: 'start' }}>
+        <Container component="main" style={{ padding: '2rem', maxWidth: '1500px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
             <Typography variant="h5" gutterBottom>
               Pharmacy Inventory
@@ -355,154 +365,140 @@ function Inventory() {
               </Button>
             </div>
           </div>
-          {/* Inventory Table */}
-          <TableContainer component={Paper} style={{ alignItems: "start" }}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Amount</TableCell>
-                  <TableCell>Supplier</TableCell>
-                  <TableCell>Price Per Quantity</TableCell>
-                  <TableCell>Expiration Date</TableCell>
-                  <TableCell>Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {inventory.map(item => (
-                  <TableRow key={item.id}>
-                    <TableCell>{item.id}</TableCell>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.amount}</TableCell>
-                    <TableCell>{item.supplier}</TableCell>
-                    <TableCell>${item.price_per_quantity}</TableCell> {/* Add $ sign */}
-                    <TableCell>{item.expiration_date}</TableCell>
-                    <TableCell>
-                      <div style={{ display: 'flex', gap: '8px' }}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() => handleOpenDialog(item)}
-                        >
-                          Purchase
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="info"
-                          onClick={() => handleOpenEditDialog(item)}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          sx={{ marginRight: '1rem' }}
-                          variant="contained"
-                          color="error"
-                          onClick={() => handleRemoveItem(item.id)}
-                        >
-                          Remove
-                        </Button>
-                      </div>
-                    </TableCell>
 
+          {/* Inventory Table Section */}
+          <Box sx={{ mb: 4 }}>
+            <TableContainer
+              component={Paper}
+              style={{
+                maxHeight: '60vh',  // Adjust this value as needed
+                overflowY: 'auto',  // Allow scrolling within the container
+              }}
+            >
+              <Table>
+                <TableHead sx={{ backgroundColor: "#00796b" }}>
+                  <TableRow>
+                    <TableCell>ID</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Amount</TableCell>
+                    <TableCell>Supplier</TableCell>
+                    <TableCell>Price Per Quantity</TableCell>
+                    <TableCell>Expiration Date</TableCell>
+                    <TableCell>Actions</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {inventory.map(item => (
+                    <TableRow key={item.id}>
+                      <TableCell>{item.id}</TableCell>
+                      <TableCell>{item.name}</TableCell>
+                      <TableCell>{item.amount}</TableCell>
+                      <TableCell>{item.supplier}</TableCell>
+                      <TableCell>${item.price_per_quantity}</TableCell>
+                      <TableCell>{item.expiration_date}</TableCell>
+                      <TableCell>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                          <Button variant="contained" color="primary" onClick={() => handleOpenDialog(item)}>Purchase</Button>
+                          <Button variant="contained" color="info" onClick={() => handleOpenEditDialog(item)}>Edit</Button>
+                          <Button sx={{ marginRight: '1rem' }} variant="contained" color="error" onClick={() => handleRemoveItem(item.id)}>Remove</Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
 
-          {/* Add New Item Form */}
+          {/* Add New Item Form Section with White Background */}
           <Box sx={{ mt: 4 }}>
-            <Typography variant="h6">Add New Inventory Item</Typography>
-            <Box sx={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}> {/* Use flex for row */}
-              <TextField label="ID" name="id" value={newItem.id} onChange={handleInputChange} style={{ flex: '1' }} />
-              <TextField label="Name" name="name" value={newItem.name} onChange={handleInputChange} style={{ flex: '1' }} />
-              <TextField label="Amount" name="amount" type="number" value={newItem.amount} onChange={handleInputChange} style={{ flex: '1' }} />
-              <TextField label="Supplier" name="supplier" value={newItem.supplier} onChange={handleInputChange} style={{ flex: '1' }} />
-              <TextField label="Price Per Quantity" name="price_per_quantity" type="number" value={newItem.price_per_quantity} onChange={handleInputChange} style={{ flex: '1' }} />
-              <TextField label="Expiration Date" name="expiration_date" type="date" value={newItem.expiration_date} onChange={handleInputChange} style={{ flex: '1' }} InputLabelProps={{ shrink: true }} /> {/* Date Input */}
-            </Box>
-            <Box sx={{ mt: 2 }}>
-              <Button variant="contained" color="primary" onClick={handleAddItem}>Add Item</Button>
-            </Box>
+            <Paper sx={{ p: 3, backgroundColor: 'white' }}> {/* Paper component with white background */}
+              <Typography variant="h6">Add New Inventory Item</Typography>
+              <Box sx={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                <TextField label="ID" name="id" value={newItem.id} onChange={handleInputChange} style={{ flex: '1' }} />
+                <TextField label="Name" name="name" value={newItem.name} onChange={handleInputChange} style={{ flex: '1' }} />
+                <TextField label="Amount" name="amount" type="number" value={newItem.amount} onChange={handleInputChange} style={{ flex: '1' }} />
+                <TextField label="Supplier" name="supplier" value={newItem.supplier} onChange={handleInputChange} style={{ flex: '1' }} />
+                <TextField label="Price Per Quantity" name="price_per_quantity" type="number" value={newItem.price_per_quantity} onChange={handleInputChange} style={{ flex: '1' }} />
+                <TextField label="Expiration Date" name="expiration_date" type="date" value={newItem.expiration_date} onChange={handleInputChange} style={{ flex: '1' }} InputLabelProps={{ shrink: true }} />
+              </Box>
+              <Box sx={{ mt: 2 }}>
+                <Button variant="contained" color="primary" onClick={handleAddItem}>Add Item</Button>
+              </Box>
+            </Paper>
           </Box>
         </Container>
-
-        {/* purchase item dialogue */}
-        <Dialog open={openDialog} onClose={handleCloseDialog}>
-          <DialogTitle>Purchase Item</DialogTitle>
-          <DialogContent>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="quantity"
-              label="Quantity"
-              type="number"
-              fullWidth
-              variant="standard"
-              value={purchaseQuantity}
-              onChange={(e) => setPurchaseQuantity(e.target.value)}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog}>Cancel</Button>
-            <Button onClick={handlePurchase}>Confirm Purchase</Button>
-          </DialogActions>
-        </Dialog>
-
-        {/* edit item dialogue */}
-        <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
-          <DialogTitle>Edit Inventory Item</DialogTitle>
-          <DialogContent>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="amount"
-              label="Amount"
-              name="amount"
-              type="number"
-              fullWidth
-              variant="standard"
-              value={editAmount}
-              onChange={(e) => setEditAmount(Number(e.target.value))}
-            />
-            <TextField
-              margin="dense"
-              id="price_per_quantity"
-              label="Price Per Quantity"
-              name="price_per_quantity"
-              type="number"
-              fullWidth
-              variant="standard"
-              value={editPrice}
-              onChange={(e) => setEditPrice(Number(e.target.value))}
-            />
-            <TextField
-              margin="dense"
-              id="expiration_date"
-              label="Expiration Date"
-              name="expiration_date"
-              type="date"
-              fullWidth
-              variant="standard"
-              value={editExpiration}
-              onChange={(e) => setEditExpiration(e.target.value)}
-              InputLabelProps={{ shrink: true }}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseEditDialog}>Cancel</Button>
-            <Button onClick={handleEdit}>Save Changes</Button>
-          </DialogActions>
-        </Dialog>
-
-        {/* Footer */}
-        <footer style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#f1f1f1' }}>
-          <Typography variant="body2" color="textSecondary">
-            &copy; 2024 Pharmacy System. All rights reserved.
-          </Typography>
-        </footer>
       </Box>
+
+
+
+      {/* purchase item dialogue */}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Purchase Item</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="quantity"
+            label="Quantity"
+            type="number"
+            fullWidth
+            variant="standard"
+            value={purchaseQuantity}
+            onChange={(e) => setPurchaseQuantity(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={handlePurchase}>Confirm Purchase</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* edit item dialogue */}
+      <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
+        <DialogTitle>Edit Inventory Item</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="amount"
+            label="Amount"
+            name="amount"
+            type="number"
+            fullWidth
+            variant="standard"
+            value={editAmount}
+            onChange={(e) => setEditAmount(Number(e.target.value))}
+          />
+          <TextField
+            margin="dense"
+            id="price_per_quantity"
+            label="Price Per Quantity"
+            name="price_per_quantity"
+            type="number"
+            fullWidth
+            variant="standard"
+            value={editPrice}
+            onChange={(e) => setEditPrice(Number(e.target.value))}
+          />
+          <TextField
+            margin="dense"
+            id="expiration_date"
+            label="Expiration Date"
+            name="expiration_date"
+            type="date"
+            fullWidth
+            variant="standard"
+            value={editExpiration}
+            onChange={(e) => setEditExpiration(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEditDialog}>Cancel</Button>
+          <Button onClick={handleEdit}>Save Changes</Button>
+        </DialogActions>
+      </Dialog>
     </div >
   );
 

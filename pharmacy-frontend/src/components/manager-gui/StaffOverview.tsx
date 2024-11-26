@@ -233,7 +233,7 @@ function StaffOverview() {
   return (
     <div style={{ width: '150vh', height: '100%' }}>
       {/* Navigation Bar */}
-      <AppBar position="fixed" sx={{ zIndex: 1400 }}>
+      <AppBar position="fixed" sx={{ zIndex: 1400, backgroundColor: "#00796b" }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
           {/* Left-aligned buttons */}
           <div style={{ flexGrow: 1 }}></div> {/* Empty div to push content to the right */}

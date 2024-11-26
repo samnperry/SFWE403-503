@@ -174,7 +174,7 @@ function SysAdminPage() {
 
   return <div className="sysadmin-background">
     {/* Header */}
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: "#00796b" }}>
       <Toolbar
         sx={{
           display: 'flex',

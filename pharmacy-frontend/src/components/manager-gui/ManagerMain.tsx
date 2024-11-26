@@ -17,6 +17,9 @@ import {
   DialogActions,
   Badge,
   IconButton,
+  CardActionArea,
+  CardContent,
+  Card,
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useNavigate } from "react-router-dom";
@@ -100,13 +103,8 @@ function ManagerMain() {
     }
   };
 
-  const handleNavigateManager = () => {
-    navigate("/ManagerMain");
-  };
-
   return (
     <Box
-      className="manager-background"
       sx={{
         backgroundColor: "#f7f9fc",
         minHeight: "100vh",
@@ -116,29 +114,33 @@ function ManagerMain() {
     >
       {/* AppBar */}
       <AppBar position="fixed" sx={{ backgroundColor: "#00796b" }}>
-        <Toolbar sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Typography variant="h6">
+        <Toolbar>
+          {/* Spacer to push the content to the center */}
+          <Box sx={{ flexGrow: 1 }} />
+
+          {/* Centered Title */}
+          <Typography variant="h6" sx={{ textAlign: 'center', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
             Manager Dashboard
           </Typography>
-          <Box sx={{ flexGrow: 1 }} />  {/* This will push items on the right */}
-          <IconButton
-            color={expiredMedications.length > 0 ? "error" : "inherit"}
-            onClick={handleNotificationClick}
-          >
-            <Badge
-              badgeContent={expiredMedications.length > 0 ? expiredMedications.length : null}
-              color="error"
+
+          {/* Buttons aligned to the right */}
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}>
+            <Box sx={{ flexGrow: 1 }} />  {/* This will push items on the right */}
+            <IconButton
+              color={expiredMedications.length > 0 ? "error" : "inherit"}
+              onClick={handleNotificationClick}
             >
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <Button
-            color="inherit"
-            onClick={handleLogout}
-            sx={{ textTransform: "none", fontWeight: "bold" }}
-          >
-            Log Out
-          </Button>
+              <Badge
+                badgeContent={expiredMedications.length > 0 ? expiredMedications.length : null}
+                color="error"
+              >
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            <Button color="inherit" onClick={handleLogout}>
+              Log Out
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
 
@@ -149,72 +151,71 @@ function ManagerMain() {
           marginTop: "6rem",
           padding: "2rem",
           flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Typography variant="h4" sx={{ fontWeight: "bold", marginBottom: "2rem" }}>
+        <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: "2rem" }}>
           Welcome, {user?.name || "Manager"}!
         </Typography>
+
         <Grid container spacing={4}>
-          {/* Staff Overview */}
-          <Grid item xs={12} sm={6}>
-            <ButtonBase
+          {/* Staff Overview Card */}
+          <Grid item xs={12} sm={6} md={6}>
+            <Card
+              sx={{
+                boxShadow: 3,
+                "&:hover": { boxShadow: 6 },
+                ":hover": { backgroundColor: "#e0f2f1" },
+                display: 'flex', // Ensures the card uses flexbox
+                flexDirection: 'column', // Align content vertically
+                height: '100%', // Ensures the card takes up full height available in the grid
+              }}
               onClick={() => navigate("/StaffOverview")}
-              sx={{
-                width: "100%",
-                display: "block",
-                borderRadius: 2,
-                overflow: "hidden",
-                boxShadow: 2,
-              }}
             >
-              <Paper
-                sx={{
-                  padding: "2rem",
-                  textAlign: "center",
-                  backgroundColor: "#ffffff",
-                  ":hover": { backgroundColor: "#e0f2f1" },
-                }}
-              >
-                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                  Staff Overview
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  View and manage pharmacy staff details.
-                </Typography>
-              </Paper>
-            </ButtonBase>
+              <CardActionArea sx={{ flexGrow: 1 }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Staff Overview
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    View and manage pharmacy staff details.
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
           </Grid>
-          {/* Inventory Management */}
-          <Grid item xs={12} sm={6}>
-            <ButtonBase
-              onClick={() => navigate("/Inventory")}
+
+          {/* Inventory Management Card */}
+          <Grid item xs={12} sm={6} md={6}>
+            <Card
               sx={{
-                width: "100%",
-                display: "block",
-                borderRadius: 2,
-                overflow: "hidden",
-                boxShadow: 2,
+                boxShadow: 3,
+                "&:hover": { boxShadow: 6 },
+                ":hover": { backgroundColor: "#e0f2f1" },
+                display: 'flex', // Ensures the card uses flexbox
+                flexDirection: 'column', // Align content vertically
+                height: '100%', // Ensures the card takes up full height available in the grid
               }}
+              onClick={() => navigate("/Inventory")}
             >
-              <Paper
-                sx={{
-                  padding: "2rem",
-                  textAlign: "center",
-                  backgroundColor: "#ffffff",
-                  ":hover": { backgroundColor: "#e0f2f1" },
-                }}
-              >
-                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                  Manage Inventory
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  Track and update medication stock.
-                </Typography>
-              </Paper>
-            </ButtonBase>
+              <CardActionArea sx={{ flexGrow: 1 }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    Manage Inventory
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Track and update medication in stock.
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
           </Grid>
         </Grid>
       </Container>
+
+
 
       {/* Footer */}
       <Box
