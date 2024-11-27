@@ -1,9 +1,9 @@
 {
-  "name": "Bubu Pharmacy",
-  "website": "https://genshin-impact.fandom.com/wiki/Bubu_Pharmacy",
-  "address": "Liyue Harbor",
-  "owner": "Baizhu",
-  "phoneNumber": "5204712355",
+  "name": "Wilbur Pharmacy",
+  "website": "https://localhost:3000/",
+  "address": "University of Arizona ",
+  "owner": "Haliey Welch",
+  "phoneNumber": "520 123 4567",
   "openingTime": "8:00",
-  "closingTime": "8:07"
+  "closingTime": "20:00"
 }
