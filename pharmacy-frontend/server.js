@@ -176,7 +176,9 @@ app.put('/api/staff/:id', (req, res) => {
 // PUT: Update an existing patient by ID
 app.put('/api/patients/:id', (req, res) => {
   const patientId = Number(req.params.id); // Get the ID from the URL
-  const updatedPatientData = req.body; // Get the new data from the request body
+  const updatedPatientData = req.body.patient.prescriptions; // Get the new data from the request body
+  const patientData = req.body.patient; // Get the new data from the request body
+  const pharmacist = req.body.pharmacistName; 
 
   fs.readFile(patientFilePath, 'utf8', (err, data) => {
     if (err) {
@@ -201,6 +203,20 @@ app.put('/api/patients/:id', (req, res) => {
 
     // Update the patient's data with the new values from the request body
     patients[patientIndex] = { ...patients[patientIndex], ...updatedPatientData };
+    // Generate the log entry by filtering and listing filled prescriptions
+    const filledPrescriptions = patientData.prescriptions
+      .filter(prescription => prescription.filled)
+      .map(prescription => `${prescription.name} (amount: ${prescription.amount})`)
+      .join(", ");
+
+    const logEntry = `Date: ${new Date().toISOString()} - Prescriptions filled for patient ${patientData.name} by ${pharmacist.name}: ${filledPrescriptions || "None"}\n`;
+
+
+    fs.appendFile(systemLogFilePath, logEntry, (err) => {
+      if (err) {
+        console.error('Error writing to system log file:', err);
+      }
+    });
 
     fs.writeFile(patientFilePath, JSON.stringify(patients, null, 2), err => {
       if (err) {

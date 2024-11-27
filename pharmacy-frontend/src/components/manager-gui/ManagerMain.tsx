@@ -216,22 +216,6 @@ function ManagerMain() {
       </Container>
 
 
-
-      {/* Footer */}
-      <Box
-        component="footer"
-        sx={{
-          backgroundColor: "#004d40",
-          padding: "1rem",
-          textAlign: "center",
-          color: "white",
-        }}
-      >
-        <Typography variant="body2">
-          &copy; 2024 Pharmacy System. All rights reserved.
-        </Typography>
-      </Box>
-
       {/* Inventory Alerts Dialog */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>Inventory Alerts</DialogTitle>
