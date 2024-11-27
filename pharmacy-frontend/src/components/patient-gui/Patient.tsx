@@ -349,7 +349,7 @@ function PatientManager() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ user: currUser }),
+        body: JSON.stringify({ user }),
       });
 
       if (response.ok) {
