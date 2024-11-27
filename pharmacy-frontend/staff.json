@@ -14,7 +14,7 @@
     "type": "Manager",
     "name": "manager",
     "username": "manager",
-    "password": "yes",
+    "password": "manager",
     "disabled": true,
     "locked": false,
     "attempted": 0,

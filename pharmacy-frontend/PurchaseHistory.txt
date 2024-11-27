@@ -3,3 +3,4 @@ Date: 2024-11-25T22:15:47.448Z - Purchase: {"id":"1732572947407","date":"2024-11
 Date: 2024-11-26T05:26:15.085Z - Purchase: {"id":"1732598775053","date":"2024-11-26T05:26:15.053Z","paymentMethod":"Cash","items":[{"id":"1732598755058","name":"oh","quantity":10,"price":10,"total":100}],"totalCost":100}
 Date: 2024-11-26T05:26:49.211Z - Purchase: {"id":"1732598809203","date":"2024-11-26T05:26:49.203Z","paymentMethod":"Cash","items":[{"id":"1732598804707","name":"po","quantity":2,"price":2,"total":4}],"totalCost":4}
 Date: 2024-11-27T03:21:27.398Z - Purchase: {"id":"1732677687389","date":"2024-11-27T03:21:27.389Z","paymentMethod":"Cash","items":[{"id":"022","name":"Warfarin","quantity":91,"price":1.3,"total":118.3}],"totalCost":118.3}
+Date: 2024-11-27T03:31:49.566Z - Purchase: {"id":"1732678309548","date":"2024-11-27T03:31:49.548Z","paymentMethod":"Cash","items":[{"id":"022","name":"Warfarin","quantity":10,"price":1.3,"total":13}],"totalCost":13}
