@@ -92,6 +92,7 @@ app.get('/api/patients', (req, res) => {
     res.json(JSON.parse(data));
   });
 });
+
 // Get the purchase history
 app.get('/api/purchases', (req, res) => {
   fs.readFile(purchaseHistoryFilePath, 'utf8', (err, data) => {
@@ -108,7 +109,12 @@ app.get('/api/purchases', (req, res) => {
       const match = line.match(/Purchase: (.+)$/);
       if (match && match[1]) {
         try {
-          return JSON.parse(match[1]);
+          const purchase = JSON.parse(match[1]);
+          // Ensure patientName is included
+          if (!purchase.patientName) {
+            purchase.patientName = 'Unknown'; // Default value if patientName is missing
+          }
+          return purchase;
         } catch (parseError) {
           console.error('Error parsing purchase entry:', parseError);
           return null;
