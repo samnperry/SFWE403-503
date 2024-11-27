@@ -205,8 +205,14 @@ app.put('/api/patients/:id', (req, res) => {
 
     // Update the patient's data with the new values from the request body
     patients[patientIndex] = { ...patients[patientIndex], ...updatedPatientData };
-    const logEntry = `Date: ${new Date().toISOString()} - Prescription filled for patient ${patientData.name} by ${pharmacist.name} 
-    for ${patientData.prescriptions.length} prescriptions\n`;
+    // Generate the log entry by filtering and listing filled prescriptions
+    const filledPrescriptions = patientData.prescriptions
+      .filter(prescription => prescription.filled)
+      .map(prescription => `${prescription.name} (amount: ${prescription.amount})`)
+      .join(", ");
+
+    const logEntry = `Date: ${new Date().toISOString()} - Prescriptions filled for patient ${patientData.name} by ${pharmacist.name}: ${filledPrescriptions || "None"}\n`;
+
 
     fs.appendFile(systemLogFilePath, logEntry, (err) => {
       if (err) {
