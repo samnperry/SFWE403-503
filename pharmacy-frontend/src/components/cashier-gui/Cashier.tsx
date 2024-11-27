@@ -54,7 +54,6 @@ function Cashier() {
   const [signatureData, setSignatureData] = useState<string | null>(null);
   const sigPad = useRef<SignatureCanvas>(null);
 
-
   // Fetch inventory from the server
   useEffect(() => {
     const fetchInventory = async () => {
@@ -268,11 +267,16 @@ function Cashier() {
       generateReceiptPDF(checkoutType);
     }
 
+    // Get the selected patient's name
+    const selectedPatient = patients.find(patient => patient.id === selectedPatientId);
+    const patientName = selectedPatient ? selectedPatient.name : 'Unknown';
+
     // Prepare purchase data
     const purchaseData = {
       id: Date.now().toString(), // Unique ID for the purchase
       date: new Date().toISOString(),
       paymentMethod: checkoutType,
+      patientName: patientName, // Include patient name
       items: cart.map(cartItem => ({
         id: cartItem.item.id,
         name: cartItem.item.name,
@@ -344,6 +348,14 @@ function Cashier() {
     yPosition += 10;
     doc.text(`Payment Method: ${checkoutType}`, 10, yPosition);
     yPosition += 10;
+
+    // Add patient name if available
+    if (selectedPatientId !== -1) {
+      const selectedPatient = patients.find(patient => patient.id === selectedPatientId);
+      const patientName = selectedPatient ? selectedPatient.name : 'Unknown';
+      doc.text(`Patient Name: ${patientName}`, 10, yPosition);
+      yPosition += 10;
+    }
 
     // Add items header
     doc.text("Items Purchased:", 10, yPosition);
@@ -516,7 +528,6 @@ function Cashier() {
 
   const handleClearSignature = () => sigPad.current?.clear();
 
-
   return (
     <div style={{ alignItems: "start" }}>
       {/* AppBar */}
@@ -561,7 +572,6 @@ function Cashier() {
             ))}
           </Select>
         </FormControl>
-
 
         {/* Select Prescription Item */}
         <FormControl fullWidth margin="normal" disabled={selectedPatientId === -1}>
@@ -737,6 +747,7 @@ function Cashier() {
                 <TableRow>
                   <TableCell>Date</TableCell>
                   <TableCell>Payment Method</TableCell>
+                  <TableCell>Patient Name</TableCell> {/* Added */}
                   <TableCell>Items</TableCell>
                   <TableCell>Total Cost</TableCell>
                 </TableRow>
@@ -746,6 +757,7 @@ function Cashier() {
                   <TableRow key={index}>
                     <TableCell>{new Date(purchase.date).toLocaleString()}</TableCell>
                     <TableCell>{purchase.paymentMethod}</TableCell>
+                    <TableCell>{purchase.patientName}</TableCell> {/* Display patient name */}
                     <TableCell>
                       {purchase.items.map((item: any, idx: number) => (
                         <div key={idx}>
