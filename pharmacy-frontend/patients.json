@@ -29,9 +29,9 @@
         "filled": true
       },
       {
-        "name": "",
-        "amount": 0,
-        "filled": false
+        "name": "Warfarin",
+        "amount": 10,
+        "filled": true
       }
     ]
   },

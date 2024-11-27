@@ -399,7 +399,7 @@ function Cashier() {
       const updatedPrescriptions = patientPrescriptions.map((prescription) => {
         const cartItemMatch = cart.find((item) => item.item.name === prescription.name);
         if (cartItemMatch) {
-          return { ...prescription, filled: true }; // Set filled to true after filling
+          return { ...prescription, filled: false }; // Set filled to false after filling
         }
         return prescription; // Leave unchanged if no match
       });
@@ -573,7 +573,7 @@ function Cashier() {
             onChange={(e) => setSelectedPrescriptionName(e.target.value as string)}
           >
             {patientPrescriptions
-              .filter((prescription) => prescription.filled === false)
+              .filter((prescription) => prescription.filled === true)
               .map((prescription) => (
                 <MenuItem key={prescription.name} value={prescription.name}>
                   {prescription.name}

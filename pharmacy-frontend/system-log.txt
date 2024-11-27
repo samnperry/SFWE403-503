@@ -135,3 +135,5 @@ Date: 2024-11-26T05:26:15.085Z - New purchase added: {"id":"1732598775053","date
 Date: 2024-11-26T05:26:49.211Z - New purchase added: {"id":"1732598809203","date":"2024-11-26T05:26:49.203Z","paymentMethod":"Cash","items":[{"id":"1732598804707","name":"po","quantity":2,"price":2,"total":4}],"totalCost":4}
 Date: 2024-11-27T02:56:52.969Z - Successful Login for User: admin
 Date: 2024-11-27T02:56:55.992Z - User "admin" of type "Admin" has successfully logged out.
+Date: 2024-11-27T03:21:27.396Z - New purchase added: {"id":"1732677687389","date":"2024-11-27T03:21:27.389Z","paymentMethod":"Cash","items":[{"id":"022","name":"Warfarin","quantity":91,"price":1.3,"total":118.3}],"totalCost":118.3}
+Date: 2024-11-27T03:21:27.445Z - Inventory updated: {"id":"022","name":"Warfarin","amount":"18","supplier":"HealthCo Pharma","price_per_quantity":1.3,"expiration_date":"2025-03-15"}
