@@ -68,12 +68,7 @@
         "amount": 6,
         "filled": true
       }
-    ],
-    "patientId": 1,
-    "pharmacistName": {
-      "name": "Willy",
-      "type": "Pharmacist"
-    }
+    ]
   },
   {
     "id": 2,
