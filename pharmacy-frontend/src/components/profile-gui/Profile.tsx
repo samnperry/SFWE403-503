@@ -58,7 +58,7 @@ function Profile() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ currUser }), // Pass the user object in the request body
+                body: JSON.stringify({ user: currUser }), // Pass the user object in the request body
             });
 
             if (response.ok) {

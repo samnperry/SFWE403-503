@@ -289,7 +289,7 @@ function Cashier() {
 
     // Send purchase data to the server
     try {
-      const response = await fetch('http://localhost:5001/api/fiscal', {
+      const response = await fetch('http://localhost:5001/api/purchases', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

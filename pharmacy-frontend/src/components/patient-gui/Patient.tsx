@@ -348,7 +348,7 @@ function PatientManager() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ currUser }),
+        body: JSON.stringify({ user: currUser }),
       });
 
       if (response.ok) {

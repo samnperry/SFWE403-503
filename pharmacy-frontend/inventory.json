@@ -106,10 +106,10 @@
   {
     "id": "014",
     "name": "Hydrochlorothiazide",
-    "amount": 90,
+    "amount": 900,
     "supplier": "MediSupply Inc.",
     "price_per_quantity": 0.75,
-    "expiration_date": "2024-11-05"
+    "expiration_date": "2026-11-05"
   },
   {
     "id": "015",

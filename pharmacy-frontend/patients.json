@@ -3,7 +3,7 @@
     "id": 1,
     "name": "William Rains",
     "dateOfBirth": "04/14/2006",
-    "address": "1605 N Fremont Ave.",
+    "address": "1234 University St",
     "phone": "5204712355",
     "email": "willyrains424@gmail.com",
     "insurance": "BCBS",
@@ -21,12 +21,33 @@
       {
         "name": "Expiredin",
         "amount": 8,
-        "filled": false
+        "filled": true
       },
       {
         "name": "Warfarin",
         "amount": 10,
         "filled": false
+      },
+      {
+        "name": "Zolpidem",
+        "amount": 5,
+        "filled": false
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Patient",
+    "dateOfBirth": "123",
+    "address": "Address St",
+    "phone": "1234",
+    "email": "gamil@gmail.com",
+    "insurance": "BCRB",
+    "prescriptions": [
+      {
+        "name": "Hydrochlorothiazide",
+        "amount": 10,
+        "filled": true
       }
     ]
   }

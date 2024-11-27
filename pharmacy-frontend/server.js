@@ -191,8 +191,6 @@ app.put('/api/patients/:id', (req, res) => {
       return res.status(500).json({ error: 'Error parsing patient data' });
     }
 
-    console.log("Patients loaded from file:", patients);  // Log the patients array to ensure it's correct
-
     // Find the index of the patient to update
     const patientIndex = patients.findIndex(patient => patient.id === patientId);
 
@@ -334,14 +332,6 @@ app.post('/api/fiscal', (req, res) => {
         }
       });
 
-      // Write the purchase to PurchaseHistory.txt
-      const purchaseEntry = `Date: ${new Date().toISOString()} - Purchase: ${JSON.stringify(newPurchase)}\n`;
-      fs.appendFile(purchaseHistoryFilePath, purchaseEntry, (err) => {
-        if (err) {
-          console.error('Error writing to PurchaseHistory.txt:', err);
-        }
-      });
-
       res.json({ message: 'Purchase recorded successfully', newPurchase });
     });
   });
@@ -432,6 +422,7 @@ app.post('/api/login', (req, res) => {
 // Logout endpoint
 app.post('/api/logout', (req, res) => {
   const { user } = req.body; // Expecting a user object in the request body
+  console.log(JSON.stringify(user));
   if (!user || !user.name) {
     return res.status(400).json({ error: 'Invalid user object' });
   }
@@ -445,7 +436,6 @@ app.post('/api/logout', (req, res) => {
       return res.status(500).json({ error: 'Unable to process logout request' });
     }
 
-    console.log(`User ${user.name} has logged out successfully.`);
     // Redirect the user to the login page
     res.status(200).json({ message: 'Logout successful. Redirecting to login page...', redirect: '/LoginPage' });
   });
@@ -469,6 +459,19 @@ app.post('/api/patients', (req, res) => {
       }
       res.json({ message: 'Patient added successfully', patients });
     });
+  });
+});
+
+// POST: Add to purcahse history log
+app.post('/api/purchases', (req, res) => {
+  const newPurchase = req.body; // Get the purchase data from the request body
+  
+  // Write the purchase to PurchaseHistory.txt
+  const purchaseEntry = `Date: ${new Date().toISOString()} - Purchase: ${JSON.stringify(newPurchase)}\n`;
+  fs.appendFile(purchaseHistoryFilePath, purchaseEntry, (err) => {
+    if (err) {
+      console.error('Error writing to PurchaseHistory.txt:', err);
+    }
   });
 });
 
@@ -600,10 +603,10 @@ app.put('/api/user/password', (req, res) => {
     const users = JSON.parse(data);
     const userIndex = users.findIndex(u => u.username === username);
 
-    if (userIndex === -1 ) {
+    if (userIndex === -1) {
       return res.status(400).send("User not found.");
     }
-    else if (users[userIndex].password !== currentPassword){
+    else if (users[userIndex].password !== currentPassword) {
       return res.status(400).send("Incorrect current password.");
     }
 

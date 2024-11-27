@@ -285,7 +285,7 @@ function PharmacistCashier() {
 
     // Send purchase data to the server
     try {
-      const response = await fetch('http://localhost:5001/api/fiscal', {
+      const response = await fetch('http://localhost:5001/api/purchases', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -478,7 +478,7 @@ function PharmacistCashier() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ user }), // Pass the user object in the request body
+        body: JSON.stringify({ user: user }), // Pass the user object in the request body
       });
 
       if (response.ok) {

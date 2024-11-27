@@ -139,3 +139,59 @@ Date: 2024-11-27T03:21:27.396Z - New purchase added: {"id":"1732677687389","date
 Date: 2024-11-27T03:21:27.445Z - Inventory updated: {"id":"022","name":"Warfarin","amount":"18","supplier":"HealthCo Pharma","price_per_quantity":1.3,"expiration_date":"2025-03-15"}
 Date: 2024-11-27T03:31:49.566Z - New purchase added: {"id":"1732678309548","date":"2024-11-27T03:31:49.548Z","paymentMethod":"Cash","items":[{"id":"022","name":"Warfarin","quantity":10,"price":1.3,"total":13}],"totalCost":13}
 Date: 2024-11-27T03:31:49.629Z - Inventory updated: {"id":"022","name":"Warfarin","amount":"8","supplier":"HealthCo Pharma","price_per_quantity":1.3,"expiration_date":"2025-03-15"}
+Date: 2024-11-27T21:53:21.452Z - Successful Login for User: john
+Date: 2024-11-27T21:59:00.267Z - New purchase added: {"id":"1732744740260","date":"2024-11-27T21:59:00.260Z","paymentMethod":"Cash","items":[{"id":"1732744737347","name":"phoenixtest","quantity":6,"price":9,"total":54}],"totalCost":54}
+Date: 2024-11-27T22:18:59.018Z - Successful Login for User: john
+Date: 2024-11-27T22:19:51.987Z - User "john" of type "Pharmacist" has successfully logged out.
+Date: 2024-11-27T22:19:57.844Z - Successful Login for User: john
+Date: 2024-11-27T22:20:00.120Z - User "john" of type "Pharmacist" has successfully logged out.
+Date: 2024-11-27T22:20:08.133Z - Successful Login for User: john
+Date: 2024-11-27T22:21:19.199Z - User "john" of type "Pharmacist" has successfully logged out.
+Date: 2024-11-27T22:21:22.494Z - Successful Login for User: manager
+Date: 2024-11-27T22:21:44.499Z - User "manager" of type "Manager" has successfully logged out.
+Date: 2024-11-27T22:24:02.874Z - Successful Login for User: manager
+Date: 2024-11-27T22:27:45.249Z - Successful Login for User: admin
+Date: 2024-11-27T22:28:05.390Z - User "admin" of type "Admin" has successfully logged out.
+Date: 2024-11-27T22:28:09.753Z - Successful Login for User: manager
+Date: 2024-11-27T22:29:21.817Z - User "manager" of type "Manager" has successfully logged out.
+Date: 2024-11-27T22:29:29.903Z - Successful Login for User: john
+Date: 2024-11-27T22:30:34.933Z - Unsuccessful Login Attempt by User: manager
+Date: 2024-11-27T22:30:37.285Z - Successful Login for User: manager
+Date: 2024-11-27T22:31:34.474Z - User "manager" of type "Manager" has successfully logged out.
+Date: 2024-11-27T22:31:37.661Z - Successful Login for User: Sharon
+Date: 2024-11-27T22:32:30.276Z - Successful Login for User: Sharon
+Date: 2024-11-27T22:32:56.329Z - User "Sharon" of type "Pharmacist" has successfully logged out.
+Date: 2024-11-27T22:33:04.397Z - Successful Login for User: Sharon
+Date: 2024-11-27T22:33:20.921Z - User "Sharon" of type "Pharmacist" has successfully logged out.
+Date: 2024-11-27T22:33:27.067Z - Unsuccessful Login Attempt by User: Sharon
+Date: 2024-11-27T22:33:27.724Z - Unsuccessful Login Attempt by User: Sharon
+Date: 2024-11-27T22:33:28.169Z - Unsuccessful Login Attempt by User: Sharon
+Date: 2024-11-27T22:33:28.559Z - Unsuccessful Login Attempt by User: Sharon
+Date: 2024-11-27T22:33:28.957Z - Unsuccessful Login Attempt by User: Sharon
+Date: 2024-11-27T22:33:35.704Z - Successful Login for User: manager
+Date: 2024-11-27T22:33:44.935Z - User "manager" of type "Manager" has successfully logged out.
+Date: 2024-11-27T22:33:47.764Z - Successful Login for User: Sharon
+Date: 2024-11-27T22:35:48.687Z - Successful Login for User: john
+Date: 2024-11-27T22:35:50.683Z - User "john" of type "Pharmacist" has successfully logged out.
+Date: 2024-11-27T22:35:53.760Z - Successful Login for User: john
+Date: 2024-11-27T22:35:58.200Z - User "john" of type "Pharmacist" has successfully logged out.
+Date: 2024-11-27T22:36:09.147Z - Successful Login for User: john
+Date: 2024-11-27T22:39:12.483Z - User "john" of type "Pharmacist" has successfully logged out.
+Date: 2024-11-27T22:41:20.182Z - Successful Login for User: john
+Date: 2024-11-27T22:41:23.763Z - User "john" of type "Pharmacist" has successfully logged out.
+Date: 2024-11-27T22:41:53.884Z - Successful Login for User: john
+Date: 2024-11-27T22:45:39.048Z - Successful Login for User: john
+Date: 2024-11-27T22:45:42.240Z - User "john" of type "Pharmacist" has successfully logged out.
+Date: 2024-11-27T22:45:50.497Z - Successful Login for User: john
+Date: 2024-11-27T22:51:11.196Z - User "john" of type "Pharmacist" has successfully logged out.
+Date: 2024-11-27T22:51:14.579Z - Successful Login for User: john
+Date: 2024-11-27T22:51:17.155Z - User "john" of type "Pharmacist" has successfully logged out.
+Date: 2024-11-27T22:51:48.833Z - Successful Login for User: john
+Date: 2024-11-27T22:53:06.487Z - Successful Login for User: john
+Date: 2024-11-27T22:53:08.674Z - User "john" of type "Pharmacist" has successfully logged out.
+Date: 2024-11-27T22:53:13.004Z - Successful Login for User: john
+Date: 2024-11-27T22:53:18.326Z - User "john" of type "Pharmacist" has successfully logged out.
+Date: 2024-11-27T22:53:21.531Z - Unsuccessful Login Attempt by User: john
+Date: 2024-11-27T22:53:23.766Z - Successful Login for User: john
+Date: 2024-11-27T23:10:03.354Z - Successful Login for User: john
+Date: 2024-11-27T23:16:33.823Z - Successful Login for User: john
