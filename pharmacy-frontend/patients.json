@@ -1,5 +1,35 @@
 [
   {
+    "0": {
+      "name": "Omeprazole",
+      "amount": 40,
+      "filled": true
+    },
+    "1": {
+      "name": "Hydrochlorothiazide",
+      "amount": 10,
+      "filled": false
+    },
+    "2": {
+      "name": "Expiredin",
+      "amount": 8,
+      "filled": true
+    },
+    "3": {
+      "name": "Warfarin",
+      "amount": 91,
+      "filled": true
+    },
+    "4": {
+      "name": "Warfarin",
+      "amount": 10,
+      "filled": true
+    },
+    "5": {
+      "name": "Gabapentin",
+      "amount": 6,
+      "filled": true
+    },
     "id": 1,
     "name": "William Rains",
     "dateOfBirth": "04/14/2006",
@@ -32,8 +62,18 @@
         "name": "Warfarin",
         "amount": 10,
         "filled": true
+      },
+      {
+        "name": "Gabapentin",
+        "amount": 6,
+        "filled": true
       }
-    ]
+    ],
+    "patientId": 1,
+    "pharmacistName": {
+      "name": "Willy",
+      "type": "Pharmacist"
+    }
   },
   {
     "id": 2,

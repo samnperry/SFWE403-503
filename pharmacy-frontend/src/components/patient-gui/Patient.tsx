@@ -35,7 +35,7 @@ import { InventoryItem, Patient } from '../../interfaces'; // Assuming the inter
 import { useUserContext } from "../UserContext";
 
 function PatientManager() {
-  const currUser = useUserContext().user;
+  const user = useUserContext().user;
   const navigate = useNavigate();
   const [patients, setPatients] = useState<Patient[]>([]);
   const [newPatient, setNewPatient] = useState<Partial<Patient>>({
@@ -232,7 +232,7 @@ function PatientManager() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prescriptions: selectedPatient.prescriptions }), // Send the updated prescriptions
+        body: JSON.stringify({ patient: selectedPatient, pharmacistName: user}), // Send the updated prescriptions
       })
         .then((response) => {
           if (!response.ok) {
@@ -341,25 +341,31 @@ function PatientManager() {
     }
   };
 
+  // Handle Logout
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:5001/api/logout", {
-        method: "POST",
+      const response = await fetch('http://localhost:5001/api/logout', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ currUser }),
+        body: JSON.stringify({ user }), // Pass the user object in the request body
       });
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data.message); // "Logout successful. Redirecting to login page..."
+
+        // Redirect to the login page
         window.location.href = data.redirect;
       } else {
         const errorData = await response.json();
-        alert(errorData.error);
+        console.error('Logout failed:', errorData.error);
+        alert(errorData.error); // Show error message to the user
       }
     } catch (error) {
-      alert("An unexpected error occurred. Please try again.");
+      console.error('Error during logout:', error);
+      alert('An unexpected error occurred. Please try again.');
     }
   };
 
