@@ -1,21 +1,18 @@
 # SFWE403-503
 This is the repository for the SFWE403/503 class project.
 # How to Run the Code
-Have [Node.js](https://nodejs.org/en) (including NPM) downloaded
-In the command line, enter:
-    ```bash
-	npm install```
-Next, in the command line enter:
-    ```bash
-	cd ./pharmacy-frontend```
-Next, in the command line enter:
-    ```bash
-	npm run dev```
-The program should boot up on localhost along with the backend
+1. Have [Node.js](https://nodejs.org/en) (including NPM) downloaded
+2. In the command line, enter:
+    ```bash npm install```
+3. Next, in the command line enter:
+    ```bash cd ./pharmacy-frontend```
+4. Next, in the command line enter:
+    ```bash npm run dev```
+The program should boot up on localhost along with the backend.
 # Top Level Breakdown
 
+## Server.js
 
-##Server.js
 This file is the backend server for a pharmacy management system built with Node.js and Express. It provides API endpoints for retrieving and updating data related to inventory, staff, pharmacy details, fiscal records, patient information, and purchase history. Additionally, it implements logging functionality for tracking system updates and actions.
 ## Assets Folder
 This folder contains images used in the frontend development.
