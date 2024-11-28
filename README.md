@@ -19,7 +19,8 @@ This folder contains images used in the frontend development.
 ## Components Folder
 This folder contains all the CSS and GUI(TSX) files that our system uses to display the content on the webpage. Each individual component is separated into folders based on their user/functionality. 
 # Page Breakdown
-
+## App.tsx
+This is the main page needed to render all our pages and has the context for our entire system. As a part of the React framework, App.tsx is needed at the main page that contains nevigation and initialization of the other pages.
 
 ## Cashier  - Cashier.tsx
 This page allows the Cashier user to create a cart that contains a patient's prescription or non-prescription items and check out the items out of the inventory for purchase. When an item is purchased it prompts the user for a signature and if the transaction is successful then the item is removed from the inventory and the patient's prescription is filled on the patient's record page. 
