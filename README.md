@@ -35,7 +35,7 @@ This file contains the functionality for the Pharmacy Manager to create/delete/e
 This is a sub-page that pharmacists can access through the pharmacist home page. It allows pharmacists to edit all information stored on patients, add or delete patients, view prescriptions that patients may have, and mark these prescriptions as filled or delete them. If a prescription is picked up the prescription will stay in the patient’s file but will be marked as un-filled.
 ## Pharm - Pharm.tsx
 This is a navigation page for the Pharmacist user that links to the inventory, patient records, cashier, and edit profile pages.  
-## Pharmacist/Cashier - PharmacistCashier.tsx
+## Pharmacist Checkout - PharmacistCashier.tsx
 This page allows the Pharmacist user to create a cart that contains a patient's prescription or non-prescription items and check out the items out of the inventory for purchase. When an item is purchased it prompts the user for a signature and if the transaction is successful then the item is removed from the inventory and the patient's prescription is filled on the patient's record page.
 ## Pharmacist Inventory - PharmacistInventory.tsx
 This page contains the viewable inventory for the pharmacist. In this page you are able to see the index of the item, name, amount, supplier, price per quantity,and the expiration date of each medication in the pharmacy.   
@@ -45,7 +45,7 @@ This page allows the pharmacist to change their password.
 This is a main that allows the System Admin user to set the current pharmacy and create a main manager account. 
 
 
-#Database
+# Database
 
 
 ## fiscal.json
