@@ -3,14 +3,14 @@ This is the repository for the SFWE403/503 class project.
 # How to Run the Code
 Have [Node.js](https://nodejs.org/en) (including NPM) downloaded
 In the command line, enter:
-	```bash
-	npm install
+    ```bash
+	npm install```
 Next, in the command line enter:
-```bash
-	cd ./pharmacy-frontend
+    ```bash
+	cd ./pharmacy-frontend```
 Next, in the command line enter:
-```bash
-	npm run dev
+    ```bash
+	npm run dev```
 The program should boot up on localhost along with the backend
 # Top Level Breakdown
 
